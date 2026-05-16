@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-namespace FishingTool
+namespace NTEFishingTool.FishingTool
 {
     internal class ImageHandler
     {

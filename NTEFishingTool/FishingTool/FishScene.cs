@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 
-using static FishingTool.ImageHandler;
+using static NTEFishingTool.FishingTool.ImageHandler;
 
-namespace FishingTool
+namespace NTEFishingTool.FishingTool
 {
     internal class FishScene
     {
@@ -59,7 +59,7 @@ namespace FishingTool
         /// <param name="gameImg">比对的图片名</param>
         /// <returns>System.Drawing.Point?</returns>
         /// <exception cref="Exception"></exception>
-        public static Point? MathTemplateImgByName(Bitmap windowImg, IntPtr IntPtrGame, E_GameImage gameImg)
+        public static Point? MathTemplateImgByName(Bitmap windowImg, IntPtr IntPtrGame, EGameImage gameImg)
         {
             Bitmap templateImg = null;
 

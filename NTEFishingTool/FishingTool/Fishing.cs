@@ -4,9 +4,9 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FishingTool
+namespace NTEFishingTool.FishingTool
 {
-    enum E_FishState
+    enum EFishState
     {
         Idle, // 待机中
         Fishing, // 钓鱼中
@@ -21,7 +21,7 @@ namespace FishingTool
 
         private Process prcGame; // 游戏进程对象
         private IntPtr intPtrGame; // 游戏窗口句柄
-        private E_FishState curFishState = E_FishState.Idle; // 当前的钓鱼状态
+        private EFishState curFishState = EFishState.Idle; // 当前的钓鱼状态
 
         private TaskController tasks;
         private string curRunningTaskName;
@@ -34,7 +34,7 @@ namespace FishingTool
 
         private static Fishing uniqueInstance;
 
-        public E_FishState CurFishState
+        public EFishState CurFishState
         {
             get => curFishState;
         }
@@ -142,7 +142,7 @@ namespace FishingTool
                     lostFishingCount++;
 
                     // 判断是否鱼溜走了
-                    Point? fishingFailLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.FishingFail);
+                    Point? fishingFailLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.FishingFail);
                     if (fishingFailLoc != null)
                     {
                         Thread.Sleep(3000); // 等待提示消失，以免再进入此判断
@@ -199,7 +199,7 @@ namespace FishingTool
                     }
 
                     // 判断是否进入上钩逻辑
-                    Point? clickToFishingLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.ClickToFishing);
+                    Point? clickToFishingLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.ClickToFishing);
                     if (clickToFishingLoc != null)
                     {
                         SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
@@ -210,7 +210,7 @@ namespace FishingTool
                     }
 
                     // 判断是否进入收杆逻辑
-                    Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.ClickToClose);
+                    Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.ClickToClose);
                     if (closeTipsLoc != null)
                     {
                         Point tempLoc = new Point(closeTipsLoc.Value.X, closeTipsLoc.Value.Y + 15); // Y轴略微向下，防遮挡
@@ -225,12 +225,12 @@ namespace FishingTool
                     }
 
                     // 被标记为待机状态，或者超过10秒没有任何操作
-                    if (curFishState == E_FishState.Idle
+                    if (curFishState == EFishState.Idle
                         || DateTimeOffset.Now.ToUnixTimeSeconds() - lastOperationTime >= 10)
                     {
                         SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
                         lostFishingCount = 0;
-                        curFishState = E_FishState.Fishing;
+                        curFishState = EFishState.Fishing;
                         lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                     }
 
@@ -243,7 +243,7 @@ namespace FishingTool
 
         private void ShoppingLoop()
         {
-            //if (curFishState == E_FishState.BaitEmpty)
+            //if (curFishState == EFishState.BaitEmpty)
             //{
             //    switch (loopStep)
             //    {
@@ -265,7 +265,7 @@ namespace FishingTool
         private bool HandleBaitEmpty(Bitmap windowImg)
         {
             // 是否提示鱼饵没了
-            Point? emptyTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.BaitEmpty);
+            Point? emptyTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.BaitEmpty);
             if (emptyTipsLoc == null)
             {
                 return false; // 还有鱼饵
@@ -279,17 +279,17 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 确认是否可以直接更换，如果可以那么更换后直接跳出，并将钓鱼状态置为待机，继续钓鱼
-            Point? changeBtnLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.Change);
+            Point? changeBtnLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.Change);
             if (changeBtnLoc != null)
             {
                 SimulateEventHandler.MouseClick(changeBtnLoc.Value);
                 Thread.Sleep(1000);
-                curFishState = E_FishState.Idle;
+                curFishState = EFishState.Idle;
                 return true;
             }
 
             // 确认是否可以购买
-            Point? toBuyLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.ToBuy);
+            Point? toBuyLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.ToBuy);
             if (toBuyLoc == null)
             {
                 throw new Exception("【HandleBaitEmpty】未能在切换鱼饵页面点击购买");
@@ -302,7 +302,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 选中万能鱼饵
-            Point? baitLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.BaitUniversal);
+            Point? baitLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.BaitUniversal);
             if (baitLoc == null)
             {
                 throw new Exception("【HandleBaitEmpty】未能在商店界面选中万能鱼饵");
@@ -311,7 +311,7 @@ namespace FishingTool
             Thread.Sleep(1000);
 
             // 选中拉满鱼饵
-            Point? shopingMaxLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.ShopingMax);
+            Point? shopingMaxLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.ShopingMax);
             if (shopingMaxLoc == null) {
                 throw new Exception("【HandleBaitEmpty】未能在商店界面选中最大值");
             }
@@ -319,7 +319,7 @@ namespace FishingTool
             Thread.Sleep(1000);
 
             // 点击购买
-            Point? buyLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.Buy);
+            Point? buyLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.Buy);
             if (buyLoc == null)
             {
                 throw new Exception("【HandleBaitEmpty】未能在商店界面选中购买");
@@ -331,7 +331,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 确认购买
-            Point? buyConfirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.BuyConfirm);
+            Point? buyConfirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.BuyConfirm);
             if (buyConfirmLoc == null)
             {
                 throw new Exception("【HandleBaitEmpty】未能在商店界面确认购买");
@@ -343,7 +343,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 关闭提示页
-            Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.ClickToClose);
+            Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.ClickToClose);
             if (closeTipsLoc == null)
             {
                 throw new Exception("【HandleBaitEmpty】未能关闭提示");
@@ -355,7 +355,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 关闭商店页
-            Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.PageClose);
+            Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.PageClose);
             if (pageCloseLoc == null)
             {
                 throw new Exception("【HandleBaitEmpty】未能关闭商店界面");
@@ -376,7 +376,7 @@ namespace FishingTool
                 return false;
             }
 
-            Point? moonCardLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.MoonCard);
+            Point? moonCardLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.MoonCard);
             if (moonCardLoc == null)
             {
                 return false;
@@ -386,7 +386,7 @@ namespace FishingTool
 
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
-            Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.ClickToClose);
+            Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.ClickToClose);
             if (closeTipsLoc == null)
             {
                 throw new Exception("【HandleMoonCard】关闭月卡领取提示失败");
@@ -406,14 +406,14 @@ namespace FishingTool
         private bool HandleFishFull(Bitmap windowImg)
         {
             // 检测当前鱼舱是否已满
-            Point? fishFullLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.FishFull);
+            Point? fishFullLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.FishFull);
             if (fishFullLoc == null)
             {
                 return false; // 未满
             }
 
             //// 检测当前界面是否可打开仓库，不能则直接退出此逻辑
-            //Point? iconLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.FishStorageIcon);
+            //Point? iconLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.FishStorageIcon);
             //if (iconLoc == null)
             //{
             //    return;
@@ -427,7 +427,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 切换到鱼舱
-            Point? storageLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.FishStorage);
+            Point? storageLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.FishStorage);
             if (storageLoc == null)
             {
                 throw new Exception("【HandleFishFull】未能切换到鱼舱");
@@ -439,7 +439,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 售卖
-            Point? saleLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.FishSale);
+            Point? saleLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.FishSale);
             if (saleLoc == null)
             {
                 throw new Exception("【HandleFishFull】未能找到售卖鱼获入口");
@@ -451,7 +451,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 确认售卖
-            Point? confirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.Confirm);
+            Point? confirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.Confirm);
             if (confirmLoc == null)
             {
                 throw new Exception("【HandleFishFull】未能确认售出鱼获");
@@ -463,7 +463,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 关闭提示页
-            Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.ClickToClose);
+            Point? closeTipsLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.ClickToClose);
             if (closeTipsLoc == null)
             {
                 throw new Exception("【HandleFishFull】售卖鱼获后未能关闭提示页");
@@ -475,7 +475,7 @@ namespace FishingTool
             windowImg = ImageHandler.CaptureWindow(intPtrGame);
 
             // 关闭页面，回到垂钓待机界面
-            Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, E_GameImage.PageClose);
+            Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtrGame, EGameImage.PageClose);
             if (pageCloseLoc == null)
             {
                 throw new Exception("【HandleFishFull】未能从鱼仓库回到垂钓界面");

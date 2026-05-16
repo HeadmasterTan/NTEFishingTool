@@ -3,8 +3,36 @@
   "WorkspaceRootPath": "D:\\Code\\C#\\Test\\NTEFishingTool\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\fishingtool\\fishing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\fishingtool\\fishing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|D:\\Code\\C#\\Test\\NTEFishingTool\\ntefishingtool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\fishingtool\\fishscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\fishingtool\\fishscene.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\fishingtool\\imagemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\fishingtool\\imagemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\fishingtool\\imagehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\fishingtool\\imagehandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\fishingtool\\processhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\fishingtool\\processhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\fishingtool\\simulateeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\fishingtool\\simulateeventhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|d:\\code\\c#\\test\\ntefishingtool\\ntefishingtool\\fishingtool\\taskcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F3264C7F-506D-4242-9D89-7730562D6D10}|NTEFishingTool\\NTEFishingTool.csproj|solutionrelative:ntefishingtool\\fishingtool\\taskcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,12 +47,111 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Fishing.cs",
+              "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\Fishing.cs",
+              "RelativeDocumentMoniker": "NTEFishingTool\\FishingTool\\Fishing.cs",
+              "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\Fishing.cs",
+              "RelativeToolTip": "NTEFishingTool\\FishingTool\\Fishing.cs",
+              "ViewState": "AgIAACsAAAAAAAAAAAA9wDcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T13:48:36.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TaskController.cs",
+              "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\TaskController.cs",
+              "RelativeDocumentMoniker": "NTEFishingTool\\FishingTool\\TaskController.cs",
+              "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\TaskController.cs",
+              "RelativeToolTip": "NTEFishingTool\\FishingTool\\TaskController.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAiwAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T13:41:35.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SimulateEventHandler.cs",
+              "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\SimulateEventHandler.cs",
+              "RelativeDocumentMoniker": "NTEFishingTool\\FishingTool\\SimulateEventHandler.cs",
+              "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\SimulateEventHandler.cs",
+              "RelativeToolTip": "NTEFishingTool\\FishingTool\\SimulateEventHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T13:41:31.647Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ProcessHandler.cs",
+              "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\ProcessHandler.cs",
+              "RelativeDocumentMoniker": "NTEFishingTool\\FishingTool\\ProcessHandler.cs",
+              "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\ProcessHandler.cs",
+              "RelativeToolTip": "NTEFishingTool\\FishingTool\\ProcessHandler.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T13:41:28.71Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ImageManager.cs",
+              "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\ImageManager.cs",
+              "RelativeDocumentMoniker": "NTEFishingTool\\FishingTool\\ImageManager.cs",
+              "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\ImageManager.cs",
+              "RelativeToolTip": "NTEFishingTool\\FishingTool\\ImageManager.cs",
+              "ViewState": "AgIAACoBAAAAAAAAAADgv0MBAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T13:41:24.179Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ImageHandler.cs",
+              "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\ImageHandler.cs",
+              "RelativeDocumentMoniker": "NTEFishingTool\\FishingTool\\ImageHandler.cs",
+              "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\ImageHandler.cs",
+              "RelativeToolTip": "NTEFishingTool\\FishingTool\\ImageHandler.cs",
+              "ViewState": "AgIAAOAAAAAAAAAAAAAwwEkAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T13:41:20.583Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FishScene.cs",
+              "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\FishScene.cs",
+              "RelativeDocumentMoniker": "NTEFishingTool\\FishingTool\\FishScene.cs",
+              "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\FishingTool\\FishScene.cs",
+              "RelativeToolTip": "NTEFishingTool\\FishingTool\\FishScene.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAiwDkAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-16T13:41:15.155Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Form1.cs",
               "DocumentMoniker": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\Form1.cs",
               "RelativeDocumentMoniker": "NTEFishingTool\\Form1.cs",
               "ToolTip": "D:\\Code\\C#\\Test\\NTEFishingTool\\NTEFishingTool\\Form1.cs",
               "RelativeToolTip": "NTEFishingTool\\Form1.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-16T12:36:13.562Z",
               "EditorCaption": ""

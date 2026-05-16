@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FishingTool
+namespace NTEFishingTool.FishingTool
 {
     internal class TaskController
     {
