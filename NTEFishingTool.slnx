@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="NTEFishingTool/NTEFishingTool.csproj" Id="f3264c7f-506d-4242-9d89-7730562d6d10">
+    <Platform Solution="*|x64" Project="x64" />
+  </Project>
+</Solution>

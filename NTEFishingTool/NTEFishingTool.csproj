@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\OpenCvSharp4.runtime.win.4.13.0.20260302\build\netstandard\OpenCvSharp4.runtime.win.props" Condition="Exists('..\packages\OpenCvSharp4.runtime.win.4.13.0.20260302\build\netstandard\OpenCvSharp4.runtime.win.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F3264C7F-506D-4242-9D89-7730562D6D10}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>NTEFishingTool</RootNamespace>
+    <AssemblyName>NTEFishingTool</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenCvSharp, Version=4.13.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenCvSharp4.4.13.0.20260302\lib\netstandard2.0\OpenCvSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenCvSharp.Extensions, Version=4.13.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenCvSharp4.Extensions.4.13.0.20260302\lib\netstandard2.0\OpenCvSharp.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Drawing.Common.10.0.3\lib\net462\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FishingTool\FishScene.cs" />
+    <Compile Include="FishingTool\Fishing.cs" />
+    <Compile Include="FishingTool\ImageHandler.cs" />
+    <Compile Include="FishingTool\ImageManager.cs" />
+    <Compile Include="FishingTool\ProcessHandler.cs" />
+    <Compile Include="FishingTool\SimulateEventHandler.cs" />
+    <Compile Include="FishingTool\TaskController.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Images\HTGame-BaitEmpty-1080.png" />
+    <Content Include="Resources\Images\HTGame-BaitEmpty-1440.png" />
+    <Content Include="Resources\Images\HTGame-BaitEmpty-720.png" />
+    <Content Include="Resources\Images\HTGame-BaitUniversal-1080.png" />
+    <Content Include="Resources\Images\HTGame-BaitUniversal-1440.png" />
+    <Content Include="Resources\Images\HTGame-BaitUniversal-720.png" />
+    <Content Include="Resources\Images\HTGame-Buy-1080.png" />
+    <Content Include="Resources\Images\HTGame-Buy-1440.png" />
+    <Content Include="Resources\Images\HTGame-Buy-720.png" />
+    <Content Include="Resources\Images\HTGame-BuyConfirm-1080.png" />
+    <Content Include="Resources\Images\HTGame-BuyConfirm-1440.png" />
+    <Content Include="Resources\Images\HTGame-BuyConfirm-720.png" />
+    <Content Include="Resources\Images\HTGame-Change-1080.png" />
+    <Content Include="Resources\Images\HTGame-Change-1440.png" />
+    <Content Include="Resources\Images\HTGame-Change-720.png" />
+    <Content Include="Resources\Images\HTGame-ChangeBaitUniversal-1080.png" />
+    <Content Include="Resources\Images\HTGame-ChangeBaitUniversal-1440.png" />
+    <Content Include="Resources\Images\HTGame-ChangeBaitUniversal-720.png" />
+    <Content Include="Resources\Images\HTGame-ClickToClose-1080.png" />
+    <Content Include="Resources\Images\HTGame-ClickToClose-1440.png" />
+    <Content Include="Resources\Images\HTGame-ClickToClose-720.png" />
+    <Content Include="Resources\Images\HTGame-ClickToFishing-1080.png" />
+    <Content Include="Resources\Images\HTGame-ClickToFishing-1440.png" />
+    <Content Include="Resources\Images\HTGame-ClickToFishing-720.png" />
+    <Content Include="Resources\Images\HTGame-Confirm-1080.png" />
+    <Content Include="Resources\Images\HTGame-Confirm-1440.png" />
+    <Content Include="Resources\Images\HTGame-Confirm-720.png" />
+    <Content Include="Resources\Images\HTGame-FishFull-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishFull-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishFull-720.png" />
+    <Content Include="Resources\Images\HTGame-FishingFail-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishingFail-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishingFail-720.png" />
+    <Content Include="Resources\Images\HTGame-FishSale-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishSale-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishSale-720.png" />
+    <Content Include="Resources\Images\HTGame-FishStorage-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishStorage-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishStorage-720.png" />
+    <Content Include="Resources\Images\HTGame-FishStorageIcon-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishStorageIcon-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishStorageIcon-720.png" />
+    <Content Include="Resources\Images\HTGame-MoonCard-1080.png" />
+    <Content Include="Resources\Images\HTGame-PageClose-1080.png" />
+    <Content Include="Resources\Images\HTGame-PageClose-1440.png" />
+    <Content Include="Resources\Images\HTGame-PageClose-720.png" />
+    <Content Include="Resources\Images\HTGame-ShopingMax-1080.png" />
+    <Content Include="Resources\Images\HTGame-ShopingMax-1440.png" />
+    <Content Include="Resources\Images\HTGame-ShopingMax-720.png" />
+    <Content Include="Resources\Images\HTGame-ToBuy-1080.png" />
+    <Content Include="Resources\Images\HTGame-ToBuy-1440.png" />
+    <Content Include="Resources\Images\HTGame-ToBuy-720.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Images\**">
+      <Link>Resources\Images\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\OpenCvSharp4.runtime.win.4.13.0.20260302\build\netstandard\OpenCvSharp4.runtime.win.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OpenCvSharp4.runtime.win.4.13.0.20260302\build\netstandard\OpenCvSharp4.runtime.win.props'))" />
+  </Target>
+</Project>
