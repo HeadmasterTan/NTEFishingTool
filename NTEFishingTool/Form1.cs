@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using FishingTool;
+using NTEFishingTool.FishingTool;
 
 namespace NTEFishingTool
 {

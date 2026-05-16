@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
 
-namespace FishingTool
+namespace NTEFishingTool.FishingTool
 {
-    enum E_GameImage
+    enum EGameImage
     {
         BaitEmpty,
         BaitUniversal,
@@ -256,7 +256,7 @@ namespace FishingTool
             }
         }
 
-        public Rectangle? GetImageRectangle(Bitmap windowImg, E_GameImage gameImg)
+        public Rectangle? GetImageRectangle(Bitmap windowImg, EGameImage gameImg)
         {
             int rectX, rectY, rectWidth, rectHeight;
 
@@ -265,120 +265,120 @@ namespace FishingTool
 
             switch (gameImg)
             {
-                case E_GameImage.ClickToClose:
+                case EGameImage.ClickToClose:
                     rectX = (int)(width * 0.43);
                     rectY = (int)(height * 0.833) + 40;
                     rectWidth = (int)(width * 0.156);
                     rectHeight = (int)(height * 0.139);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.ClickToFishing:
+                case EGameImage.ClickToFishing:
                     rectX = (int)(width * 0.391);
                     rectY = (int)(height * 0.209) + 40;
                     rectWidth = (int)(width * 0.235);
                     rectHeight = (int)(height * 0.07);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.FishStorageIcon:
+                case EGameImage.FishStorageIcon:
                     rectX = (int)(width * 0.75);
                     rectY = (int)(height * 0.8) + 40;
                     rectWidth = (int)(width * 0.15);
                     rectHeight = (int)(height * 0.15);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.FishStorage:
+                case EGameImage.FishStorage:
                     rectX = (int)(width * 0.047);
                     rectY = (int)(height * 0.334) + 40;
                     rectWidth = (int)(width * 0.073);
                     rectHeight = (int)(height * 0.102);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.FishSale:
+                case EGameImage.FishSale:
                     rectX = (int)(width * 0.511);
                     rectY = (int)(height * 0.871) + 40;
                     rectWidth = (int)(width * 0.084);
                     rectHeight = (int)(height * 0.047);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.Confirm:
+                case EGameImage.Confirm:
                     rectX = (int)(width * 0.573);
                     rectY = (int)(height * 0.63) + 40;
                     rectWidth = (int)(width * 0.0625);
                     rectHeight = (int)(height * 0.056);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.PageClose:
+                case EGameImage.PageClose:
                     rectX = (int)(width * 0.922);
                     rectY = 40;
                     rectWidth = (int)(width * 0.078);
                     rectHeight = (int)(height * 0.112);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.BaitEmpty:
+                case EGameImage.BaitEmpty:
                     rectX = (int)(width * 0.406);
                     rectY = (int)(height * 0.463) + 40;
                     rectWidth = (int)(width * 0.208);
                     rectHeight = (int)(height * 0.093);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.ChangeBaitUniversal:
+                case EGameImage.ChangeBaitUniversal:
                     rectX = (int)(width * 0.313);
                     rectY = (int)(height * 0.417) + 40;
                     rectWidth = (int)(width * 0.156);
                     rectHeight = (int)(height * 0.139);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.ToBuy:
-                case E_GameImage.Change:
+                case EGameImage.ToBuy:
+                case EGameImage.Change:
                     rectX = (int)(width * 0.573);
                     rectY = (int)(height * 0.620) + 40;
                     rectWidth = (int)(width * 0.052);
                     rectHeight = (int)(height * 0.065);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.BaitUniversal:
+                case EGameImage.BaitUniversal:
                     rectX = (int)(width * 0.016);
                     rectY = (int)(height * 0.111) + 40;
                     rectWidth = (int)(width * 0.365);
                     rectHeight = (int)(height * 0.648);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.Buy:
+                case EGameImage.Buy:
                     rectX = (int)(width * 0.8125);
                     rectY = (int)(height * 0.926) + 40;
                     rectWidth = (int)(width * 0.052);
                     rectHeight = (int)(height * 0.056);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.BuyConfirm:
+                case EGameImage.BuyConfirm:
                     rectX = (int)(width * 0.573);
                     rectY = (int)(height * 0.63) + 40;
                     rectWidth = (int)(width * 0.052);
                     rectHeight = (int)(height * 0.056);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.ShopingMax:
+                case EGameImage.ShopingMax:
                     rectX = (int)(width * 0.911);
                     rectY = (int)(height * 0.833) + 40;
                     rectWidth = (int)(width * 0.0625);
                     rectHeight = (int)(height * 0.093);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.MoonCard:
+                case EGameImage.MoonCard:
                     rectX = (int)(width * 0.401);
                     rectY = (int)(height * 0.278) + 40;
                     rectWidth = (int)(width * 0.209);
                     rectHeight = (int)(height * 0.371);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.FishingFail:
+                case EGameImage.FishingFail:
                     rectX = (int)(width * 0.448);
                     rectY = (int)(height * 0.463) + 40;
                     rectWidth = (int)(width * 0.104);
                     rectHeight = (int)(height * 0.074);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
-                case E_GameImage.FishFull:
+                case EGameImage.FishFull:
                     rectX = (int)(width * 0.344);
                     rectY = (int)(height * 0.463) + 40;
                     rectWidth = (int)(width * 0.3125);

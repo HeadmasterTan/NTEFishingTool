@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace FishingTool
+namespace NTEFishingTool.FishingTool
 {
     internal class ProcessHandler
     {
@@ -24,11 +24,7 @@ namespace FishingTool
         public static Process GetProcess(string processName)
         {
             var processes = Process.GetProcessesByName(processName);
-            if (processes.Length > 0)
-            {
-                return processes[0];
-            }
-            return null;
+            return processes.Length > 0 ? processes[0] : null;
         }
     }
 }
