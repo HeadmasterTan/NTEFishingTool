@@ -13,40 +13,41 @@ namespace NTEFishingTool.FishingTool
         // 取消令牌源，用于彻底停止所有任务
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
-        public void StartTask(string taskId, Action taskFunc)
+        public void StartTask(string taskId, Func<ConcurrentDictionary<string, TaskCompletionSource<bool>>, CancellationToken, Task> taskFunc)
         {
             var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
             tcs.SetResult(true);
             _taskSwitches[taskId] = tcs;
 
-            Task.Run(async () => await DoWorkAsync(taskId, _cts.Token, taskFunc));
+            Task.Run(async () => await taskFunc(_taskSwitches, _cts.Token));
         }
 
-        private async Task DoWorkAsync(string taskId, CancellationToken token, Action taskFunc)
+        private async Task DoWorkAsync(TaskCompletionSource<bool> tcs, CancellationToken token)
         {
-            Console.WriteLine($"任务 [{taskId}] 已启动");
+            //Console.WriteLine($"任务 [{taskId}] 已启动");
 
             try
             {
                 while (!token.IsCancellationRequested)
                 {
-                    // 检查是否需要暂停
-                    if (_taskSwitches.TryGetValue(taskId, out var tcs))
-                    {
-                        // 如果tcs.Task未完成，代码会在此处异步挂起，不阻塞线程池线程
-                        await tcs.Task;
-                    }
+                    // 如果tcs.Task未完成，代码会在此处异步挂起，不阻塞线程池线程
+                    //if (tcsDict.TryGetValue(taskId, out var tcs))
+                    //{
+                    //    // 如果tcs.Task未完成，代码会在此处异步挂起，不阻塞线程池线程
+                    //    await tcs.Task;
+                    //}
+                    await tcs.Task;
 
-                    taskFunc();
+                    // do something
                 }
             }
             catch (OperationCanceledException)
             {
-                Console.WriteLine($"任务 [{taskId}] 收到取消信号");
+                //Console.WriteLine($"任务 [{taskId}] 收到取消信号");
             }
             finally
             {
-                Console.WriteLine($"任务 [{taskId}] 已停止");
+                //Console.WriteLine($"任务 [{taskId}] 已停止");
             }
         }
 

@@ -38,7 +38,7 @@ namespace NTEFishingTool
 
         private void btnStopFishing_Click(object sender, EventArgs e)
         {
-            fishingTool.Stop();
+            fishingTool.Resume();
 
             if (btnStopFishing.Enabled)
             {

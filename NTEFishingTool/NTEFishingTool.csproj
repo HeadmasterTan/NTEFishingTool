@@ -101,6 +101,7 @@
     <Compile Include="FishingTool\ProcessHandler.cs" />
     <Compile Include="FishingTool\SimulateEventHandler.cs" />
     <Compile Include="FishingTool\TaskController.cs" />
+    <Compile Include="FishingTool\Transaction.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,9 +163,15 @@
     <Content Include="Resources\Images\HTGame-ClickToFishing-1080.png" />
     <Content Include="Resources\Images\HTGame-ClickToFishing-1440.png" />
     <Content Include="Resources\Images\HTGame-ClickToFishing-720.png" />
+    <Content Include="Resources\Images\HTGame-ClickToStart-1080.png" />
+    <Content Include="Resources\Images\HTGame-ClickToStart-1440.png" />
+    <Content Include="Resources\Images\HTGame-ClickToStart-720.png" />
     <Content Include="Resources\Images\HTGame-Confirm-1080.png" />
     <Content Include="Resources\Images\HTGame-Confirm-1440.png" />
     <Content Include="Resources\Images\HTGame-Confirm-720.png" />
+    <Content Include="Resources\Images\HTGame-EnterToFishing-1080.png" />
+    <Content Include="Resources\Images\HTGame-EnterToFishing-1440.png" />
+    <Content Include="Resources\Images\HTGame-EnterToFishing-720.png" />
     <Content Include="Resources\Images\HTGame-FishFull-1080.png" />
     <Content Include="Resources\Images\HTGame-FishFull-1440.png" />
     <Content Include="Resources\Images\HTGame-FishFull-720.png" />
