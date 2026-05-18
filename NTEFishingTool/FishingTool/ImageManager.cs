@@ -12,7 +12,9 @@ namespace NTEFishingTool.FishingTool
         ChangeBaitUniversal,
         ClickToClose,
         ClickToFishing,
+        ClickToStart,
         Confirm,
+        EnterToFishing,
         FishFull,
         FishingFail,
         FishSale,
@@ -68,10 +70,20 @@ namespace NTEFishingTool.FishingTool
         private static readonly Bitmap img1080_ClickToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOFISHING}-1080.png");
         private static readonly Bitmap img1440_ClickToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOFISHING}-1440.png");
 
+        private const string IMAGE_CLICKTOSTART = "HTGame-ClickToStart";
+        private static readonly Bitmap img720_ClickToStart = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOSTART}-720.png");
+        private static readonly Bitmap img1080_ClickToStart = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOSTART}-1080.png");
+        private static readonly Bitmap img1440_ClickToStart = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOSTART}-1440.png");
+
         private const string IMAGE_CONFIRM = "HTGame-Confirm";
         private static readonly Bitmap img720_Confirm = new Bitmap($"{IMAGE_PATH}{IMAGE_CONFIRM}-720.png");
         private static readonly Bitmap img1080_Confirm = new Bitmap($"{IMAGE_PATH}{IMAGE_CONFIRM}-1080.png");
         private static readonly Bitmap img1440_Confirm = new Bitmap($"{IMAGE_PATH}{IMAGE_CONFIRM}-1440.png");
+
+        private const string IMAGE_ENTERTOFISHING = "HTGame-EnterToFishing";
+        private static readonly Bitmap img720_EnterToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_ENTERTOFISHING}-720.png");
+        private static readonly Bitmap img1080_EnterToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_ENTERTOFISHING}-1080.png");
+        private static readonly Bitmap img1440_EnterToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_ENTERTOFISHING}-1440.png");
 
         private const string IMAGE_FISHFULL = "HTGame-FishFull";
         private static readonly Bitmap img720_FishFull = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHFULL}-720.png");
@@ -180,12 +192,26 @@ namespace NTEFishingTool.FishingTool
                     case "img1440_ClickToFishing":
                         return img1440_ClickToFishing;
 
+                    case "img720_ClickToStart":
+                        return img720_ClickToStart;
+                    case "img1080_ClickToStart":
+                        return img1080_ClickToStart;
+                    case "img1440_ClickToStart":
+                        return img1440_ClickToStart;
+
                     case "img720_Confirm":
                         return img720_Confirm;
                     case "img1080_Confirm":
                         return img1080_Confirm;
                     case "img1440_Confirm":
                         return img1440_Confirm;
+
+                    case "img720_EnterToFishing":
+                        return img720_EnterToFishing;
+                    case "img1080_EnterToFishing":
+                        return img1080_EnterToFishing;
+                    case "img1440_EnterToFishing":
+                        return img1440_EnterToFishing;
 
                     case "img720_FishFull":
                         return img720_FishFull;
@@ -222,11 +248,11 @@ namespace NTEFishingTool.FishingTool
                     case "img1440_FishStorageIcon":
                         return img1440_FishStorageIcon;
 
-                    //case "img720_MoonCard":
+                    case "img720_MoonCard":
                     //    return img720_MoonCard;
                     case "img1080_MoonCard":
+                    case "img1440_MoonCard":
                         return img1080_MoonCard;
-                    //case "img1440_MoonCard":
                     //    return img1440_MoonCard;
 
                     case "img720_PageClose":
@@ -311,7 +337,7 @@ namespace NTEFishingTool.FishingTool
                     rectX = (int)(width * 0.922);
                     rectY = 40;
                     rectWidth = (int)(width * 0.078);
-                    rectHeight = (int)(height * 0.112);
+                    rectHeight = (int)(height * 0.148);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
 
                 case EGameImage.BaitEmpty:
@@ -383,6 +409,20 @@ namespace NTEFishingTool.FishingTool
                     rectY = (int)(height * 0.463) + 40;
                     rectWidth = (int)(width * 0.3125);
                     rectHeight = (int)(height * 0.084);
+                    return new Rectangle(rectX, rectY, rectWidth, rectHeight);
+
+                case EGameImage.ClickToStart:
+                    rectX = (int)(width * 0.797);
+                    rectY = (int)(height * 0.834) + 40;
+                    rectWidth = (int)(width * 0.084);
+                    rectHeight = (int)(height * 0.056);
+                    return new Rectangle(rectX, rectY, rectWidth, rectHeight);
+
+                case EGameImage.EnterToFishing:
+                    rectX = (int)(width * 0.61);
+                    rectY = (int)(height * 0.51) + 40;
+                    rectWidth = (int)(width * 0.052);
+                    rectHeight = (int)(height * 0.056);
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
             }
 

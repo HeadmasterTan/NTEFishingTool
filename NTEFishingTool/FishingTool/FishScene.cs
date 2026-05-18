@@ -55,11 +55,11 @@ namespace NTEFishingTool.FishingTool
         /// 返回匹配结果，能够在窗口截图中找到比对图则返回比对图在整个桌面全屏模式下的绝对位置，否则返回null
         /// </summary>
         /// <param name="windowImg">游戏窗口截图</param>
-        /// <param name="IntPtrGame">程序句柄</param>
+        /// <param name="intPtrGame">程序句柄</param>
         /// <param name="gameImg">比对的图片名</param>
         /// <returns>System.Drawing.Point?</returns>
         /// <exception cref="Exception"></exception>
-        public static Point? MathTemplateImgByName(Bitmap windowImg, IntPtr IntPtrGame, EGameImage gameImg)
+        public static Point? MathTemplateImgByName(Bitmap windowImg, IntPtr intPtrGame, EGameImage gameImg)
         {
             Bitmap templateImg = null;
 
@@ -90,7 +90,7 @@ namespace NTEFishingTool.FishingTool
 
             if (loc != null)
             {
-                GetWindowRect(IntPtrGame, out RECT windowRect);
+                GetWindowRect(intPtrGame, out RECT windowRect);
 
                 // 将相对坐标转换为绝对坐标
                 int absoluteX = windowRect.Left + rect.Value.X + loc.Value.X;
