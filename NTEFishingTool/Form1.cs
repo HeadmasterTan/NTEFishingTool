@@ -7,7 +7,7 @@ namespace NTEFishingTool
 {
     public partial class Form1 : Form
     {
-        private static Fishing fishingTool = Fishing.GetInstance();
+        private static Fishing _fishingTool = Fishing.GetInstance();
 
         public Form1()
         {
@@ -23,7 +23,7 @@ namespace NTEFishingTool
         {
             try
             {
-                fishingTool.Start();
+                _fishingTool.Start();
                 if (btnStartFishing.Enabled)
                 {
                     btnStartFishing.Enabled = false;
@@ -38,13 +38,18 @@ namespace NTEFishingTool
 
         private void btnStopFishing_Click(object sender, EventArgs e)
         {
-            fishingTool.Resume();
+            _fishingTool.Resume();
 
             if (btnStopFishing.Enabled)
             {
                 btnStartFishing.Enabled = true;
                 btnStopFishing.Enabled = false;
             }
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _fishingTool.Stop();
         }
     }
 }

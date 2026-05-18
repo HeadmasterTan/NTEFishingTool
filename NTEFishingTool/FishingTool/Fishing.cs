@@ -34,11 +34,6 @@ namespace NTEFishingTool.FishingTool
         private static Fishing _uniqueInstance;
         private static readonly object _lock = new object();
 
-        public IntPtr IntPtrGame
-        {
-            get => _intPtrGame;
-        }
-
         public EFishState CurFishState
         {
             get => _curFishState;
@@ -88,7 +83,6 @@ namespace NTEFishingTool.FishingTool
                 _isTaskRunning = true;
                 _curRunningTaskName = "FishingLoop";
                 _tasks.StartTask("FishingLoop", FishingLoop);
-                //tasks.StartTask("ShoppingLoop", ShoppingLoop);
             }
             else if (!_isTaskRunning)
             {
@@ -160,6 +154,7 @@ namespace NTEFishingTool.FishingTool
 
                     // 循环捕获游戏窗口图像并处理
                     Bitmap windowImg = ImageHandler.CaptureWindow(_intPtrGame);
+                    Console.WriteLine($"当前状态：{_curFishState.ToString()}");
 
                     try
                     {
@@ -173,17 +168,23 @@ namespace NTEFishingTool.FishingTool
                                 continue;
                             case EFishState.BuyBait:
                                 Transaction.HandleBuyOrChangeBait(_intPtrGame);
+                                _curFishState = EFishState.Fishing;
                                 continue;
                             case EFishState.SaleFish:
                                 Transaction.HandleSaleFish(_intPtrGame);
+                                _curFishState = EFishState.Fishing;
                                 continue;
                             case EFishState.MoonCard:
                                 HandleMoonCard(windowImg);
+                                _curFishState = EFishState.Fishing;
                                 continue;
                         }
                     }
-                    catch
+                    catch(Exception e)
                     {
+                        Console.WriteLine("===========================内层===========================");
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine("===========================内层===========================");
                         // 报错了不管怎么样，重置下按键事件，然后直接回退到游戏待机界面，重新来过。
                         if (curKeyScanCode != 0)
                         {
@@ -191,6 +192,7 @@ namespace NTEFishingTool.FishingTool
                             curKeyScanCode = 0;
                         }
                         _curFishState = EFishState.Back;
+                        continue;
                     }
 
                     (OpenCvSharp.Point? locBar, OpenCvSharp.Point? locPoint) = FishScene.GetFishBarAndPoint(windowImg);
@@ -207,6 +209,7 @@ namespace NTEFishingTool.FishingTool
                     // 判断是否进入溜鱼逻辑
                     if (locBar != null && locPoint != null)
                     {
+                        _curFishState = EFishState.Fishing;
                         lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
 
                         if (locBar.Value.X > locPoint.Value.X)
@@ -220,7 +223,7 @@ namespace NTEFishingTool.FishingTool
                             curKeyScanCode = SimulateEventHandler.SCAN_A;
                         }
                     }
-                    else if (lostFishingCount >= 10) // 连续多次未找到钓鱼绿条或光标，可能是溜鱼结束了
+                    else if (lostFishingCount >= 10) // 连续多次未找到钓鱼绿条或光标，进入各项判断逻辑
                     {
                         if (curKeyScanCode != 0)
                         {
@@ -281,9 +284,13 @@ namespace NTEFishingTool.FishingTool
                             continue;
                         }
 
-                        // 处理月卡
-                        DateTime nowTime = DateTime.Now;
-                        if (nowTime.Hour == 4 && nowTime.Minute <= 3)
+                        //DateTime nowTime = DateTime.Now;
+                        //if (nowTime.Hour == 5 && nowTime.Minute <= 59)
+                        //{
+                        //}
+                        // 处理月卡，并非整点结算月卡
+                        Point? moonCardLoc = FishScene.MathTemplateImgByName(windowImg, _intPtrGame, EGameImage.MoonCard);
+                        if (moonCardLoc != null)
                         {
                             _curFishState = EFishState.MoonCard;
                             continue;
@@ -311,7 +318,9 @@ namespace NTEFishingTool.FishingTool
             }
             catch (Exception e)
             {
+                Console.WriteLine("==========================外层==========================");
                 Console.WriteLine(e.Message);
+                Console.WriteLine("==========================外层==========================");
             }
             finally
             {
@@ -319,15 +328,13 @@ namespace NTEFishingTool.FishingTool
             }
         }
 
-        private bool HandleMoonCard(Bitmap windowImg)
+        private void HandleMoonCard(Bitmap windowImg)
         {
-            Thread.Sleep(2000);
-
             Point? moonCardLoc = FishScene.MathTemplateImgByName(windowImg, _intPtrGame, EGameImage.MoonCard);
             if (moonCardLoc == null)
             {
                 // 没有月卡，无事发生
-                return false;
+                return;
             }
 
             SimulateEventHandler.MouseClick(moonCardLoc.Value);
@@ -343,8 +350,6 @@ namespace NTEFishingTool.FishingTool
 
             SimulateEventHandler.MouseClick(closeTipsLoc.Value);
             Thread.Sleep(3000);
-
-            return true;
         }
 
         private void BackToGameIdle()

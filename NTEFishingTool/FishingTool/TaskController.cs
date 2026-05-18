@@ -22,6 +22,7 @@ namespace NTEFishingTool.FishingTool
             Task.Run(async () => await taskFunc(_taskSwitches, _cts.Token));
         }
 
+        // 示例
         private async Task DoWorkAsync(TaskCompletionSource<bool> tcs, CancellationToken token)
         {
             //Console.WriteLine($"任务 [{taskId}] 已启动");

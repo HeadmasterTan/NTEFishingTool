@@ -40,18 +40,18 @@
             // 
             // btnStartFishing
             // 
-            this.btnStartFishing.Location = new System.Drawing.Point(134, 206);
+            this.btnStartFishing.Location = new System.Drawing.Point(117, 206);
             this.btnStartFishing.Name = "btnStartFishing";
             this.btnStartFishing.Size = new System.Drawing.Size(91, 38);
             this.btnStartFishing.TabIndex = 0;
-            this.btnStartFishing.Text = "开始钓鱼";
+            this.btnStartFishing.Text = "自动钓鱼";
             this.btnStartFishing.UseVisualStyleBackColor = true;
             this.btnStartFishing.Click += new System.EventHandler(this.btnStartFishing_Click);
             // 
             // btnStopFishing
             // 
             this.btnStopFishing.Enabled = false;
-            this.btnStopFishing.Location = new System.Drawing.Point(272, 206);
+            this.btnStopFishing.Location = new System.Drawing.Point(300, 206);
             this.btnStopFishing.Name = "btnStopFishing";
             this.btnStopFishing.Size = new System.Drawing.Size(91, 38);
             this.btnStopFishing.TabIndex = 1;
@@ -91,27 +91,27 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(12, 87);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(390, 15);
+            this.label4.Size = new System.Drawing.Size(438, 15);
             this.label4.TabIndex = 5;
-            this.label4.Text = "3. 仅支持2560*1440窗口/1920*1080窗口/1280*720窗口";
+            this.label4.Text = "3. 仅支持[2560*1440窗口]/[1920*1080窗口]/[1280*720窗口]";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(12, 112);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(436, 15);
+            this.label5.Size = new System.Drawing.Size(391, 15);
             this.label5.TabIndex = 6;
-            this.label5.Text = "4. 内置自动购买万能鱼饵和满鱼舱自动售出（不帮忙购买鱼竿）";
+            this.label5.Text = "4. 内置自动购买万能鱼饵和自动售出（不帮忙购买鱼竿）";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(131, 176);
+            this.label6.Location = new System.Drawing.Point(114, 178);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(232, 15);
+            this.label6.Size = new System.Drawing.Size(277, 15);
             this.label6.TabIndex = 7;
-            this.label6.Text = "确认已在钓鱼界面后点击开始钓鱼";
+            this.label6.Text = "确认已在游戏中点击【开始钓鱼】后使用";
             // 
             // Form1
             // 
@@ -131,6 +131,7 @@
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Text = "异环钓鱼工具";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
