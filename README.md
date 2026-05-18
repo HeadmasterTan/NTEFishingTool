@@ -3,6 +3,8 @@
 
 本工具基于`OpenCV`，所以不能挂后台，望周知。
 
+[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.0.0)
+
 ## 使用说明
 
 * 本工具只有 `自动钓鱼` 和 `停止钓鱼` 两个按钮
