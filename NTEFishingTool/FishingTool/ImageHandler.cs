@@ -243,11 +243,12 @@ namespace NTEFishingTool.FishingTool
                 Cv2.InRange(hsv, lowerColor, upperColor, mask);
 
                 // 去噪声，使用开运算（先腐蚀后膨胀）来去除小的噪点
+                // 改用闭运算（先膨胀后腐蚀），加上一个矩形内核用作替代光标，连接两节钓鱼条。
                 Cv2.MorphologyEx(
                     mask,
                     mask,
-                    MorphTypes.Open,
-                    Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(3, 3)));
+                    MorphTypes.Close,
+                    Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(20, 15)));
 
                 // 查找轮廓
                 Cv2.FindContours(
