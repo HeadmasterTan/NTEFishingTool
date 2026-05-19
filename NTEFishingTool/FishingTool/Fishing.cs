@@ -216,8 +216,14 @@ namespace NTEFishingTool.FishingTool
                     {
                         _curFishState = EFishState.Fishing;
                         lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+                        int distance = locBar.Value.X - locPoint.Value.X;
 
-                        if (locBar.Value.X > locPoint.Value.X)
+                        if (distance < 20 && distance > -20)
+                        {
+                            ToggleFishingPressKey(curKeyScanCode, 0);
+                            curKeyScanCode = 0;
+                        }
+                        else if (locBar.Value.X > locPoint.Value.X)
                         {
                             ToggleFishingPressKey(curKeyScanCode, SimulateEventHandler.SCAN_D);
                             curKeyScanCode = SimulateEventHandler.SCAN_D;
