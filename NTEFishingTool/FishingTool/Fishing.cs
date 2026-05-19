@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace NTEFishingTool.FishingTool
 {
@@ -154,7 +155,6 @@ namespace NTEFishingTool.FishingTool
 
                     // 循环捕获游戏窗口图像并处理
                     Bitmap windowImg = ImageHandler.CaptureWindow(_intPtrGame);
-                    Console.WriteLine($"当前状态：{_curFishState.ToString()}");
 
                     try
                     {
@@ -162,21 +162,26 @@ namespace NTEFishingTool.FishingTool
                         {
                             case EFishState.Back:
                                 BackToGameIdle();
+                                lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                 continue;
                             case EFishState.GameIdle:
                                 GoToFishingIdle(windowImg);
+                                lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                 continue;
                             case EFishState.BuyBait:
                                 Transaction.HandleBuyOrChangeBait(_intPtrGame);
                                 _curFishState = EFishState.Fishing;
+                                lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                 continue;
                             case EFishState.SaleFish:
                                 Transaction.HandleSaleFish(_intPtrGame);
                                 _curFishState = EFishState.Fishing;
+                                lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                 continue;
                             case EFishState.MoonCard:
                                 HandleMoonCard(windowImg);
                                 _curFishState = EFishState.Fishing;
+                                lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                 continue;
                         }
                     }
@@ -284,6 +289,13 @@ namespace NTEFishingTool.FishingTool
                             continue;
                         }
 
+                        Point? toEnterLoc = FishScene.MathTemplateImgByName(windowImg, _intPtrGame, EGameImage.EnterToFishing);
+                        if (toEnterLoc != null)
+                        {
+                            _curFishState = EFishState.GameIdle;
+                            continue;
+                        }
+
                         //DateTime nowTime = DateTime.Now;
                         //if (nowTime.Hour == 5 && nowTime.Minute <= 59)
                         //{
@@ -296,6 +308,13 @@ namespace NTEFishingTool.FishingTool
                             continue;
                         }
 
+                        // 超过40秒没有任何操作，主动回退到游戏界面
+                        if (DateTimeOffset.Now.ToUnixTimeSeconds() - lastOperationTime >= 40)
+                        {
+                            _curFishState = EFishState.Back;
+                            continue;
+                        }
+
                         // 被标记为待机状态，或者超过10秒没有任何操作
                         if (_curFishState == EFishState.Idle
                             || DateTimeOffset.Now.ToUnixTimeSeconds() - lastOperationTime >= 10)
@@ -303,7 +322,6 @@ namespace NTEFishingTool.FishingTool
                             SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
                             lostFishingCount = 0;
                             _curFishState = EFishState.Fishing;
-                            lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                         }
 
                         continue;
@@ -321,6 +339,11 @@ namespace NTEFishingTool.FishingTool
                 Console.WriteLine("==========================外层==========================");
                 Console.WriteLine(e.Message);
                 Console.WriteLine("==========================外层==========================");
+                MessageBox.Show(
+                    $"{e.Message}\n请关闭工具后重新打开",
+                    "不温馨提示",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
@@ -385,6 +408,31 @@ namespace NTEFishingTool.FishingTool
             Thread.Sleep(2000);
 
             windowImg = ImageHandler.CaptureWindow(_intPtrGame);
+
+            // 检查是否缺少鱼饵
+            Point? selBaitLoc = FishScene.MathTemplateImgByName(windowImg, _intPtrGame, EGameImage.SelectBait);
+            if (selBaitLoc != null)
+            {
+                SimulateEventHandler.MouseClick(selBaitLoc.Value);
+                Thread.Sleep(1500);
+
+                windowImg = ImageHandler.CaptureWindow(_intPtrGame);
+                if (!Transaction.HandleChangeBait(windowImg, _intPtrGame))
+                {
+                    // 购买鱼饵
+                    Transaction.HandleBuyBait(_intPtrGame);
+
+                    // 更换鱼饵
+                    SimulateEventHandler.MouseClick(selBaitLoc.Value);
+                    Thread.Sleep(1500);
+
+                    windowImg = ImageHandler.CaptureWindow(_intPtrGame);
+                    Transaction.HandleChangeBait(windowImg, _intPtrGame);
+                }
+
+                _curFishState = EFishState.GameIdle;
+                windowImg = ImageHandler.CaptureWindow(_intPtrGame);
+            }
 
             Point? startFishingLoc = FishScene.MathTemplateImgByName(windowImg, _intPtrGame, EGameImage.ClickToStart);
             if (startFishingLoc == null)

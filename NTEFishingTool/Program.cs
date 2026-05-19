@@ -18,15 +18,15 @@ namespace NTEFishingTool
             Application.SetCompatibleTextRenderingDefault(false);
 
             // 使程序适应高DPI显示屏
-            if (Environment.OSVersion.Version.Major >= 6)
-            {
-                SetProcessDPIAware();
-            }
+            //if (Environment.OSVersion.Version.Major >= 6)
+            //{
+            //    SetProcessDPIAware();
+            //}
 
             Application.Run(new Form1());
         }
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        public static extern bool SetProcessDPIAware();
+        //[System.Runtime.InteropServices.DllImport("user32.dll")]
+        //public static extern bool SetProcessDPIAware();
     }
 }
