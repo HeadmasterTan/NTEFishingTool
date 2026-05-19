@@ -22,10 +22,16 @@
   </trustInfo>
 
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
-    <application>
+    <application xmlns="urn:schemas-microsoft-com:asm.v3">
       <!-- 设计此应用程序与其一起工作且已针对此应用程序进行测试的
            Windows 版本的列表。取消评论适当的元素，
            Windows 将自动选择最兼容的环境。 -->
+	  <windowSettings>
+		<!-- 设置 PerMonitorV2 (支持 Win10 1607+) -->
+		<dpiAwareness xmlns="http://microsoft.com">PerMonitorV2</dpiAwareness>
+		<!-- 为老版本 Windows 提供兜底 (支持 Win7/8) -->
+		<dpiAwareware xmlns="http://microsoft.com">true/pm</dpiAwareware>
+	  </windowSettings>
 
       <!-- Windows Vista -->
       <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->

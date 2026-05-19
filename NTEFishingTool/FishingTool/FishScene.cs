@@ -15,8 +15,8 @@ namespace NTEFishingTool.FishingTool
         {
             // 裁剪出钓鱼条的相对区域，避免干扰
             int rectX = (int)(windowImg.Width * 0.315);
-            int rectY = (int)(windowImg.Height * 0.059) + 40;
-            int rectWidth = (int)(windowImg.Width * 0.363);
+            int rectY = (int)(windowImg.Height * 0.0625);
+            int rectWidth = (int)(windowImg.Width * 0.383);
             int rectHeight = (int)(windowImg.Height * 0.021);
             Bitmap fishbarImg = CropImageByRect(windowImg, new Rectangle(rectX, rectY, rectWidth, rectHeight));
 
@@ -25,29 +25,6 @@ namespace NTEFishingTool.FishingTool
             OpenCvSharp.Point? locPoint = DetectAreaByRgb(fishbarImg, rgbFishPoint);
 
             return (locBar, locPoint);
-        }
-
-        /// <summary>
-        /// 传入窗口高度，以判断返回游戏设置的分辨率
-        /// </summary>
-        /// <param name="height"></param>
-        /// <returns></returns>
-        private static int GetResolutionLevel(int height)
-        {
-            if (height >= 719 && height < 800)
-            {
-                return 720;
-            }
-            if (height >= 1079 && height < 1440)
-            {
-                return 1080;
-            }
-            if (height >= 1439)
-            {
-                return 1440;
-            }
-
-            return 0; // 不支持的分辨率
         }
 
         /// <summary>
@@ -90,7 +67,7 @@ namespace NTEFishingTool.FishingTool
 
             if (loc != null)
             {
-                GetWindowRect(intPtrGame, out RECT windowRect);
+                if (!GetPureClientRect(intPtrGame, out RECT windowRect)) return null;
 
                 // 将相对坐标转换为绝对坐标
                 int absoluteX = windowRect.Left + rect.Value.X + loc.Value.X;

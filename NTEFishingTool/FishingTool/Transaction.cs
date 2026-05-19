@@ -21,7 +21,7 @@ namespace NTEFishingTool.FishingTool
             if (changeBtnLoc != null)
             {
                 SimulateEventHandler.MouseClick(changeBtnLoc.Value);
-                Thread.Sleep(1000);
+                Thread.Sleep(2000);
                 _fishingTool.CurFishState = EFishState.Idle;
                 return true;
             }
@@ -51,9 +51,10 @@ namespace NTEFishingTool.FishingTool
         /// 目前设计是线性流程，所以万一中途中断了那就捕获异常，回到垂钓界面重新再来
         /// </summary>
         /// <param name="intPtr"></param>
+        /// <param name="isSaleFish"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public static void HandleBuyOrChangeBait(IntPtr intPtr)
+        public static void HandleBuyOrChangeBait(IntPtr intPtr, bool isSaleFish = true)
         {
             // 打开鱼饵切换页面，等待提示信息自己消失
             SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_E);
@@ -67,7 +68,8 @@ namespace NTEFishingTool.FishingTool
             {
                 return;
             }
-            else
+
+            if (isSaleFish)
             {
                 // 退回到垂钓待机界面
                 SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_ESCAPE);
@@ -81,11 +83,20 @@ namespace NTEFishingTool.FishingTool
                 Thread.Sleep(2000);
             }
 
+            HandleBuyBait(intPtr);
+
+            // 操作时间已经很长了，跳出逻辑后会继续钓鱼
+        }
+
+        public static void HandleBuyBait(IntPtr intPtr)
+        {
+            Bitmap windowImg = ImageHandler.CaptureWindow(intPtr);
+
             // 确认是否可以购买
             Point? toBuyLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.ToBuy);
             if (toBuyLoc == null)
             {
-                throw new Exception("【HandleBuyOrChangeBait】未能在切换鱼饵页面点击购买");
+                throw new Exception("【HandleBuyBait】未能在切换鱼饵页面点击购买");
             }
             SimulateEventHandler.MouseClick(toBuyLoc.Value);
             Thread.Sleep(2000);
@@ -98,7 +109,7 @@ namespace NTEFishingTool.FishingTool
             Point? baitLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.BaitUniversal);
             if (baitLoc == null)
             {
-                throw new Exception("【HandleBuyOrChangeBait】未能在商店界面选中万能鱼饵");
+                throw new Exception("【HandleBuyBait】未能在商店界面选中万能鱼饵");
             }
             SimulateEventHandler.MouseClick(baitLoc.Value);
             Thread.Sleep(1000);
@@ -107,7 +118,7 @@ namespace NTEFishingTool.FishingTool
             Point? shopingMaxLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.ShopingMax);
             if (shopingMaxLoc == null)
             {
-                throw new Exception("【HandleBuyOrChangeBait】未能在商店界面选中最大值");
+                throw new Exception("【HandleBuyBait】未能在商店界面选中最大值");
             }
             SimulateEventHandler.MouseClick(shopingMaxLoc.Value);
             Thread.Sleep(1000);
@@ -116,10 +127,10 @@ namespace NTEFishingTool.FishingTool
             Point? buyLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.Buy);
             if (buyLoc == null)
             {
-                throw new Exception("【HandleBuyOrChangeBait】未能在商店界面选中购买");
+                throw new Exception("【HandleBuyBait】未能在商店界面选中购买");
             }
             SimulateEventHandler.MouseClick(buyLoc.Value);
-            Thread.Sleep(1000);
+            Thread.Sleep(3500);
 
             //（新截图）
             windowImg = ImageHandler.CaptureWindow(intPtr);
@@ -133,7 +144,7 @@ namespace NTEFishingTool.FishingTool
                 Point? buyConfirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.BuyConfirm);
                 if (buyConfirmLoc == null)
                 {
-                    throw new Exception("【HandleBuyOrChangeBait】未能在商店界面确认购买");
+                    throw new Exception("【HandleBuyBait】未能在商店界面确认购买");
                 }
                 SimulateEventHandler.MouseClick(buyConfirmLoc.Value);
                 Thread.Sleep(3000);
@@ -141,7 +152,7 @@ namespace NTEFishingTool.FishingTool
                 windowImg = ImageHandler.CaptureWindow(intPtr);
                 if (!HandleCloseTips(windowImg, intPtr))
                 {
-                    throw new Exception("【HandleBuyOrChangeBait】未能关闭提示");
+                    throw new Exception("【HandleBuyBait】未能关闭提示");
                 }
             }
 
@@ -152,12 +163,10 @@ namespace NTEFishingTool.FishingTool
             Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.PageClose);
             if (pageCloseLoc == null)
             {
-                throw new Exception("【HandleBuyOrChangeBait】未能关闭商店界面");
+                throw new Exception("【HandleBuyBait】未能关闭商店界面");
             }
             SimulateEventHandler.MouseClick(pageCloseLoc.Value);
             Thread.Sleep(1000);
-
-            // 操作时间已经很长了，跳出逻辑后会继续钓鱼
         }
 
         public static bool IsFishHoldFull(Bitmap windowImg, IntPtr intPtr)

@@ -18,6 +18,13 @@ namespace NTEFishingTool.FishingTool
             public int Bottom;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
         public struct RGB
         {
             public int R;
@@ -34,6 +41,77 @@ namespace NTEFishingTool.FishingTool
         [DllImport("user32.dll")]
         public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
 
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
+
+        /// <summary>
+        /// 获取窗口大小，包含标题栏、边框和阴影。
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="rect"></param>
+        /// <returns></returns>
+        public static bool GetActualWindowRect(IntPtr hWnd, out RECT rect)
+        {
+            try
+            {
+                if (Environment.OSVersion.Version.Major >= 6)
+                {
+                    int result = DwmGetWindowAttribute(hWnd, 9, out rect, Marshal.SizeOf(typeof(RECT)));
+                    if (result == 0)
+                    {
+                        return true;
+                    }
+                }
+
+                GetWindowRect(hWnd, out rect);
+            }
+            catch
+            {
+                rect = new RECT();
+                return false;
+            }
+
+            return true;
+        }
+
+        [DllImport("user32.dll")]
+        private static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        private static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
+
+        /// <summary>
+        /// 获取纯净的游戏内容窗口坐标ClientRect
+        /// 不包含边框、标题栏、阴影等
+        /// </summary>
+        /// <param name="hWnd"></param>
+        /// <param name="rect"></param>
+        public static bool GetPureClientRect(IntPtr hWnd, out RECT rect)
+        {
+            try
+            {
+                GetClientRect(hWnd, out RECT clientRect);
+
+                POINT topLeft = new POINT { X = 0, Y = 0 };
+                ClientToScreen(hWnd, ref topLeft);
+
+                rect = new RECT
+                {
+                    Top = topLeft.Y,
+                    Left = topLeft.X,
+                    Bottom = topLeft.Y + clientRect.Bottom,
+                    Right = topLeft.X + clientRect.Right
+                };
+            }
+            catch
+            {
+                rect = new RECT();
+                return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// 获取指定窗口的屏幕截图，并返回一个Bitmap对象。
         /// </summary>
@@ -42,7 +120,7 @@ namespace NTEFishingTool.FishingTool
         public static Bitmap CaptureWindow(IntPtr hWnd)
         {
             // 获取窗口在屏幕上的坐标和大小
-            if (!GetWindowRect(hWnd, out RECT rect)) return null;
+            if (!GetPureClientRect(hWnd, out RECT rect)) return null;
 
             int width = rect.Right - rect.Left;
             int height = rect.Bottom - rect.Top;
@@ -57,6 +135,29 @@ namespace NTEFishingTool.FishingTool
             }
 
             return bmp;
+        }
+
+        /// <summary>
+        /// 传入窗口高度，以判断返回游戏设置的分辨率
+        /// </summary>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static int GetResolutionLevel(int height)
+        {
+            if (height >= 719 && height < 770)
+            {
+                return 720;
+            }
+            if (height >= 1079 && height < 1130)
+            {
+                return 1080;
+            }
+            if (height >= 1439)
+            {
+                return 1440;
+            }
+
+            return 0; // 不支持的分辨率
         }
 
         /// <summary>
