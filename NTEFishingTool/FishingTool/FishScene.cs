@@ -9,20 +9,21 @@ namespace NTEFishingTool.FishingTool
     {
         private static RGB rgbFishBar = new RGB(49, 218, 183); // 绿条
         private static RGB rgbFishPoint = new RGB(245, 246, 159); // 光标
+        //private static RGB rgbFishPoint = new RGB(254, 246, 168); // 光标
         private static ImageManager imgManager = new ImageManager();
 
         public static (OpenCvSharp.Point? locBar, OpenCvSharp.Point? locPoint) GetFishBarAndPoint(Bitmap windowImg)
         {
             // 裁剪出钓鱼条的相对区域，避免干扰
             int rectX = (int)(windowImg.Width * 0.315);
-            int rectY = (int)(windowImg.Height * 0.0625);
-            int rectWidth = (int)(windowImg.Width * 0.383);
-            int rectHeight = (int)(windowImg.Height * 0.021);
+            int rectY = (int)(windowImg.Height * 0.0653);
+            int rectWidth = (int)(windowImg.Width * 0.375);
+            int rectHeight = (int)(windowImg.Height * 0.014);
             Bitmap fishbarImg = CropImageByRect(windowImg, new Rectangle(rectX, rectY, rectWidth, rectHeight));
 
             // 获取绿条和光标的位置
             OpenCvSharp.Point? locBar = DetectAreaByRgb(fishbarImg, rgbFishBar, false);
-            OpenCvSharp.Point? locPoint = DetectAreaByRgb(fishbarImg, rgbFishPoint);
+            OpenCvSharp.Point? locPoint = DetectAreaByRgb(fishbarImg, rgbFishPoint, false);
 
             return (locBar, locPoint);
         }
