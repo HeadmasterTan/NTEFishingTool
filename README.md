@@ -3,7 +3,7 @@
 
 本工具基于`OpenCV`，所以不能挂后台，望周知。
 
-[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.0.2)
+[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.0.3)
 
 ## 使用说明
 
