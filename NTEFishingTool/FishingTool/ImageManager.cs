@@ -20,6 +20,7 @@ namespace NTEFishingTool.FishingTool
         FishSale,
         FishStorage,
         FishStorageIcon,
+        LoginPage,
         MoonCard,
         PageClose,
         SelectBait,
@@ -29,109 +30,114 @@ namespace NTEFishingTool.FishingTool
 
     internal class ImageManager
     {
-        private const string IMAGE_PATH = ".\\Resources\\Images\\";
+        private const string IMAGE_PATH = ".\\Resources\\Images\\HTGame-";
 
-        private const string IMAGE_BAITEMPTY = "HTGame-BaitEmpty";
+        private const string IMAGE_BAITEMPTY = "BaitEmpty";
         private static readonly Bitmap img720_BaitEmpty = new Bitmap($"{IMAGE_PATH}{IMAGE_BAITEMPTY}-720.png");
         private static readonly Bitmap img1080_BaitEmpty = new Bitmap($"{IMAGE_PATH}{IMAGE_BAITEMPTY}-1080.png");
         private static readonly Bitmap img1440_BaitEmpty = new Bitmap($"{IMAGE_PATH}{IMAGE_BAITEMPTY}-1440.png");
 
-        private const string IMAGE_BAITUNIVERSAL = "HTGame-BaitUniversal";
+        private const string IMAGE_BAITUNIVERSAL = "BaitUniversal";
         private static readonly Bitmap img720_BaitUniversal = new Bitmap($"{IMAGE_PATH}{IMAGE_BAITUNIVERSAL}-720.png");
         private static readonly Bitmap img1080_BaitUniversal = new Bitmap($"{IMAGE_PATH}{IMAGE_BAITUNIVERSAL}-1080.png");
         private static readonly Bitmap img1440_BaitUniversal = new Bitmap($"{IMAGE_PATH}{IMAGE_BAITUNIVERSAL}-1440.png");
 
-        private const string IMAGE_BUY = "HTGame-Buy";
+        private const string IMAGE_BUY = "Buy";
         private static readonly Bitmap img720_Buy = new Bitmap($"{IMAGE_PATH}{IMAGE_BUY}-720.png");
         private static readonly Bitmap img1080_Buy = new Bitmap($"{IMAGE_PATH}{IMAGE_BUY}-1080.png");
         private static readonly Bitmap img1440_Buy = new Bitmap($"{IMAGE_PATH}{IMAGE_BUY}-1440.png");
 
-        private const string IMAGE_BUYCONFIRM = "HTGame-BuyConfirm";
+        private const string IMAGE_BUYCONFIRM = "BuyConfirm";
         private static readonly Bitmap img720_BuyConfirm = new Bitmap($"{IMAGE_PATH}{IMAGE_BUYCONFIRM}-720.png");
         private static readonly Bitmap img1080_BuyConfirm = new Bitmap($"{IMAGE_PATH}{IMAGE_BUYCONFIRM}-1080.png");
         private static readonly Bitmap img1440_BuyConfirm = new Bitmap($"{IMAGE_PATH}{IMAGE_BUYCONFIRM}-1440.png");
 
-        private const string IMAGE_CHANGE = "HTGame-Change";
+        private const string IMAGE_CHANGE = "Change";
         private static readonly Bitmap img720_Change = new Bitmap($"{IMAGE_PATH}{IMAGE_CHANGE}-720.png");
         private static readonly Bitmap img1080_Change = new Bitmap($"{IMAGE_PATH}{IMAGE_CHANGE}-1080.png");
         private static readonly Bitmap img1440_Change = new Bitmap($"{IMAGE_PATH}{IMAGE_CHANGE}-1440.png");
 
-        private const string IMAGE_CHANGEBAITUNIVERSAL = "HTGame-ChangeBaitUniversal";
+        private const string IMAGE_CHANGEBAITUNIVERSAL = "ChangeBaitUniversal";
         private static readonly Bitmap img720_ChangeBaitUniversal = new Bitmap($"{IMAGE_PATH}{IMAGE_CHANGEBAITUNIVERSAL}-720.png");
         private static readonly Bitmap img1080_ChangeBaitUniversal = new Bitmap($"{IMAGE_PATH}{IMAGE_CHANGEBAITUNIVERSAL}-1080.png");
         private static readonly Bitmap img1440_ChangeBaitUniversal = new Bitmap($"{IMAGE_PATH}{IMAGE_CHANGEBAITUNIVERSAL}-1440.png");
 
-        private const string IMAGE_CLICKTOCLOSE = "HTGame-ClickToClose";
+        private const string IMAGE_CLICKTOCLOSE = "ClickToClose";
         private static readonly Bitmap img720_ClickToClose = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOCLOSE}-720.png");
         private static readonly Bitmap img1080_ClickToClose = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOCLOSE}-1080.png");
         private static readonly Bitmap img1440_ClickToClose = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOCLOSE}-1440.png");
 
-        private const string IMAGE_CLICKTOFISHING = "HTGame-ClickToFishing";
+        private const string IMAGE_CLICKTOFISHING = "ClickToFishing";
         private static readonly Bitmap img720_ClickToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOFISHING}-720.png");
         private static readonly Bitmap img1080_ClickToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOFISHING}-1080.png");
         private static readonly Bitmap img1440_ClickToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOFISHING}-1440.png");
 
-        private const string IMAGE_CLICKTOSTART = "HTGame-ClickToStart";
+        private const string IMAGE_CLICKTOSTART = "ClickToStart";
         private static readonly Bitmap img720_ClickToStart = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOSTART}-720.png");
         private static readonly Bitmap img1080_ClickToStart = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOSTART}-1080.png");
         private static readonly Bitmap img1440_ClickToStart = new Bitmap($"{IMAGE_PATH}{IMAGE_CLICKTOSTART}-1440.png");
 
-        private const string IMAGE_CONFIRM = "HTGame-Confirm";
+        private const string IMAGE_CONFIRM = "Confirm";
         private static readonly Bitmap img720_Confirm = new Bitmap($"{IMAGE_PATH}{IMAGE_CONFIRM}-720.png");
         private static readonly Bitmap img1080_Confirm = new Bitmap($"{IMAGE_PATH}{IMAGE_CONFIRM}-1080.png");
         private static readonly Bitmap img1440_Confirm = new Bitmap($"{IMAGE_PATH}{IMAGE_CONFIRM}-1440.png");
 
-        private const string IMAGE_ENTERTOFISHING = "HTGame-EnterToFishing";
+        private const string IMAGE_ENTERTOFISHING = "EnterToFishing";
         private static readonly Bitmap img720_EnterToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_ENTERTOFISHING}-720.png");
         private static readonly Bitmap img1080_EnterToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_ENTERTOFISHING}-1080.png");
         private static readonly Bitmap img1440_EnterToFishing = new Bitmap($"{IMAGE_PATH}{IMAGE_ENTERTOFISHING}-1440.png");
 
-        private const string IMAGE_FISHFULL = "HTGame-FishFull";
+        private const string IMAGE_FISHFULL = "FishFull";
         private static readonly Bitmap img720_FishFull = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHFULL}-720.png");
         private static readonly Bitmap img1080_FishFull = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHFULL}-1080.png");
         private static readonly Bitmap img1440_FishFull = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHFULL}-1440.png");
 
-        private const string IMAGE_FISHINGFAIL = "HTGame-FishingFail";
+        private const string IMAGE_FISHINGFAIL = "FishingFail";
         private static readonly Bitmap img720_FishingFail = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHINGFAIL}-720.png");
         private static readonly Bitmap img1080_FishingFail = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHINGFAIL}-1080.png");
         private static readonly Bitmap img1440_FishingFail = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHINGFAIL}-1440.png");
 
-        private const string IMAGE_FISHSALE = "HTGame-FishSale";
+        private const string IMAGE_FISHSALE = "FishSale";
         private static readonly Bitmap img720_FishSale = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSALE}-720.png");
         private static readonly Bitmap img1080_FishSale = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSALE}-1080.png");
         private static readonly Bitmap img1440_FishSale = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSALE}-1440.png");
 
-        private const string IMAGE_FISHSTORAGE = "HTGame-FishStorage";
+        private const string IMAGE_FISHSTORAGE = "FishStorage";
         private static readonly Bitmap img720_FishStorage = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSTORAGE}-720.png");
         private static readonly Bitmap img1080_FishStorage = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSTORAGE}-1080.png");
         private static readonly Bitmap img1440_FishStorage = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSTORAGE}-1440.png");
 
-        private const string IMAGE_FISHSTORAGEICON = "HTGame-FishStorageIcon";
+        private const string IMAGE_FISHSTORAGEICON = "FishStorageIcon";
         private static readonly Bitmap img720_FishStorageIcon = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSTORAGEICON}-720.png");
         private static readonly Bitmap img1080_FishStorageIcon = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSTORAGEICON}-1080.png");
         private static readonly Bitmap img1440_FishStorageIcon = new Bitmap($"{IMAGE_PATH}{IMAGE_FISHSTORAGEICON}-1440.png");
 
-        private const string IMAGE_MOONCARD = "HTGame-MoonCard";
+        private const string IMAGE_LOGINPAGE = "LoginPage";
+        private static readonly Bitmap img720_LoginPage = new Bitmap($"{IMAGE_PATH}{IMAGE_LOGINPAGE}-720.png");
+        private static readonly Bitmap img1080_LoginPage = new Bitmap($"{IMAGE_PATH}{IMAGE_LOGINPAGE}-1080.png");
+        private static readonly Bitmap img1440_LoginPage = new Bitmap($"{IMAGE_PATH}{IMAGE_LOGINPAGE}-1440.png");
+
+        private const string IMAGE_MOONCARD = "MoonCard";
         private static readonly Bitmap img720_MoonCard = new Bitmap($"{IMAGE_PATH}{IMAGE_MOONCARD}-720.png");
         private static readonly Bitmap img1080_MoonCard = new Bitmap($"{IMAGE_PATH}{IMAGE_MOONCARD}-1080.png");
-        //private static readonly Bitmap img1440_MoonCard = new Bitmap($"{IMAGE_PATH}{IMAGE_MOONCARD}-1440.png");
+        private static readonly Bitmap img1440_MoonCard = new Bitmap($"{IMAGE_PATH}{IMAGE_MOONCARD}-1440.png");
 
-        private const string IMAGE_PAGECLOSE = "HTGame-PageClose";
+        private const string IMAGE_PAGECLOSE = "PageClose";
         private static readonly Bitmap img720_PageClose = new Bitmap($"{IMAGE_PATH}{IMAGE_PAGECLOSE}-720.png");
         private static readonly Bitmap img1080_PageClose = new Bitmap($"{IMAGE_PATH}{IMAGE_PAGECLOSE}-1080.png");
         private static readonly Bitmap img1440_PageClose = new Bitmap($"{IMAGE_PATH}{IMAGE_PAGECLOSE}-1440.png");
 
-        private const string IMAGE_SELECTBAIT = "HTGame-SelectBait";
+        private const string IMAGE_SELECTBAIT = "SelectBait";
         private static readonly Bitmap img720_SelectBait = new Bitmap($"{IMAGE_PATH}{IMAGE_SELECTBAIT}-720.png");
         private static readonly Bitmap img1080_SelectBait = new Bitmap($"{IMAGE_PATH}{IMAGE_SELECTBAIT}-1080.png");
         private static readonly Bitmap img1440_SelectBait = new Bitmap($"{IMAGE_PATH}{IMAGE_SELECTBAIT}-1440.png");
 
-        private const string IMAGE_SHOPINGMAX = "HTGame-ShopingMax";
+        private const string IMAGE_SHOPINGMAX = "ShopingMax";
         private static readonly Bitmap img720_ShopingMax = new Bitmap($"{IMAGE_PATH}{IMAGE_SHOPINGMAX}-720.png");
         private static readonly Bitmap img1080_ShopingMax = new Bitmap($"{IMAGE_PATH}{IMAGE_SHOPINGMAX}-1080.png");
         private static readonly Bitmap img1440_ShopingMax = new Bitmap($"{IMAGE_PATH}{IMAGE_SHOPINGMAX}-1440.png");
 
-        private const string IMAGE_TOBUY = "HTGame-ToBuy";
+        private const string IMAGE_TOBUY = "ToBuy";
         private static readonly Bitmap img720_ToBuy = new Bitmap($"{IMAGE_PATH}{IMAGE_TOBUY}-720.png");
         private static readonly Bitmap img1080_ToBuy = new Bitmap($"{IMAGE_PATH}{IMAGE_TOBUY}-1080.png");
         private static readonly Bitmap img1440_ToBuy = new Bitmap($"{IMAGE_PATH}{IMAGE_TOBUY}-1440.png");
@@ -254,12 +260,19 @@ namespace NTEFishingTool.FishingTool
                     case "img1440_FishStorageIcon":
                         return img1440_FishStorageIcon;
 
+                    case "img720_LoginPage":
+                        return img720_LoginPage;
+                    case "img1080_LoginPage":
+                        return img1080_LoginPage;
+                    case "img1440_LoginPage":
+                        return img1440_LoginPage;
+
                     case "img720_MoonCard":
                         return img720_MoonCard;
                     case "img1080_MoonCard":
-                    case "img1440_MoonCard":
                         return img1080_MoonCard;
-                    //    return img1440_MoonCard;
+                    case "img1440_MoonCard":
+                        return img1440_MoonCard;
 
                     case "img720_PageClose":
                         return img720_PageClose;
@@ -443,6 +456,13 @@ namespace NTEFishingTool.FishingTool
                     rectY = (int)(height * 0.653);
                     rectWidth = (int)(width * 0.086);
                     rectHeight = (int)(height * 0.125);
+                    return new Rectangle(rectX, rectY, rectWidth, rectHeight);
+
+                case EGameImage.LoginPage:
+                    rectX = (int)(width * (50/1920.0));
+                    rectY = (int)(height * (60/1080.0));
+                    rectWidth = (int)(width * (100/1920.0));
+                    rectHeight = (int)(height * (100/1080.0));
                     return new Rectangle(rectX, rectY, rectWidth, rectHeight);
             }
 
