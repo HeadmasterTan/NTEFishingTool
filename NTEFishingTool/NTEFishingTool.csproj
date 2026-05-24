@@ -187,7 +187,11 @@
     <Content Include="Resources\Images\HTGame-FishStorageIcon-1080.png" />
     <Content Include="Resources\Images\HTGame-FishStorageIcon-1440.png" />
     <Content Include="Resources\Images\HTGame-FishStorageIcon-720.png" />
+    <Content Include="Resources\Images\HTGame-LoginPage-1080.png" />
+    <Content Include="Resources\Images\HTGame-LoginPage-1440.png" />
+    <Content Include="Resources\Images\HTGame-LoginPage-720.png" />
     <Content Include="Resources\Images\HTGame-MoonCard-1080.png" />
+    <Content Include="Resources\Images\HTGame-MoonCard-1440.png" />
     <Content Include="Resources\Images\HTGame-MoonCard-720.png" />
     <Content Include="Resources\Images\HTGame-PageClose-1080.png" />
     <Content Include="Resources\Images\HTGame-PageClose-1440.png" />

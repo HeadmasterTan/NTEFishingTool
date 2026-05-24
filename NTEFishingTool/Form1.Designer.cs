@@ -73,9 +73,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 39);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(241, 15);
+            this.label2.Size = new System.Drawing.Size(436, 15);
             this.label2.TabIndex = 3;
-            this.label2.Text = "1. 请保持游戏界面完整暴露在桌面";
+            this.label2.Text = "1. 请保持游戏界面完整暴露在桌面，且游戏内设置【简体中文】";
             // 
             // label3
             // 
