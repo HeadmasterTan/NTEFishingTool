@@ -61,13 +61,15 @@ namespace NTEFishingTool.FishingTool
             Thread.Sleep(4000);
 
             //（新截图）
-            Bitmap windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 确认是否可以直接更换，如果可以那么更换后直接跳出，并将钓鱼状态置为待机，继续钓鱼
-            if (HandleChangeBait(windowImg, intPtr))
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                return;
+                // 确认是否可以直接更换，如果可以那么更换后直接跳出，并将钓鱼状态置为待机，继续钓鱼
+                if (HandleChangeBait(windowImg, intPtr))
+                {
+                    return;
+                }
             }
+
 
             if (isSaleFish)
             {
@@ -90,83 +92,91 @@ namespace NTEFishingTool.FishingTool
 
         public static void HandleBuyBait(IntPtr intPtr)
         {
-            Bitmap windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 确认是否可以购买
-            Point? toBuyLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.ToBuy);
-            if (toBuyLoc == null)
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleBuyBait】未能在切换鱼饵页面点击购买");
+                // 确认是否可以购买
+                Point? toBuyLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.ToBuy);
+                if (toBuyLoc == null)
+                {
+                    throw new Exception("【HandleBuyBait】未能在切换鱼饵页面点击购买");
+                }
+                SimulateEventHandler.MouseClick(toBuyLoc.Value);
+                Thread.Sleep(2000);
             }
-            SimulateEventHandler.MouseClick(toBuyLoc.Value);
-            Thread.Sleep(2000);
+
 
             //（新截图）
             // 进入购买页面
-            windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 选中万能鱼饵
-            Point? baitLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.BaitUniversal);
-            if (baitLoc == null)
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleBuyBait】未能在商店界面选中万能鱼饵");
-            }
-            SimulateEventHandler.MouseClick(baitLoc.Value);
-            Thread.Sleep(1000);
+                // 选中万能鱼饵
+                Point? baitLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.BaitUniversal);
+                if (baitLoc == null)
+                {
+                    throw new Exception("【HandleBuyBait】未能在商店界面选中万能鱼饵");
+                }
+                SimulateEventHandler.MouseClick(baitLoc.Value);
+                Thread.Sleep(1000);
 
-            // 选中拉满鱼饵
-            Point? shopingMaxLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.ShopingMax);
-            if (shopingMaxLoc == null)
-            {
-                throw new Exception("【HandleBuyBait】未能在商店界面选中最大值");
-            }
-            SimulateEventHandler.MouseClick(shopingMaxLoc.Value);
-            Thread.Sleep(1000);
+                // 选中拉满鱼饵
+                Point? shopingMaxLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.ShopingMax);
+                if (shopingMaxLoc == null)
+                {
+                    throw new Exception("【HandleBuyBait】未能在商店界面选中最大值");
+                }
+                SimulateEventHandler.MouseClick(shopingMaxLoc.Value);
+                Thread.Sleep(1000);
 
-            // 点击购买
-            Point? buyLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.Buy);
-            if (buyLoc == null)
-            {
-                throw new Exception("【HandleBuyBait】未能在商店界面选中购买");
+                // 点击购买
+                Point? buyLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.Buy);
+                if (buyLoc == null)
+                {
+                    throw new Exception("【HandleBuyBait】未能在商店界面选中购买");
+                }
+                SimulateEventHandler.MouseClick(buyLoc.Value);
+                Thread.Sleep(3500);
             }
-            SimulateEventHandler.MouseClick(buyLoc.Value);
-            Thread.Sleep(3500);
 
             //（新截图）
-            windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 购买分两种情况
-            // 一种直接购买成功，然后关闭购买提示
-            // 另一种弹出确认购买，需要确认然后关闭提示
-            if (!HandleCloseTips(windowImg, intPtr))
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                // 确认购买
-                Point? buyConfirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.BuyConfirm);
-                if (buyConfirmLoc == null)
-                {
-                    throw new Exception("【HandleBuyBait】未能在商店界面确认购买");
-                }
-                SimulateEventHandler.MouseClick(buyConfirmLoc.Value);
-                Thread.Sleep(3000);
-
-                windowImg = ImageHandler.CaptureWindow(intPtr);
+                // 购买分两种情况
+                // 一种直接购买成功，然后关闭购买提示
+                // 另一种弹出确认购买，需要确认然后关闭提示
                 if (!HandleCloseTips(windowImg, intPtr))
                 {
-                    throw new Exception("【HandleBuyBait】未能关闭提示");
+                    // 确认购买
+                    Point? buyConfirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.BuyConfirm);
+                    if (buyConfirmLoc == null)
+                    {
+                        throw new Exception("【HandleBuyBait】未能在商店界面确认购买");
+                    }
+                    SimulateEventHandler.MouseClick(buyConfirmLoc.Value);
+                    Thread.Sleep(3000);
+
+                    using (Bitmap newWindowImg = ImageHandler.CaptureWindow(intPtr))
+                    {
+                        if (!HandleCloseTips(newWindowImg, intPtr))
+                        {
+                            throw new Exception("【HandleBuyBait】未能关闭提示");
+                        }
+                    }
                 }
             }
 
             //（新截图）
-            windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 关闭商店页
-            Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.PageClose);
-            if (pageCloseLoc == null)
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleBuyBait】未能关闭商店界面");
+                // 关闭商店页
+                Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.PageClose);
+                if (pageCloseLoc == null)
+                {
+                    throw new Exception("【HandleBuyBait】未能关闭商店界面");
+                }
+                SimulateEventHandler.MouseClick(pageCloseLoc.Value);
+                Thread.Sleep(1000);
             }
-            SimulateEventHandler.MouseClick(pageCloseLoc.Value);
-            Thread.Sleep(1000);
+
         }
 
         public static bool IsFishHoldFull(Bitmap windowImg, IntPtr intPtr)
@@ -190,61 +200,69 @@ namespace NTEFishingTool.FishingTool
             Thread.Sleep(2000);
 
             //（新截图）
-            Bitmap windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 是否可切换到鱼舱
-            Point? storageLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.FishStorage);
-            if (storageLoc == null)
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleSaleFish】未能切换到鱼舱");
+                // 是否可切换到鱼舱
+                Point? storageLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.FishStorage);
+                if (storageLoc == null)
+                {
+                    throw new Exception("【HandleSaleFish】未能切换到鱼舱");
+                }
+                SimulateEventHandler.MouseClick(storageLoc.Value);
+                Thread.Sleep(1000);
             }
-            SimulateEventHandler.MouseClick(storageLoc.Value);
-            Thread.Sleep(1000);
+
 
             //（新截图）
-            windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 是否可售卖
-            Point? saleLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.FishSale);
-            if (saleLoc == null)
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleSaleFish】未能找到售卖鱼获入口");
+                // 是否可售卖
+                Point? saleLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.FishSale);
+                if (saleLoc == null)
+                {
+                    throw new Exception("【HandleSaleFish】未能找到售卖鱼获入口");
+                }
+                SimulateEventHandler.MouseClick(saleLoc.Value);
+                Thread.Sleep(1000);
             }
-            SimulateEventHandler.MouseClick(saleLoc.Value);
-            Thread.Sleep(1000);
+
 
             //（新截图）
-            windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 是否可确认售卖
-            Point? confirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.Confirm);
-            if (confirmLoc == null)
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleSaleFish】未能确认售出鱼获");
+                // 是否可确认售卖
+                Point? confirmLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.Confirm);
+                if (confirmLoc == null)
+                {
+                    throw new Exception("【HandleSaleFish】未能确认售出鱼获");
+                }
+                SimulateEventHandler.MouseClick(confirmLoc.Value);
+                Thread.Sleep(5000); // 休眠时间稍微长一点，让鱼卖一会。
             }
-            SimulateEventHandler.MouseClick(confirmLoc.Value);
-            Thread.Sleep(5000); // 休眠时间稍微长一点，让鱼卖一会。
+
 
             //（新截图）
-            windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 是否可关闭提示页
-            if (!HandleCloseTips(windowImg, intPtr))
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleSaleFish】售卖鱼获后未能关闭提示页");
+                // 是否可关闭提示页
+                if (!HandleCloseTips(windowImg, intPtr))
+                {
+                    throw new Exception("【HandleSaleFish】售卖鱼获后未能关闭提示页");
+                }
             }
 
             //（新截图）
-            windowImg = ImageHandler.CaptureWindow(intPtr);
-
-            // 关闭页面，回到垂钓待机界面
-            Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.PageClose);
-            if (pageCloseLoc == null)
+            using (Bitmap windowImg = ImageHandler.CaptureWindow(intPtr))
             {
-                throw new Exception("【HandleSaleFish】未能从鱼仓库回到垂钓界面");
+                // 关闭页面，回到垂钓待机界面
+                Point? pageCloseLoc = FishScene.MathTemplateImgByName(windowImg, intPtr, EGameImage.PageClose);
+                if (pageCloseLoc == null)
+                {
+                    throw new Exception("【HandleSaleFish】未能从鱼仓库回到垂钓界面");
+                }
+                SimulateEventHandler.MouseClick(pageCloseLoc.Value);
+                Thread.Sleep(1500);
             }
-            SimulateEventHandler.MouseClick(pageCloseLoc.Value);
-            Thread.Sleep(1500);
         }
     }
 }

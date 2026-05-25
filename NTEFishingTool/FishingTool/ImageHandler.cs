@@ -1,6 +1,7 @@
 ﻿using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -197,6 +198,9 @@ namespace NTEFishingTool.FishingTool
             return (lower, upper);
         }
 
+        private static Mat convertHsvPixel = new Mat();
+        private static Dictionary<string, Scalar> hsvScalarCache = new Dictionary<string, Scalar>();
+
         /// <summary>
         /// 将RGB颜色值转换为HSV颜色值。
         /// </summary>
@@ -204,15 +208,27 @@ namespace NTEFishingTool.FishingTool
         /// <returns></returns>
         public static Scalar ConvertRgbToHsv(RGB rgb)
         {
-            using (Mat rgbPixel = new Mat(1, 1, MatType.CV_8UC3, new Scalar(rgb.B, rgb.G, rgb.R)))
-            using (Mat hsvPixel = new Mat())
+            string rgbString = $"({rgb.R}, {rgb.G}, {rgb.B})";
+            if (hsvScalarCache.ContainsKey(rgbString))
             {
-                Cv2.CvtColor(rgbPixel, hsvPixel, ColorConversionCodes.BGR2HSV);
+                return hsvScalarCache[rgbString];
+            }
 
-                Vec3b hsv = hsvPixel.At<Vec3b>(0, 0);
-                return new Scalar(hsv.Item0, hsv.Item1, hsv.Item2);
+            using (Mat rgbPixel = new Mat(1, 1, MatType.CV_8UC3, new Scalar(rgb.B, rgb.G, rgb.R)))
+            {
+                Cv2.CvtColor(rgbPixel, convertHsvPixel, ColorConversionCodes.BGR2HSV);
+
+                Vec3b hsv = convertHsvPixel.At<Vec3b>(0, 0);
+                hsvScalarCache[rgbString] = new Scalar(hsv.Item0, hsv.Item1, hsv.Item2);
+                return hsvScalarCache[rgbString];
             }
         }
+
+        private static Mat detectHsv = new Mat();
+        private static Mat detectMask = new Mat();
+
+        private static Mat structuringElement =
+            Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(20, 15));
 
         /// <summary>
         /// 根据给定的截图，以及rgb值，检测图像中是否存在符合条件的颜色区域，并返回该区域的中心点坐标。
@@ -222,10 +238,9 @@ namespace NTEFishingTool.FishingTool
         /// <returns>返回检测到的颜色区域的中心点坐标，如果未检测到则返回null</returns>
         public static OpenCvSharp.Point? DetectAreaByRgb(Bitmap screenFrame, RGB? rgb = null, bool lowRange = true)
         {
-            using (Mat hsv = new Mat())
             using (Mat frame = screenFrame.ToMat())
             {
-                Cv2.CvtColor(frame, hsv, ColorConversionCodes.BGR2HSV);
+                Cv2.CvtColor(frame, detectHsv, ColorConversionCodes.BGR2HSV);
 
                 Scalar lowerColor;
                 Scalar upperColor;
@@ -239,20 +254,19 @@ namespace NTEFishingTool.FishingTool
                     (lowerColor, upperColor) = GetHsvRange(ConvertRgbToHsv(new RGB(36, 206, 170)));
                 }
 
-                Mat mask = new Mat();
-                Cv2.InRange(hsv, lowerColor, upperColor, mask);
+                Cv2.InRange(detectHsv, lowerColor, upperColor, detectMask);
 
                 // 去噪声，使用开运算（先腐蚀后膨胀）来去除小的噪点
                 // 改用闭运算（先膨胀后腐蚀），加上一个矩形内核用作替代光标，连接两节钓鱼条。
                 Cv2.MorphologyEx(
-                    mask,
-                    mask,
+                    detectMask,
+                    detectMask,
                     MorphTypes.Close,
-                    Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(20, 15)));
+                    structuringElement);
 
                 // 查找轮廓
                 Cv2.FindContours(
-                    mask,
+                    detectMask,
                     out OpenCvSharp.Point[][] contours,
                     out HierarchyIndex[] hierachy,
                     RetrievalModes.External,
@@ -270,23 +284,26 @@ namespace NTEFishingTool.FishingTool
             return null;
         }
 
+        private static Mat matchResizedTplMat = new Mat();
+        private static Mat matchTmplResult = new Mat();
+
         private static void MatchImageTemplate(Mat refMat, Mat tplMat, double scale, ref double bestMaxVal, ref OpenCvSharp.Point bestLoc, ref double bestScale)
         {
-            using (Mat resizedTplMat = new Mat())
-            {
+            //using (Mat resizedTplMat = new Mat())
+            //{
                 // 根据当前的缩放比例调整模板图像的大小
-                Cv2.Resize(tplMat, resizedTplMat, new OpenCvSharp.Size(tplMat.Cols * scale, tplMat.Rows * scale));
+                Cv2.Resize(tplMat, matchResizedTplMat, new OpenCvSharp.Size(tplMat.Cols * scale, tplMat.Rows * scale));
 
-                if (resizedTplMat.Cols > refMat.Cols || resizedTplMat.Rows > refMat.Rows)
+                if (matchResizedTplMat.Cols > refMat.Cols || matchResizedTplMat.Rows > refMat.Rows)
                 {
                     return; // 跳过模板图像大于屏幕截图的情况
                 }
 
                 // 使用归一化相关系数匹配方法进行模板匹配，并获取匹配结果
-                using (Mat result = new Mat())
-                {
-                    Cv2.MatchTemplate(refMat, resizedTplMat, result, TemplateMatchModes.CCoeffNormed);
-                    Cv2.MinMaxLoc(result, out _, out double maxVal, out _, out OpenCvSharp.Point maxLoc);
+                //using (Mat result = new Mat())
+                //{
+                    Cv2.MatchTemplate(refMat, matchResizedTplMat, matchTmplResult, TemplateMatchModes.CCoeffNormed);
+                    Cv2.MinMaxLoc(matchTmplResult, out _, out double maxVal, out _, out OpenCvSharp.Point maxLoc);
 
                     if (maxVal > bestMaxVal)
                     {
@@ -294,16 +311,16 @@ namespace NTEFishingTool.FishingTool
                         bestLoc = maxLoc;
                         bestScale = scale;
                     }
-                }
-            }
+                //}
+            //}
         }
 
-        public static System.Drawing.Point? FindImageLocation(Bitmap screenSource, Bitmap templateImg)
+        public static System.Drawing.Point? FindImageLocation(Bitmap screenSource, Mat templateImg)
         {
             const double MAX_SIMILARITY = 0.8; // 设置一个匹配度阈值，只要当匹配度超过这个值时，就认为找到了目标
 
+            Mat tplMat = templateImg;
             using (Mat refMat = screenSource.ToMat())
-            using (Mat tplMat = templateImg.ToMat())
             {
                 double bestMaxVal = 0;
                 OpenCvSharp.Point bestLoc = new OpenCvSharp.Point();

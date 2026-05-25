@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using Point = System.Drawing.Point;
 
 using static NTEFishingTool.FishingTool.ImageHandler;
 
@@ -12,6 +16,8 @@ namespace NTEFishingTool.FishingTool
         //private static RGB rgbFishPoint = new RGB(254, 246, 168); // 光标
         private static ImageManager imgManager = new ImageManager();
 
+        private static Dictionary<string, Mat> templateImagesCache = new Dictionary<string, Mat>();
+
         public static (OpenCvSharp.Point? locBar, OpenCvSharp.Point? locPoint) GetFishBarAndPoint(Bitmap windowImg)
         {
             // 裁剪出钓鱼条的相对区域，避免干扰
@@ -19,13 +25,13 @@ namespace NTEFishingTool.FishingTool
             int rectY = (int)(windowImg.Height * 0.0653);
             int rectWidth = (int)(windowImg.Width * 0.375);
             int rectHeight = (int)(windowImg.Height * 0.014);
-            Bitmap fishbarImg = CropImageByRect(windowImg, new Rectangle(rectX, rectY, rectWidth, rectHeight));
-
-            // 获取绿条和光标的位置
-            OpenCvSharp.Point? locBar = DetectAreaByRgb(fishbarImg, rgbFishBar, false);
-            OpenCvSharp.Point? locPoint = DetectAreaByRgb(fishbarImg, rgbFishPoint, false);
-
-            return (locBar, locPoint);
+            using (Bitmap fishbarImg = CropImageByRect(windowImg, new Rectangle(rectX, rectY, rectWidth, rectHeight)))
+            {
+                // 获取绿条和光标的位置
+                OpenCvSharp.Point? locBar = DetectAreaByRgb(fishbarImg, rgbFishBar, false);
+                OpenCvSharp.Point? locPoint = DetectAreaByRgb(fishbarImg, rgbFishPoint, false);
+                return (locBar, locPoint);
+            }
         }
 
         /// <summary>
@@ -48,11 +54,16 @@ namespace NTEFishingTool.FishingTool
                 throw new Exception("不支持的分辨率");
             }
 
-            templateImg = imgManager[$"img{resolutionLevel}_{gameImg.ToString()}"];
+            string imgName = $"img{resolutionLevel}_{gameImg.ToString()}";
+            templateImg = imgManager[imgName];
 
             if (templateImg == null)
             {
                 throw new Exception("传入了错误的比对图");
+            }
+            if (!templateImagesCache.ContainsKey(imgName))
+            {
+                templateImagesCache[imgName] = templateImg.ToMat();
             }
 
             // 裁剪区域，以减少干扰和避免增加性能消耗
@@ -62,19 +73,20 @@ namespace NTEFishingTool.FishingTool
                 throw new Exception("未找到比对图所需裁剪区域");
             }
 
-            Bitmap cropImg = CropImageByRect(windowImg, rect.Value);
-
-            Point? loc = FindImageLocation(cropImg, templateImg);
-
-            if (loc != null)
+            using (Bitmap cropImg = CropImageByRect(windowImg, rect.Value))
             {
-                if (!GetPureClientRect(intPtrGame, out RECT windowRect)) return null;
+                Point? loc = FindImageLocation(cropImg, templateImagesCache[imgName]);
 
-                // 将相对坐标转换为绝对坐标
-                int absoluteX = windowRect.Left + rect.Value.X + loc.Value.X;
-                int absoluteY = windowRect.Top + rect.Value.Y + loc.Value.Y;
+                if (loc != null)
+                {
+                    if (!GetPureClientRect(intPtrGame, out RECT windowRect)) return null;
 
-                return new Point(absoluteX, absoluteY);
+                    // 将相对坐标转换为绝对坐标
+                    int absoluteX = windowRect.Left + rect.Value.X + loc.Value.X;
+                    int absoluteY = windowRect.Top + rect.Value.Y + loc.Value.Y;
+
+                    return new Point(absoluteX, absoluteY);
+                }
             }
 
             return null;

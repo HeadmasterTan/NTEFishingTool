@@ -3,7 +3,7 @@
 
 本工具基于`OpenCV`，所以不能挂后台，望周知。
 
-[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.0.4)
+[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.0.5)
 
 ## 使用说明
 
@@ -23,8 +23,11 @@
 
 1. 自动钓鱼
 2. 自动购买鱼饵（但是只会购买万能鱼饵）
-3. 自动出售鱼获
+3. 自动出售鱼获（满仓和鱼饵用完时触发）
+4. 自动跳过月卡
+5. 自动从踢出登录页重新进入游戏
 
-## 待验证
+## 待修复
 
-- 跳过月卡领取遮挡的功能正在验证中...
+- AMD环境兼容问题
+- 部分反馈的光标不动的问题
