@@ -58,6 +58,9 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenCvSharp, Version=4.13.0.0, Culture=neutral, PublicKeyToken=6adad1e807fea099, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenCvSharp4.4.13.0.20260302\lib\netstandard2.0\OpenCvSharp.dll</HintPath>
@@ -97,11 +100,10 @@
     <Compile Include="FishingTool\FishScene.cs" />
     <Compile Include="FishingTool\Fishing.cs" />
     <Compile Include="FishingTool\ImageHandler.cs" />
-    <Compile Include="FishingTool\ImageManager.cs" />
     <Compile Include="FishingTool\ProcessHandler.cs" />
     <Compile Include="FishingTool\SimulateEventHandler.cs" />
     <Compile Include="FishingTool\TaskController.cs" />
-    <Compile Include="FishingTool\Transaction.cs" />
+    <Compile Include="FishingTool\TemplateController.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -139,72 +141,67 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\Images\HTGame-BaitEmpty-1080.png" />
-    <Content Include="Resources\Images\HTGame-BaitEmpty-1440.png" />
-    <Content Include="Resources\Images\HTGame-BaitEmpty-720.png" />
-    <Content Include="Resources\Images\HTGame-BaitUniversal-1080.png" />
-    <Content Include="Resources\Images\HTGame-BaitUniversal-1440.png" />
-    <Content Include="Resources\Images\HTGame-BaitUniversal-720.png" />
-    <Content Include="Resources\Images\HTGame-Buy-1080.png" />
-    <Content Include="Resources\Images\HTGame-Buy-1440.png" />
-    <Content Include="Resources\Images\HTGame-Buy-720.png" />
-    <Content Include="Resources\Images\HTGame-BuyConfirm-1080.png" />
-    <Content Include="Resources\Images\HTGame-BuyConfirm-1440.png" />
-    <Content Include="Resources\Images\HTGame-BuyConfirm-720.png" />
-    <Content Include="Resources\Images\HTGame-Change-1080.png" />
-    <Content Include="Resources\Images\HTGame-Change-1440.png" />
-    <Content Include="Resources\Images\HTGame-Change-720.png" />
-    <Content Include="Resources\Images\HTGame-ChangeBaitUniversal-1080.png" />
-    <Content Include="Resources\Images\HTGame-ChangeBaitUniversal-1440.png" />
-    <Content Include="Resources\Images\HTGame-ChangeBaitUniversal-720.png" />
-    <Content Include="Resources\Images\HTGame-ClickToClose-1080.png" />
-    <Content Include="Resources\Images\HTGame-ClickToClose-1440.png" />
-    <Content Include="Resources\Images\HTGame-ClickToClose-720.png" />
-    <Content Include="Resources\Images\HTGame-ClickToFishing-1080.png" />
-    <Content Include="Resources\Images\HTGame-ClickToFishing-1440.png" />
-    <Content Include="Resources\Images\HTGame-ClickToFishing-720.png" />
-    <Content Include="Resources\Images\HTGame-ClickToStart-1080.png" />
-    <Content Include="Resources\Images\HTGame-ClickToStart-1440.png" />
-    <Content Include="Resources\Images\HTGame-ClickToStart-720.png" />
-    <Content Include="Resources\Images\HTGame-Confirm-1080.png" />
-    <Content Include="Resources\Images\HTGame-Confirm-1440.png" />
-    <Content Include="Resources\Images\HTGame-Confirm-720.png" />
-    <Content Include="Resources\Images\HTGame-EnterToFishing-1080.png" />
-    <Content Include="Resources\Images\HTGame-EnterToFishing-1440.png" />
-    <Content Include="Resources\Images\HTGame-EnterToFishing-720.png" />
-    <Content Include="Resources\Images\HTGame-FishFull-1080.png" />
-    <Content Include="Resources\Images\HTGame-FishFull-1440.png" />
-    <Content Include="Resources\Images\HTGame-FishFull-720.png" />
-    <Content Include="Resources\Images\HTGame-FishingFail-1080.png" />
-    <Content Include="Resources\Images\HTGame-FishingFail-1440.png" />
-    <Content Include="Resources\Images\HTGame-FishingFail-720.png" />
-    <Content Include="Resources\Images\HTGame-FishSale-1080.png" />
-    <Content Include="Resources\Images\HTGame-FishSale-1440.png" />
-    <Content Include="Resources\Images\HTGame-FishSale-720.png" />
-    <Content Include="Resources\Images\HTGame-FishStorage-1080.png" />
-    <Content Include="Resources\Images\HTGame-FishStorage-1440.png" />
-    <Content Include="Resources\Images\HTGame-FishStorage-720.png" />
-    <Content Include="Resources\Images\HTGame-FishStorageIcon-1080.png" />
-    <Content Include="Resources\Images\HTGame-FishStorageIcon-1440.png" />
-    <Content Include="Resources\Images\HTGame-FishStorageIcon-720.png" />
-    <Content Include="Resources\Images\HTGame-LoginPage-1080.png" />
-    <Content Include="Resources\Images\HTGame-LoginPage-1440.png" />
-    <Content Include="Resources\Images\HTGame-LoginPage-720.png" />
+    <Content Include="Logo.ico" />
+    <Content Include="Resources\Images\HTGame-CloseIcon-1080.png" />
+    <Content Include="Resources\Images\HTGame-CloseIcon-1440.png" />
+    <Content Include="Resources\Images\HTGame-CloseIcon-720.png" />
+    <Content Include="Resources\Images\HTGame-ConfirmDialogButton-1080.png" />
+    <Content Include="Resources\Images\HTGame-ConfirmDialogButton-1440.png" />
+    <Content Include="Resources\Images\HTGame-ConfirmDialogButton-720.png" />
+    <Content Include="Resources\Images\HTGame-ConfirmTips-1080.png" />
+    <Content Include="Resources\Images\HTGame-ConfirmTips-1440.png" />
+    <Content Include="Resources\Images\HTGame-ConfirmTips-720.png" />
+    <Content Include="Resources\Images\HTGame-EnterAKeyToLeft-1080.png" />
+    <Content Include="Resources\Images\HTGame-EnterAKeyToLeft-1440.png" />
+    <Content Include="Resources\Images\HTGame-EnterAKeyToLeft-720.png" />
+    <Content Include="Resources\Images\HTGame-EnterFKeyToFishing-1080.png" />
+    <Content Include="Resources\Images\HTGame-EnterFKeyToFishing-1440.png" />
+    <Content Include="Resources\Images\HTGame-EnterFKeyToFishing-720.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldActive-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldActive-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldActive-720.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldEmpty-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldEmpty-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldEmpty-720.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldInactive-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldInactive-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishHoldInactive-720.png" />
+    <Content Include="Resources\Images\HTGame-FishingPoint-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishingPoint-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishingPoint-720.png" />
+    <Content Include="Resources\Images\HTGame-FishingSceneFKey-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishingSceneFKey-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishingSceneFKey-720.png" />
+    <Content Include="Resources\Images\HTGame-FishWeightGram-1080.png" />
+    <Content Include="Resources\Images\HTGame-FishWeightGram-1440.png" />
+    <Content Include="Resources\Images\HTGame-FishWeightGram-720.png" />
+    <Content Include="Resources\Images\HTGame-LoginPageAnnouncement-1080.png" />
+    <Content Include="Resources\Images\HTGame-LoginPageAnnouncement-1440.png" />
+    <Content Include="Resources\Images\HTGame-LoginPageAnnouncement-720.png" />
+    <Content Include="Resources\Images\HTGame-LoginPageAnnouncementLight-1080.png" />
+    <Content Include="Resources\Images\HTGame-LoginPageAnnouncementLight-1440.png" />
+    <Content Include="Resources\Images\HTGame-LoginPageAnnouncementLight-720.png" />
+    <Content Include="Resources\Images\HTGame-Maximum-1080.png" />
+    <Content Include="Resources\Images\HTGame-Maximum-1440.png" />
+    <Content Include="Resources\Images\HTGame-Maximum-720.png" />
     <Content Include="Resources\Images\HTGame-MoonCard-1080.png" />
     <Content Include="Resources\Images\HTGame-MoonCard-1440.png" />
     <Content Include="Resources\Images\HTGame-MoonCard-720.png" />
-    <Content Include="Resources\Images\HTGame-PageClose-1080.png" />
-    <Content Include="Resources\Images\HTGame-PageClose-1440.png" />
-    <Content Include="Resources\Images\HTGame-PageClose-720.png" />
-    <Content Include="Resources\Images\HTGame-SelectBait-1080.png" />
-    <Content Include="Resources\Images\HTGame-SelectBait-1440.png" />
-    <Content Include="Resources\Images\HTGame-SelectBait-720.png" />
-    <Content Include="Resources\Images\HTGame-ShopingMax-1080.png" />
-    <Content Include="Resources\Images\HTGame-ShopingMax-1440.png" />
-    <Content Include="Resources\Images\HTGame-ShopingMax-720.png" />
-    <Content Include="Resources\Images\HTGame-ToBuy-1080.png" />
-    <Content Include="Resources\Images\HTGame-ToBuy-1440.png" />
-    <Content Include="Resources\Images\HTGame-ToBuy-720.png" />
+    <Content Include="Resources\Images\HTGame-SellFishShellCoin-1080.png" />
+    <Content Include="Resources\Images\HTGame-SellFishShellCoin-1440.png" />
+    <Content Include="Resources\Images\HTGame-SellFishShellCoin-720.png" />
+    <Content Include="Resources\Images\HTGame-StartSceneSelectBait-1080.png" />
+    <Content Include="Resources\Images\HTGame-StartSceneSelectBait-1440.png" />
+    <Content Include="Resources\Images\HTGame-StartSceneSelectBait-720.png" />
+    <Content Include="Resources\Images\HTGame-StartSceneShopIcon-1080.png" />
+    <Content Include="Resources\Images\HTGame-StartSceneShopIcon-1440.png" />
+    <Content Include="Resources\Images\HTGame-StartSceneShopIcon-720.png" />
+    <Content Include="Resources\Images\HTGame-TakesTheBait-1080.png" />
+    <Content Include="Resources\Images\HTGame-TakesTheBait-1440.png" />
+    <Content Include="Resources\Images\HTGame-TakesTheBait-720.png" />
+    <Content Include="Resources\Images\HTGame-UniversalBait-1080.png" />
+    <Content Include="Resources\Images\HTGame-UniversalBait-1440.png" />
+    <Content Include="Resources\Images\HTGame-UniversalBait-720.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Images\**">
