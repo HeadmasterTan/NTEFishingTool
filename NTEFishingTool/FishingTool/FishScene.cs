@@ -38,20 +38,21 @@ namespace NTEFishingTool.FishingTool
 
         /// <summary>
         /// 是否出现了中间提示条。
-        /// 用三个依据来判断是否是中间提示条：
-        /// 当A键提示被遮盖找不到，F键提示还在，并且中间出现白色匹配时，说明出现了中间提示条。
+        /// 用两个个依据来判断是否是中间提示条：
+        /// F键提示还在，并且中间出现白色匹配时，说明出现了中间提示条。
         /// </summary>
         /// <param name="windowImg"></param>
         /// <returns></returns>
         public static bool CheckIsCenterTips(Bitmap windowImg)
         {
-            Point? enterAKeyPoint =
-                TemplateController.MathTemplateImgByName(windowImg, _fishingTool.IntPtrGame, ETemplateName.EnterAKeyToLeft);
+            //Point? enterAKeyPoint =
+            //    TemplateController.MathTemplateImgByName(windowImg, _fishingTool.IntPtrGame, ETemplateName.EnterAKeyToLeft);
             Point? fishSceneFKeyPoint =
                 TemplateController.MathTemplateImgByName(windowImg, _fishingTool.IntPtrGame, ETemplateName.FishingSceneFKey);
             Point? centerTipsPoint = GetCenterTipsPoint(windowImg);
 
-            return enterAKeyPoint == null && fishSceneFKeyPoint.HasValue && centerTipsPoint.HasValue;
+            return fishSceneFKeyPoint.HasValue && centerTipsPoint.HasValue;
+            //return enterAKeyPoint == null && fishSceneFKeyPoint.HasValue && centerTipsPoint.HasValue;
         }
 
         /// <summary>

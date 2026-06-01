@@ -246,7 +246,7 @@ namespace NTEFishingTool.FishingTool
                             if (locBar != null && locPoint != null)
                             {
                                 lostFishCount = 0;
-                                Console.WriteLine($"绿条位置: ({locBar.Value.X}, {locBar.Value.Y}) == 光标位置: ({locPoint.Value.X}, {locPoint.Value.Y})");
+                                //Console.WriteLine($"绿条位置: ({locBar.Value.X}, {locBar.Value.Y}) == 光标位置: ({locPoint.Value.X}, {locPoint.Value.Y})");
 
                                 _curFishState = EFishState.Fishing;
                                 _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
@@ -354,6 +354,7 @@ namespace NTEFishingTool.FishingTool
                                     }
 
                                     FishScene.HandleBaitEmpty(_intPtrGame);
+                                    _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                     continue;
                                 }
 

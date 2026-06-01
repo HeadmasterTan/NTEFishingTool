@@ -115,9 +115,108 @@ namespace NTEFishingTool.FishingTool
                     return CalculateTemplateRect(windowImg, 68, 364, 178, 177);
                 case ETemplateName.FishHoldQuickSellButton:
                     return CalculateTemplateRect(windowImg, 964, 969, 201, 73);
+                case ETemplateName.EnterFKeyToFishing:
+                    return CalculateTemplateRect(windowImg, 1100, 590, 236, 75);
+                case ETemplateName.StartSceneShopIcon:
+                    return CalculateTemplateRect(windowImg, 1226, 928, 165, 100);
+                case ETemplateName.StartSceneStartButton:
+                    return CalculateTemplateRect(windowImg, 1359, 931, 522, 100);
+                case ETemplateName.StartSceneSelectBait:
+                    return CalculateTemplateRect(windowImg, 1597, 696, 220, 227);
+                case ETemplateName.ConfirmDialogButton:
+                    return CalculateTemplateRect(windowImg, 859, 695, 434, 100);
+                case ETemplateName.ConfirmDialogConfirmButton:
+                    return CalculateTemplateRect(windowImg, 969, 695, 404, 100);
+                case ETemplateName.UniversalBait:
+                    return CalculateTemplateRect(windowImg, 27, 150, 667, 745);
+                case ETemplateName.Maximum:
+                    return CalculateTemplateRect(windowImg, 1779, 944, 100, 100);
+                case ETemplateName.ShopScenePurchaseButton:
+                    return CalculateTemplateRect(windowImg, 1343, 1015, 536, 104);
+                case ETemplateName.CloseIcon:
+                    return CalculateTemplateRect(windowImg, 1747, 39, 175, 175);
+                case ETemplateName.ClickEmptyAreaToClose:
+                    return CalculateTemplateRect(windowImg, 803, 955, 333, 84);
+                case ETemplateName.ConfirmTips:
+                    return CalculateTemplateRect(windowImg, 825, 282, 272, 241);
+                case ETemplateName.EnterAKeyToLeft:
+                    return CalculateTemplateRect(windowImg, 1761, 577, 161, 49);
+                case ETemplateName.FishingSceneFKey:
+                    return CalculateTemplateRect(windowImg, 1728, 1015, 100, 100);
+                case ETemplateName.TakesTheBait:
+                    return CalculateTemplateRect(windowImg, 454, 217, 327, 150);
+                case ETemplateName.FishWeightGram:
+                    return CalculateTemplateRect(windowImg, 867, 711, 389, 150);
+                case ETemplateName.FishHoldEmpty:
+                    return CalculateTemplateRect(windowImg, 1315, 475, 416, 290);
+                case ETemplateName.SellFishShellCoin:
+                    return CalculateTemplateRect(windowImg, 692, 848, 542, 110);
+                case ETemplateName.CenterTips:
+                    return CalculateTemplateRect(windowImg, 907, 565, 110, 28);
             }
 
             throw new Exception($"【GetNormalRatioRect】无法匹配当前 16/9 分辨率下的模板矩形: {templateName}");
+        }
+
+        /// <summary>
+        /// 分辨率16/10
+        /// </summary>
+        private static Rectangle GetShortRatioRect(Bitmap windowImg, ETemplateName templateName)
+        {
+            const double ratioWidth = 2560.0;
+            const double ratioHeight = 1600.0;
+
+            switch (templateName)
+            {
+                case ETemplateName.FishingPoint:
+                    return CalculateTemplateRect(windowImg, 793, 122, 986, 31, ratioWidth, ratioHeight);
+                case ETemplateName.FishHoldActive:
+                    return CalculateTemplateRect(windowImg, 49, 566, 259, 211, ratioWidth, ratioHeight);
+                case ETemplateName.FishHoldInactive:
+                    return CalculateTemplateRect(windowImg, 81, 560, 263, 220, ratioWidth, ratioHeight);
+                case ETemplateName.FishHoldQuickSellButton:
+                    return CalculateTemplateRect(windowImg, 1276, 1364, 283, 88, ratioWidth, ratioHeight);
+                case ETemplateName.EnterFKeyToFishing:
+                    return CalculateTemplateRect(windowImg, 1485, 833, 225, 129, ratioWidth, ratioHeight);
+                case ETemplateName.StartSceneShopIcon:
+                    return CalculateTemplateRect(windowImg, 1641, 1295, 194, 158, ratioWidth, ratioHeight);
+                case ETemplateName.StartSceneStartButton:
+                    return CalculateTemplateRect(windowImg, 1807, 1304, 698, 137, ratioWidth, ratioHeight);
+                case ETemplateName.StartSceneSelectBait:
+                    return CalculateTemplateRect(windowImg, 2140, 1013, 285, 268, ratioWidth, ratioHeight);
+                case ETemplateName.ConfirmDialogButton:
+                    return CalculateTemplateRect(windowImg, 1205, 1001, 295, 127, ratioWidth, ratioHeight);
+                case ETemplateName.ConfirmDialogConfirmButton:
+                    return CalculateTemplateRect(windowImg, 1305, 1002, 507, 119, ratioWidth, ratioHeight);
+                case ETemplateName.UniversalBait:
+                    return CalculateTemplateRect(windowImg, 38, 159, 916, 1060, ratioWidth, ratioHeight);
+                case ETemplateName.Maximum:
+                    return CalculateTemplateRect(windowImg, 2381, 1320, 127, 134, ratioWidth, ratioHeight);
+                case ETemplateName.ShopScenePurchaseButton:
+                    return CalculateTemplateRect(windowImg, 1788, 1428, 723, 122, ratioWidth, ratioHeight);
+                case ETemplateName.CloseIcon:
+                    return CalculateTemplateRect(windowImg, 2294, 39, 267, 218, ratioWidth, ratioHeight);
+                case ETemplateName.ClickEmptyAreaToClose:
+                    return CalculateTemplateRect(windowImg, 1017, 1396, 541, 146, ratioWidth, ratioHeight);
+                case ETemplateName.ConfirmTips:
+                    return CalculateTemplateRect(windowImg, 1121, 472, 322, 250, ratioWidth, ratioHeight);
+                case ETemplateName.EnterAKeyToLeft:
+                    return CalculateTemplateRect(windowImg, 2430, 907, 132, 85, ratioWidth, ratioHeight);
+                case ETemplateName.FishingSceneFKey:
+                    return CalculateTemplateRect(windowImg, 2305, 1516, 130, 111, ratioWidth, ratioHeight);
+                case ETemplateName.TakesTheBait:
+                    return CalculateTemplateRect(windowImg, 656, 292, 219, 170, ratioWidth, ratioHeight);
+                case ETemplateName.FishWeightGram:
+                    return CalculateTemplateRect(windowImg, 1154, 1042, 493, 193, ratioWidth, ratioHeight);
+                case ETemplateName.FishHoldEmpty:
+                    return CalculateTemplateRect(windowImg, 1720, 634, 661, 594, ratioWidth, ratioHeight);
+                case ETemplateName.SellFishShellCoin:
+                    return CalculateTemplateRect(windowImg, 906, 1183, 749, 154, ratioWidth, ratioHeight);
+                case ETemplateName.CenterTips:
+                    return CalculateTemplateRect(windowImg, 1150, 814, 244, 43, ratioWidth, ratioHeight);
+            }
+
+            throw new Exception($"【GetShortRatioRect】无法匹配当前 16/10 分辨率下的模板矩形: {templateName}");
         }
 
         /// <summary>
@@ -133,14 +232,113 @@ namespace NTEFishingTool.FishingTool
                 case ETemplateName.FishingPoint:
                     return CalculateTemplateRect(windowImg, 640, 82, 522, 17, ratioWidth, ratioHeight);
                 case ETemplateName.FishHoldActive:
-                    return CalculateTemplateRect(windowImg, 221, 265, 192, 138, ratioWidth, ratioHeight);
+                    return CalculateTemplateRect(windowImg, 241, 276, 141, 112, ratioWidth, ratioHeight);
                 case ETemplateName.FishHoldInactive:
-                    return CalculateTemplateRect(windowImg, 246, 263, 159, 139, ratioWidth, ratioHeight);
+                    return CalculateTemplateRect(windowImg, 257, 275, 133, 115, ratioWidth, ratioHeight);
                 case ETemplateName.FishHoldQuickSellButton:
-                    return CalculateTemplateRect(windowImg, 884, 691, 173, 67, ratioWidth, ratioHeight);
+                    return CalculateTemplateRect(windowImg, 900, 701, 142, 49, ratioWidth, ratioHeight);
+                case ETemplateName.EnterFKeyToFishing:
+                    return CalculateTemplateRect(windowImg, 999, 432, 131, 50, ratioWidth, ratioHeight);
+                case ETemplateName.StartSceneShopIcon:
+                    return CalculateTemplateRect(windowImg, 1317, 664, 79, 79, ratioWidth, ratioHeight);
+                case ETemplateName.StartSceneStartButton:
+                    return CalculateTemplateRect(windowImg, 1392, 673, 370, 68, ratioWidth, ratioHeight);
+                case ETemplateName.StartSceneSelectBait:
+                    return CalculateTemplateRect(windowImg, 1577, 515, 139, 139, ratioWidth, ratioHeight);
+                case ETemplateName.ConfirmDialogButton:
+                    return CalculateTemplateRect(windowImg, 860, 506, 145, 68, ratioWidth, ratioHeight);
+                case ETemplateName.ConfirmDialogConfirmButton:
+                    return CalculateTemplateRect(windowImg, 911, 507, 273, 67, ratioWidth, ratioHeight);
+                case ETemplateName.UniversalBait:
+                    return CalculateTemplateRect(windowImg, 16, 109, 486, 565, ratioWidth, ratioHeight);
+                case ETemplateName.Maximum:
+                    return CalculateTemplateRect(windowImg, 1698, 682, 60, 66, ratioWidth, ratioHeight);
+                case ETemplateName.ShopScenePurchaseButton:
+                    return CalculateTemplateRect(windowImg, 1381, 738, 385, 62, ratioWidth, ratioHeight);
+                case ETemplateName.CloseIcon:
+                    return CalculateTemplateRect(windowImg, 1673, 39, 119, 98, ratioWidth, ratioHeight);
+                case ETemplateName.ClickEmptyAreaToClose:
+                    return CalculateTemplateRect(windowImg, 753, 686, 287, 64, ratioWidth, ratioHeight);
+                case ETemplateName.ConfirmTips:
+                    return CalculateTemplateRect(windowImg, 801, 223, 194, 139, ratioWidth, ratioHeight);
+                case ETemplateName.EnterAKeyToLeft:
+                    return CalculateTemplateRect(windowImg, 1735, 418, 59, 44, ratioWidth, ratioHeight);
+                case ETemplateName.FishingSceneFKey:
+                    return CalculateTemplateRect(windowImg, 1684, 741, 86, 57, ratioWidth, ratioHeight);
+                case ETemplateName.TakesTheBait:
+                    return CalculateTemplateRect(windowImg, 567, 178, 106, 84, ratioWidth, ratioHeight);
+                case ETemplateName.FishWeightGram:
+                    return CalculateTemplateRect(windowImg, 839, 535, 250, 90, ratioWidth, ratioHeight);
+                case ETemplateName.FishHoldEmpty:
+                    return CalculateTemplateRect(windowImg, 1133, 340, 351, 292, ratioWidth, ratioHeight);
+                case ETemplateName.SellFishShellCoin:
+                    return CalculateTemplateRect(windowImg, 698, 607, 398, 85, ratioWidth, ratioHeight);
+                case ETemplateName.CenterTips:
+                    return CalculateTemplateRect(windowImg, 842, 411, 110, 22, ratioWidth, ratioHeight);
             }
 
             throw new Exception($"【GetLongRatioRect】无法匹配当前 24/10 分辨率下的模板矩形: {templateName}");
+        }
+
+        /// <summary>
+        /// 分辨率35/10
+        /// </summary>
+        private static Rectangle GetUltraRatioRect(Bitmap windowImg, ETemplateName templateName)
+        {
+            const double ratioWidth = 3840.0;
+            //const double ratioHeight = 1080.0;
+
+            switch (templateName)
+            {
+                case ETemplateName.FishingPoint:
+                    return CalculateTemplateRect(windowImg, 1552, 99, 740, 24, ratioWidth);
+                case ETemplateName.FishHoldActive:
+                    return CalculateTemplateRect(windowImg, 974, 371, 235, 162, ratioWidth);
+                case ETemplateName.FishHoldInactive:
+                    return CalculateTemplateRect(windowImg, 996, 375, 231, 159, ratioWidth);
+                case ETemplateName.FishHoldQuickSellButton:
+                    return CalculateTemplateRect(windowImg, 1913, 969, 221, 72, ratioWidth);
+                case ETemplateName.FishHoldEmpty:
+                    return CalculateTemplateRect(windowImg, 2245, 415, 496, 441, ratioWidth);
+                case ETemplateName.EnterFKeyToFishing:
+                    return CalculateTemplateRect(windowImg, 2028, 582, 257, 85, ratioWidth);
+                case ETemplateName.StartSceneShopIcon:
+                    return CalculateTemplateRect(windowImg, 3167, 919, 113, 113, ratioWidth);
+                case ETemplateName.StartSceneStartButton:
+                    return CalculateTemplateRect(windowImg, 3274, 929, 524, 103, ratioWidth);
+                case ETemplateName.StartSceneSelectBait:
+                    return CalculateTemplateRect(windowImg, 3519, 711, 219, 213, ratioWidth);
+                case ETemplateName.ConfirmDialogButton:
+                    return CalculateTemplateRect(windowImg, 1851, 699, 235, 91, ratioWidth);
+                case ETemplateName.ConfirmDialogConfirmButton:
+                    return CalculateTemplateRect(windowImg, 1937, 701, 386, 91, ratioWidth);
+                case ETemplateName.UniversalBait:
+                    return CalculateTemplateRect(windowImg, 0, 142, 720, 789, ratioWidth);
+                case ETemplateName.Maximum:
+                    return CalculateTemplateRect(windowImg, 3693, 949, 106, 83, ratioWidth);
+                case ETemplateName.ShopScenePurchaseButton:
+                    return CalculateTemplateRect(windowImg, 3261, 1024, 538, 84, ratioWidth);
+                case ETemplateName.CloseIcon:
+                    return CalculateTemplateRect(windowImg, 3649, 39, 191, 149, ratioWidth);
+                case ETemplateName.ClickEmptyAreaToClose:
+                    return CalculateTemplateRect(windowImg, 1594, 935, 613, 108, ratioWidth);
+                case ETemplateName.ConfirmTips:
+                    return CalculateTemplateRect(windowImg, 1807, 304, 236, 190, ratioWidth);
+                case ETemplateName.EnterAKeyToLeft:
+                    return CalculateTemplateRect(windowImg, 3715, 575, 125, 50, ratioWidth);
+                case ETemplateName.FishingSceneFKey:
+                    return CalculateTemplateRect(windowImg, 3628, 1005, 141, 106, ratioWidth);
+                case ETemplateName.TakesTheBait:
+                    return CalculateTemplateRect(windowImg, 1423, 236, 229, 113, ratioWidth);
+                case ETemplateName.FishWeightGram:
+                    return CalculateTemplateRect(windowImg, 1781, 733, 438, 125, ratioWidth);
+                case ETemplateName.SellFishShellCoin:
+                    return CalculateTemplateRect(windowImg, 1609, 832, 638, 125, ratioWidth);
+                case ETemplateName.CenterTips:
+                    return CalculateTemplateRect(windowImg, 1826, 558, 171, 39, ratioWidth);
+            }
+
+            throw new Exception($"【GetUltraRatioRect】无法匹配当前 35/10 分辨率下的模板矩形: {templateName}");
         }
 
         private static Rectangle MatchRatioRectangle(Bitmap windowImg, ETemplateName templateName)
@@ -148,27 +346,16 @@ namespace NTEFishingTool.FishingTool
             switch (GetSimilarityRatio())
             {
                 case 1.6:
-                    switch (templateName)
-                    {
-                        case ETemplateName.FishingPoint:
-                            return CalculateTemplateRect(windowImg, 597, 102, 738, 22);
-                    }
-
-                    break;
+                    return GetShortRatioRect(windowImg, templateName);
                 case 1.7:
                     return GetNormalRatioRect(windowImg, templateName);
                 case 2.4:
                     return GetLongRatioRect(windowImg, templateName);
                 case 3.5:
-                    switch (templateName)
-                    {
-                        case ETemplateName.FishingPoint:
-                            return CalculateTemplateRect(windowImg, 580, 94, 766, 56);
-                    }
-                    break;
+                    return GetUltraRatioRect(windowImg, templateName);
             }
 
-            throw new Exception("【MatchRatioRectangle】无法匹配当前分辨率");
+            throw new Exception("【MatchRatioRectangle】无法匹配当前分辨率\n请检查是否符合[16:9] [16:10] [24:10] [35:10]的分辨率");
         }
 
         public static Rectangle GetTemplateRect(Bitmap windowImg, ETemplateName templateName)
@@ -178,61 +365,12 @@ namespace NTEFishingTool.FishingTool
                 case ETemplateName.LoginPageAnnouncement:
                 case ETemplateName.LoginPageAnnouncementLight:
                     return CalculateTemplateRect(windowImg, 1826, 140, 85, 85);
-                case ETemplateName.EnterFKeyToFishing:
-                    return CalculateTemplateRect(windowImg, 1100, 590, 236, 75);
-                case ETemplateName.EnterAKeyToLeft:
-                    return CalculateTemplateRect(windowImg, 1761, 577, 161, 49);
-                case ETemplateName.FishingSceneFKey:
-                    return CalculateTemplateRect(windowImg, 1728, 1015, 100, 100);
-                case ETemplateName.StartSceneShopIcon:
-                    return CalculateTemplateRect(windowImg, 1226, 928, 165, 100);
-                case ETemplateName.StartSceneStartButton:
-                    return CalculateTemplateRect(windowImg, 1359, 931, 522, 100);
-                case ETemplateName.StartSceneSelectBait:
-                    return CalculateTemplateRect(windowImg, 1597, 696, 220, 227);
-                case ETemplateName.UniversalBait:
-                    return CalculateTemplateRect(windowImg, 27, 150, 667, 745);
-                case ETemplateName.Maximum:
-                    return CalculateTemplateRect(windowImg, 1779, 944, 100, 100);
-                case ETemplateName.ShopScenePurchaseButton:
-                    return CalculateTemplateRect(windowImg, 1343, 1015, 536, 104);
-                case ETemplateName.ConfirmDialogButton:
-                    return CalculateTemplateRect(windowImg, 859, 695, 434, 100);
-                case ETemplateName.ConfirmDialogConfirmButton:
-                    return CalculateTemplateRect(windowImg, 969, 695, 404, 100);
-                case ETemplateName.CloseIcon:
-                    return CalculateTemplateRect(windowImg, 1747, 38, 175, 175);
-                case ETemplateName.SellFishShellCoin:
-                    return CalculateTemplateRect(windowImg, 692, 848, 542, 110);
-                case ETemplateName.ClickEmptyAreaToClose:
-                    return CalculateTemplateRect(windowImg, 803, 955, 333, 84);
-                case ETemplateName.TakesTheBait:
-                    return CalculateTemplateRect(windowImg, 454, 217, 327, 150);
-                case ETemplateName.FishWeightGram:
-                    return CalculateTemplateRect(windowImg, 867, 711, 389, 150);
-                case ETemplateName.ConfirmTips:
-                    return CalculateTemplateRect(windowImg, 825, 282, 272, 241);
-                case ETemplateName.CenterTips:
-                    return CalculateTemplateRect(windowImg, 907, 565, 110, 28);
                 case ETemplateName.MoonCard:
                     return CalculateTemplateRect(windowImg, 770, 339, 400, 400);
-                case ETemplateName.FishHoldEmpty:
-                    return CalculateTemplateRect(windowImg, 1315, 475, 416, 290);
 
-                case ETemplateName.FishingPoint:
-                case ETemplateName.FishHoldActive:
-                case ETemplateName.FishHoldInactive:
-                case ETemplateName.FishHoldQuickSellButton:
+                default:
                     return MatchRatioRectangle(windowImg, templateName);
-                //case ETemplateName.FishHoldActive:
-                //    return CalculateTemplateRect(windowImg, 27, 351, 238, 199);
-                //case ETemplateName.FishHoldInactive:
-                //    return CalculateTemplateRect(windowImg, 68, 364, 178, 177);
-                //case ETemplateName.FishHoldQuickSellButton:
-                //    return CalculateTemplateRect(windowImg, 964, 969, 201, 73);
             }
-
-            throw new Exception($"【GetTemplateRect】未找到模板: {templateName}");
         }
 
         /// <summary>
@@ -347,9 +485,14 @@ namespace NTEFishingTool.FishingTool
             }
         }
 
-        public static Bitmap GetTemplateImage(string imageName)
+        public static Bitmap GetTemplateImage(string imageName, int resolutionLevel = 0)
         {
-            string key = $"HTGame-{imageName}-{_resolutionLevel}";
+            if (resolutionLevel == 0)
+            {
+                resolutionLevel = _resolutionLevel;
+            }
+
+            string key = $"HTGame-{imageName}-{resolutionLevel}";
 
             if (TemplateImagesCache.TryGetValue(key, out Bitmap image))
             {
