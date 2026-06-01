@@ -6,6 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
+
 namespace NTEFishingTool.FishingTool
 {
     internal class ImageHandler
@@ -26,6 +29,7 @@ namespace NTEFishingTool.FishingTool
             public int Y;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
         public struct RGB
         {
             public int R;
@@ -37,42 +41,6 @@ namespace NTEFishingTool.FishingTool
                 G = g;
                 B = b;
             }
-        }
-
-        [DllImport("user32.dll")]
-        public static extern bool GetWindowRect(IntPtr hWnd, out RECT rect);
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmGetWindowAttribute(IntPtr hwnd, int dwAttribute, out RECT pvAttribute, int cbAttribute);
-
-        /// <summary>
-        /// 获取窗口大小，包含标题栏、边框和阴影。
-        /// </summary>
-        /// <param name="hWnd"></param>
-        /// <param name="rect"></param>
-        /// <returns></returns>
-        public static bool GetActualWindowRect(IntPtr hWnd, out RECT rect)
-        {
-            try
-            {
-                if (Environment.OSVersion.Version.Major >= 6)
-                {
-                    int result = DwmGetWindowAttribute(hWnd, 9, out rect, Marshal.SizeOf(typeof(RECT)));
-                    if (result == 0)
-                    {
-                        return true;
-                    }
-                }
-
-                GetWindowRect(hWnd, out rect);
-            }
-            catch
-            {
-                rect = new RECT();
-                return false;
-            }
-
-            return true;
         }
 
         [DllImport("user32.dll")]
@@ -132,7 +100,7 @@ namespace NTEFishingTool.FishingTool
             using (Graphics g = Graphics.FromImage(bmp))
             {
                 // 从屏幕上指定的区域复制图像到Bitmap对象中
-                g.CopyFromScreen(rect.Left, rect.Top, 0, 0, new System.Drawing.Size(width, height));
+                g.CopyFromScreen(rect.Left, rect.Top, 0, 0, new Size(width, height));
             }
 
             return bmp;
@@ -145,20 +113,29 @@ namespace NTEFishingTool.FishingTool
         /// <returns></returns>
         public static int GetResolutionLevel(int height)
         {
-            if (height >= 719 && height < 770)
+            if (height < 900)
             {
                 return 720;
             }
-            if (height >= 1079 && height < 1130)
+            if (height < 1439)
             {
                 return 1080;
             }
-            if (height >= 1439)
-            {
-                return 1440;
-            }
+            return 1440;
 
-            return 0; // 不支持的分辨率
+            //if (height >= 719 && height < 770)
+            //{
+            //    return 720;
+            //}
+            //if (height >= 1079 && height < 1130)
+            //{
+            //    return 1080;
+            //}
+            //if (height >= 1439 && height < 1500)
+            //{
+            //    return 1440;
+            //}
+            //return 0; // 不支持的分辨率
         }
 
         /// <summary>
@@ -198,8 +175,8 @@ namespace NTEFishingTool.FishingTool
             return (lower, upper);
         }
 
-        private static Mat convertHsvPixel = new Mat();
-        private static Dictionary<string, Scalar> hsvScalarCache = new Dictionary<string, Scalar>();
+        private static Mat _convertHsvPixel = new Mat();
+        private static Dictionary<string, Scalar> _hsvScalarCache = new Dictionary<string, Scalar>();
 
         /// <summary>
         /// 将RGB颜色值转换为HSV颜色值。
@@ -209,25 +186,24 @@ namespace NTEFishingTool.FishingTool
         public static Scalar ConvertRgbToHsv(RGB rgb)
         {
             string rgbString = $"({rgb.R}, {rgb.G}, {rgb.B})";
-            if (hsvScalarCache.ContainsKey(rgbString))
+            if (_hsvScalarCache.ContainsKey(rgbString))
             {
-                return hsvScalarCache[rgbString];
+                return _hsvScalarCache[rgbString];
             }
 
             using (Mat rgbPixel = new Mat(1, 1, MatType.CV_8UC3, new Scalar(rgb.B, rgb.G, rgb.R)))
             {
-                Cv2.CvtColor(rgbPixel, convertHsvPixel, ColorConversionCodes.BGR2HSV);
+                Cv2.CvtColor(rgbPixel, _convertHsvPixel, ColorConversionCodes.BGR2HSV);
 
-                Vec3b hsv = convertHsvPixel.At<Vec3b>(0, 0);
-                hsvScalarCache[rgbString] = new Scalar(hsv.Item0, hsv.Item1, hsv.Item2);
-                return hsvScalarCache[rgbString];
+                Vec3b hsv = _convertHsvPixel.At<Vec3b>(0, 0);
+                _hsvScalarCache[rgbString] = new Scalar(hsv.Item0, hsv.Item1, hsv.Item2);
+                return _hsvScalarCache[rgbString];
             }
         }
 
-        private static Mat detectHsv = new Mat();
-        private static Mat detectMask = new Mat();
-
-        private static Mat structuringElement =
+        private static Mat _detectHsv = new Mat();
+        private static Mat _detectMask = new Mat();
+        private static Mat _structuringElement =
             Cv2.GetStructuringElement(MorphShapes.Rect, new OpenCvSharp.Size(20, 15));
 
         /// <summary>
@@ -236,11 +212,11 @@ namespace NTEFishingTool.FishingTool
         /// <param name="screenFrame">传入的截图</param>
         /// <param name="rgb">RGB颜色值</param>
         /// <returns>返回检测到的颜色区域的中心点坐标，如果未检测到则返回null</returns>
-        public static OpenCvSharp.Point? DetectAreaByRgb(Bitmap screenFrame, RGB? rgb = null, bool lowRange = true)
+        public static Point? DetectAreaByRgb(Bitmap screenFrame, RGB? rgb = null, bool lowRange = true)
         {
             using (Mat frame = screenFrame.ToMat())
             {
-                Cv2.CvtColor(frame, detectHsv, ColorConversionCodes.BGR2HSV);
+                Cv2.CvtColor(frame, _detectHsv, ColorConversionCodes.BGR2HSV);
 
                 Scalar lowerColor;
                 Scalar upperColor;
@@ -254,19 +230,19 @@ namespace NTEFishingTool.FishingTool
                     (lowerColor, upperColor) = GetHsvRange(ConvertRgbToHsv(new RGB(36, 206, 170)));
                 }
 
-                Cv2.InRange(detectHsv, lowerColor, upperColor, detectMask);
+                Cv2.InRange(_detectHsv, lowerColor, upperColor, _detectMask);
 
                 // 去噪声，使用开运算（先腐蚀后膨胀）来去除小的噪点
                 // 改用闭运算（先膨胀后腐蚀），加上一个矩形内核用作替代光标，连接两节钓鱼条。
                 Cv2.MorphologyEx(
-                    detectMask,
-                    detectMask,
+                    _detectMask,
+                    _detectMask,
                     MorphTypes.Close,
-                    structuringElement);
+                    _structuringElement);
 
                 // 查找轮廓
                 Cv2.FindContours(
-                    detectMask,
+                    _detectMask,
                     out OpenCvSharp.Point[][] contours,
                     out HierarchyIndex[] hierachy,
                     RetrievalModes.External,
@@ -274,51 +250,45 @@ namespace NTEFishingTool.FishingTool
 
                 if (contours.Length > 0)
                 {
+                    //_detectMask.SaveImage($"./Resources/{DateTimeOffset.Now.ToUnixTimeMilliseconds()}.png");
+
                     var largestContour = contours.OrderByDescending(c => Cv2.ContourArea(c)).First();
                     var rec = Cv2.BoundingRect(largestContour);
 
-                    return new OpenCvSharp.Point(rec.X + rec.Width / 2, rec.Y + rec.Height / 2);
+                    return new Point(rec.X + rec.Width / 2, rec.Y + rec.Height / 2);
                 }
             }
 
             return null;
         }
 
-        private static Mat matchResizedTplMat = new Mat();
-        private static Mat matchTmplResult = new Mat();
+        private static Mat _matchResizedTplMat = new Mat();
+        private static Mat _matchTmplResult = new Mat();
 
         private static void MatchImageTemplate(Mat refMat, Mat tplMat, double scale, ref double bestMaxVal, ref OpenCvSharp.Point bestLoc, ref double bestScale)
         {
-            //using (Mat resizedTplMat = new Mat())
-            //{
-                // 根据当前的缩放比例调整模板图像的大小
-                Cv2.Resize(tplMat, matchResizedTplMat, new OpenCvSharp.Size(tplMat.Cols * scale, tplMat.Rows * scale));
+            // 根据当前的缩放比例调整模板图像的大小
+            Cv2.Resize(tplMat, _matchResizedTplMat, new OpenCvSharp.Size(tplMat.Cols * scale, tplMat.Rows * scale));
 
-                if (matchResizedTplMat.Cols > refMat.Cols || matchResizedTplMat.Rows > refMat.Rows)
-                {
-                    return; // 跳过模板图像大于屏幕截图的情况
-                }
+            if (_matchResizedTplMat.Cols > refMat.Cols || _matchResizedTplMat.Rows > refMat.Rows)
+            {
+                return; // 跳过模板图像大于屏幕截图的情况
+            }
 
-                // 使用归一化相关系数匹配方法进行模板匹配，并获取匹配结果
-                //using (Mat result = new Mat())
-                //{
-                    Cv2.MatchTemplate(refMat, matchResizedTplMat, matchTmplResult, TemplateMatchModes.CCoeffNormed);
-                    Cv2.MinMaxLoc(matchTmplResult, out _, out double maxVal, out _, out OpenCvSharp.Point maxLoc);
+            // 使用归一化相关系数匹配方法进行模板匹配，并获取匹配结果
+            Cv2.MatchTemplate(refMat, _matchResizedTplMat, _matchTmplResult, TemplateMatchModes.CCoeffNormed);
+            Cv2.MinMaxLoc(_matchTmplResult, out _, out double maxVal, out _, out OpenCvSharp.Point maxLoc);
 
-                    if (maxVal > bestMaxVal)
-                    {
-                        bestMaxVal = maxVal;
-                        bestLoc = maxLoc;
-                        bestScale = scale;
-                    }
-                //}
-            //}
+            if (maxVal > bestMaxVal)
+            {
+                bestMaxVal = maxVal;
+                bestLoc = maxLoc;
+                bestScale = scale;
+            }
         }
 
-        public static System.Drawing.Point? FindImageLocation(Bitmap screenSource, Mat templateImg)
+        public static Point? FindImageLocation(Bitmap screenSource, Mat templateImg, double minSimilarity = 0.8)
         {
-            const double MAX_SIMILARITY = 0.8; // 设置一个匹配度阈值，只要当匹配度超过这个值时，就认为找到了目标
-
             Mat tplMat = templateImg;
             using (Mat refMat = screenSource.ToMat())
             {
@@ -329,7 +299,7 @@ namespace NTEFishingTool.FishingTool
                 // 直接匹配原始大小的模板图像
                 MatchImageTemplate(refMat, tplMat, 1.0, ref bestMaxVal, ref bestLoc, ref bestScale);
 
-                if (bestMaxVal <= MAX_SIMILARITY)
+                if (bestMaxVal <= minSimilarity)
                 {
                     // 尝试从0.5倍到1.5倍的缩放比例，步长为0.1，来匹配模板图像
                     for (double scale = 0.5; scale <= 1.5; scale += 0.1)
@@ -337,18 +307,18 @@ namespace NTEFishingTool.FishingTool
                         if (scale == 1.0) continue; // 已经匹配过原始大小的模板图像，跳过
 
                         MatchImageTemplate(refMat, tplMat, scale, ref bestMaxVal, ref bestLoc, ref bestScale);
-                        if (bestMaxVal > MAX_SIMILARITY)
+                        if (bestMaxVal > minSimilarity)
                         {
                             break; // 找到匹配度足够高的结果，跳出循环
                         }
                     }
                 }
 
-                if (bestMaxVal > MAX_SIMILARITY)
+                if (bestMaxVal > minSimilarity)
                 {
                     int centerX = bestLoc.X + (int)(tplMat.Cols * bestScale / 2);
                     int centerY = bestLoc.Y + (int)(tplMat.Rows * bestScale / 2);
-                    return new System.Drawing.Point(centerX, centerY);
+                    return new Point(centerX, centerY);
                 }
             }
 
