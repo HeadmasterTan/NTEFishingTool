@@ -7,6 +7,8 @@
 
 [点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.1)
 
+[历史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
+
 - [繁體中文](./README-zhTW.md)
 - [English](./README-enUS.md)
 

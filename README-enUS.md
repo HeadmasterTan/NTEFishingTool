@@ -5,7 +5,9 @@ This tool is based on `OpenCV`, so it cannot run in the background. Please be aw
 
 ![Lacrimosa](./docs/Lacrimosa.png)Let Lacrimosa fish for you.
 
-[Click to download the latest version](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.0.5)
+[Click to download the latest version](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.1)
+
+[Historical Versions](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
 ## 📘 User Guide
 
