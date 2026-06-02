@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
-
+using NLog;
 using NTEFishingTool.FishingTool;
 
 namespace NTEFishingTool
 {
     public partial class Form1 : Form
     {
-        private static readonly Fishing _fishingTool = Fishing.GetInstance();
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
+        private static readonly Fishing _fishingTool = Fishing.GetInstance();
         private static string[] Languages = { "简体中文", "繁体中文", "English" };
+        private static string _hotKeyText = "";
 
         public Form1()
         {
@@ -18,12 +20,51 @@ namespace NTEFishingTool
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // 注册全局热键 F11
+            bool hotkeyRegistered = SimulateEventHandler.RegisterHotKey(
+                this.Handle,
+                SimulateEventHandler.HOTKEY_ID,
+                SimulateEventHandler.MOD_NONE,
+                SimulateEventHandler.VK_F11);
+
+            if (hotkeyRegistered)
+            {
+                _hotKeyText = "[F11]\n";
+            }
+
             selLanguage.DataSource = Languages;
             selLanguage.SelectedIndex = 0;
             SetChineseSimplified();
         }
 
-        private void btnStartFishing_Click(object sender, EventArgs e)
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_HOTKEY = 0x0312; // 热键消息常量
+
+            if (m.Msg == WM_HOTKEY)
+            {
+                if (m.WParam.ToInt32() == SimulateEventHandler.HOTKEY_ID)
+                {
+                    HandleHotKey();
+                }
+            }
+
+            base.WndProc(ref m);
+        }
+
+        private void HandleHotKey()
+        {
+            if (btnStartFishing.Enabled)
+            {
+                HandleStart();
+            }
+            else if (btnStopFishing.Enabled)
+            {
+                HandlePause();
+            }
+        }
+
+        private void HandleStart()
         {
             try
             {
@@ -34,26 +75,44 @@ namespace NTEFishingTool
                     btnStopFishing.Enabled = true;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return;
+                Log.Error(ex, "【HandleStart】工具启动发生异常");
+            }
+        }
+
+        private void btnStartFishing_Click(object sender, EventArgs e)
+        {
+            HandleStart();
+        }
+
+        private void HandlePause()
+        {
+            try
+            {
+                _fishingTool.Pause();
+
+                if (btnStopFishing.Enabled)
+                {
+                    btnStartFishing.Enabled = true;
+                    btnStopFishing.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "【HandlePause】工具暂停发生异常");
             }
         }
 
         private void btnStopFishing_Click(object sender, EventArgs e)
         {
-            _fishingTool.Pause();
-
-            if (btnStopFishing.Enabled)
-            {
-                btnStartFishing.Enabled = true;
-                btnStopFishing.Enabled = false;
-            }
+            HandlePause();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             _fishingTool.Stop();
+            SimulateEventHandler.UnregisterHotKey(this.Handle, SimulateEventHandler.HOTKEY_ID);
         }
 
         private void SetChineseSimplified()
@@ -65,8 +124,8 @@ namespace NTEFishingTool
             label4.Text = "3. 支持[16:9] [16:10] [24:10] [35:10]等分辨率";
             label5.Text = "4. 内置自动购买万能鱼饵和自动售出（不帮忙购买鱼竿）";
             label6.Text = "确认已在游戏中点击【开始钓鱼】后使用";
-            btnStartFishing.Text = "自动钓鱼";
-            btnStopFishing.Text = "停止钓鱼";
+            btnStartFishing.Text = _hotKeyText + "自动钓鱼";
+            btnStopFishing.Text = _hotKeyText + "停止钓鱼";
         }
 
         private void SetChineseTraditional()
@@ -78,8 +137,8 @@ namespace NTEFishingTool
             label4.Text = "3. 支持[16:9] [16:10] [24:10] [35:10]等分辨率";
             label5.Text = "4. 內置自動購買萬能魚餌和自動售出（不幫忙購買魚竿）";
             label6.Text = "確認已在遊戲中點擊【開始釣魚】後使用";
-            btnStartFishing.Text = "自動釣魚";
-            btnStopFishing.Text = "停止釣魚";
+            btnStartFishing.Text = _hotKeyText + "自動釣魚";
+            btnStopFishing.Text = _hotKeyText + "停止釣魚";
         }
 
         private void SetEnglish()
@@ -91,8 +150,8 @@ namespace NTEFishingTool
             label4.Text = "3. Supports [16:9], [16:10], [24:10], [35:10] resolutions";
             label5.Text = "4. Auto-buys bait & auto-sells fish (excludes fishing rods)";
             label6.Text = "Click [Start Fishing] in-game before using";
-            btnStartFishing.Text = "AutoFish";
-            btnStopFishing.Text = "StopFishing";
+            btnStartFishing.Text = _hotKeyText + "AutoFishing";
+            btnStopFishing.Text = _hotKeyText + "StopFishing";
         }
 
         private void selLanguage_SelectedIndexChanged(object sender, EventArgs e)

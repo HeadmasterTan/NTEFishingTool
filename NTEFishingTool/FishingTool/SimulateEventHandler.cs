@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -23,11 +24,21 @@ namespace NTEFishingTool.FishingTool
         public const byte SCAN_E = 0x12; // E键
         public const byte SCAN_R = 0x13; // R键
 
+        public const int HOTKEY_ID = 9000;
+        public const uint MOD_NONE = 0x0000; // 辅助键常量（0表示不使用）
+        public const uint VK_F11 = 0x7A; // 虚拟键码 F11键
+
         [DllImport("user32.dll")]
         public static extern void mouse_event(uint dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
 
         [DllImport("user32.dll")]
         public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         public static void MouseClick(Point point, int delayMs = 50)
         {

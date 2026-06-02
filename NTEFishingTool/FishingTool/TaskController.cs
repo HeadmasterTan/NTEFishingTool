@@ -2,11 +2,14 @@
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
+using NLog;
 
 namespace NTEFishingTool.FishingTool
 {
     internal class TaskController
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         // 存储任务控制开关：Key为任务ID，Value为用于控制暂停/继续的信号源
         private readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> _taskSwitches = new ConcurrentDictionary<string, TaskCompletionSource<bool>>();
 
@@ -20,6 +23,8 @@ namespace NTEFishingTool.FishingTool
             _taskSwitches[taskId] = tcs;
 
             Task.Run(async () => await taskFunc(_taskSwitches, _cts.Token));
+
+            Log.Info($"【StartTask】任务 [{taskId}] 已启动");
         }
 
         // 示例
@@ -62,7 +67,8 @@ namespace NTEFishingTool.FishingTool
                     if (tcs.Task.IsCompleted)
                     {
                         _taskSwitches[id] = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-                        Console.WriteLine($"任务 [{id}] 已被暂停");
+
+                        Log.Info($"【PauseTask】任务 [{id}] 已被暂停");
                     }
                 }
             }
@@ -78,7 +84,8 @@ namespace NTEFishingTool.FishingTool
                     if (!tcs.Task.IsCompleted)
                     {
                         tcs.TrySetResult(true);
-                        Console.WriteLine($"任务 [{id}] 已恢复运行");
+
+                        Log.Info($"【ResumeTasks】任务 [{id}] 已恢复运行");
                     }
                 }
             }
