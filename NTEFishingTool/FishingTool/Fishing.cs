@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using NLog;
 using static NTEFishingTool.FishingTool.ImageHandler;
 
 namespace NTEFishingTool.FishingTool
@@ -23,12 +23,15 @@ namespace NTEFishingTool.FishingTool
 
     internal class Fishing
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private const string GAME_PROCESS_NAME = "HTGame"; // 异环的程序名
         private const int FISHING_INTERVAL_MS = 1000 / 60; // 默认60帧率
 
         private Process _prcGame; // 游戏进程对象
         private IntPtr _intPtrGame; // 游戏窗口句柄
         private EFishState _curFishState = EFishState.Idle; // 当前的钓鱼状态
+        private int _fishingPointDistance = 20; // 钓鱼光标与绿条中心的距离阈值。
 
         private TaskController _tasks;
         private bool _isTaskRunning;
@@ -77,6 +80,9 @@ namespace NTEFishingTool.FishingTool
             {
                 if (_tasks == null)
                 {
+                    Log.Info("【Start】=========================================================");
+                    Log.Info("【Start】工具启动，开始初始化数据...");
+
                     _prcGame = ProcessHandler.GetProcess(GAME_PROCESS_NAME);
 
                     if (_prcGame == null)
@@ -94,11 +100,15 @@ namespace NTEFishingTool.FishingTool
 
                     GetPureClientRect(_intPtrGame, out RECT windowRect);
                     TemplateController.InitRatio(windowRect);
+                    _fishingPointDistance *= ((windowRect.Bottom - windowRect.Top) / 720);
 
-                    // 游戏进程和句柄均已记录，开始执行钓鱼任务
+                    // 数据初始化完成，开始执行钓鱼任务
                     _isTaskRunning = true;
                     _curRunningTaskName = "FishingLoop";
                     _tasks.StartTask(_curRunningTaskName, FishingLoop);
+
+                    Log.Info("【Start】数据初始化完毕");
+                    Log.Info("【Start】=========================================================");
                 }
                 else if (!_isTaskRunning)
                 {
@@ -112,6 +122,7 @@ namespace NTEFishingTool.FishingTool
             }
             catch(Exception ex)
             {
+                Log.Error(ex, "启动钓鱼任务时发生错误");
                 ShowErrorMessage(ex.Message);
             }
         }
@@ -178,8 +189,7 @@ namespace NTEFishingTool.FishingTool
             int lostFishCount = 0; // 鱼溜走次数
             long lastLostFishTime = DateTimeOffset.Now.ToUnixTimeSeconds(); // 上次遛鱼失败的时间戳
 
-            // 用于光标匹配。
-            double matchMinSimilarity = 0.9; // 模板匹配的最小相似度
+            bool writeFishingLogFlag = true; // 是否记录一次钓鱼中状态。
 
             try
             {
@@ -211,18 +221,21 @@ namespace NTEFishingTool.FishingTool
                                     continue;
                                 case EFishState.GameIdle:
                                     FishScene.GoToFishingIdle(windowImg);
+                                    lostFishCount = 0;
                                     _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                     continue;
                                 case EFishState.BuyBait:
                                     FishScene.HandleBuyBait(_intPtrGame);
+                                    lostFishCount = 0;
                                     _curFishState = EFishState.Fishing;
                                     _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                     continue;
-                                case EFishState.SaleFish:
-                                    FishScene.HandleSaleFish(_intPtrGame);
-                                    _curFishState = EFishState.Fishing;
-                                    _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-                                    continue;
+                                // 出售逻辑已合并到鱼饵为空逻辑。
+                                //case EFishState.SaleFish:
+                                //    FishScene.HandleSaleFish(_intPtrGame);
+                                //    _curFishState = EFishState.Fishing;
+                                //    _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+                                //    continue;
                                 case EFishState.MoonCard:
                                     FishScene.HandleMoonCard(windowImg);
                                     _curFishState = EFishState.Fishing;
@@ -245,14 +258,20 @@ namespace NTEFishingTool.FishingTool
                             // 判断是否进入遛鱼逻辑，优先级较高。
                             if (locBar != null && locPoint != null)
                             {
-                                lostFishCount = 0;
+                                if (writeFishingLogFlag)
+                                {
+                                    Log.Info("【Fishing】进入遛鱼逻辑，垂钓中...");
+                                    lostFishCount = 0; // 能钓到鱼，遛鱼失败次数重置。
+                                    writeFishingLogFlag = false; // 每次遛鱼开始时记录一次日志，避免日志过于频繁。
+                                }
+
                                 //Console.WriteLine($"绿条位置: ({locBar.Value.X}, {locBar.Value.Y}) == 光标位置: ({locPoint.Value.X}, {locPoint.Value.Y})");
 
                                 _curFishState = EFishState.Fishing;
                                 _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-                                int distance = locBar.Value.X - locPoint.Value.X;
+                                int distance = Math.Abs(locBar.Value.X - locPoint.Value.X);
 
-                                if (distance < 20 && distance > -20)
+                                if (distance < _fishingPointDistance)
                                 {
                                     ToggleFishingPressKey(curKeyScanCode, 0);
                                     curKeyScanCode = 0;
@@ -270,6 +289,8 @@ namespace NTEFishingTool.FishingTool
                             }
                             else if (lostFishingCount >= 10) // 连续多次未找到钓鱼绿条和光标，进入各项判断逻辑。
                             {
+                                writeFishingLogFlag = true;
+
                                 if (curKeyScanCode != 0)
                                 {
                                     ToggleFishingPressKey(curKeyScanCode, 0);
@@ -281,6 +302,8 @@ namespace NTEFishingTool.FishingTool
                                     TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.TakesTheBait);
                                 if (clickToFishingLoc != null)
                                 {
+                                    Log.Info("【Fishing】检测到鱼上钩了...");
+
                                     SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
                                     lostFishingCount = 0;
                                     _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
@@ -293,24 +316,13 @@ namespace NTEFishingTool.FishingTool
                                     TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.FishWeightGram);
                                 if (weightGramLoc != null)
                                 {
+                                    Log.Info("【Fishing】成功钓起了一条鱼");
+
+                                    Thread.Sleep(1500);
                                     FishScene.HandleClickToClose();
 
                                     // 立刻继续钓鱼
                                     SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
-                                    _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-                                    continue;
-                                }
-
-                                // 处理莫名退回到登录界面的问题
-                                Point? announcementLoc = TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.LoginPageAnnouncement);
-                                Point? announcementLightLoc = TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.LoginPageAnnouncementLight);
-                                if (announcementLoc != null || announcementLightLoc != null)
-                                {
-                                    Thread.Sleep(2500);
-
-                                    FishScene.HandleClickToClose();
-
                                     _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
 
                                     continue;
@@ -321,14 +333,6 @@ namespace NTEFishingTool.FishingTool
                                 if (enterFLoc != null)
                                 {
                                     _curFishState = EFishState.GameIdle;
-                                    continue;
-                                }
-
-                                // 处理月卡，并非整点结算月卡
-                                Point? moonCardLoc = TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.MoonCard);
-                                if (moonCardLoc != null)
-                                {
-                                    _curFishState = EFishState.MoonCard;
                                     continue;
                                 }
 
@@ -349,18 +353,48 @@ namespace NTEFishingTool.FishingTool
                                             lastLostFishTime = currentLostTime;
                                         }
 
+                                        Log.Info("【FishingLoop】检测到遛鱼失败...当前已统计最近遛鱼失败 {0} 次", lostFishCount);
                                         _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
                                         continue;
                                     }
 
+                                    Log.Info("【FishingLoop】检测到鱼饵用完...");
                                     FishScene.HandleBaitEmpty(_intPtrGame);
+
                                     _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+                                    continue;
+                                }
+
+                                // 处理莫名退回到登录界面的问题
+                                Point? announcementLoc = TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.LoginPageAnnouncement);
+                                Point? announcementLightLoc = TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.LoginPageAnnouncementLight);
+                                if (announcementLoc != null || announcementLightLoc != null)
+                                {
+                                    Log.Info("【FishingLoop】检测到被踢回登录界面...");
+
+                                    Thread.Sleep(2500);
+
+                                    FishScene.HandleClickToClose();
+
+                                    _lastOperationTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+                                    continue;
+                                }
+
+                                // 处理月卡，并非整点结算月卡，因为此匹配逻辑可能会比较耗时，所以降低其优先级。
+                                Point? moonCardLoc = TemplateController.MathTemplateImgByName(windowImg, _intPtrGame, ETemplateName.MoonCard);
+                                if (moonCardLoc != null)
+                                {
+                                    Log.Info("【FishingLoop】检测到月卡提示...");
+
+                                    _curFishState = EFishState.MoonCard;
                                     continue;
                                 }
 
                                 // 超过40秒没有任何操作，主动回退到游戏待机界面
                                 if (DateTimeOffset.Now.ToUnixTimeSeconds() - _lastOperationTime >= 40)
                                 {
+                                    Log.Info("【FishingLoop】检测到超过40秒没有任何操作...");
                                     _curFishState = EFishState.Back;
                                     continue;
                                 }
@@ -369,6 +403,8 @@ namespace NTEFishingTool.FishingTool
                                 if (_curFishState == EFishState.Idle
                                     || DateTimeOffset.Now.ToUnixTimeSeconds() - _lastOperationTime >= 10)
                                 {
+                                    Log.Info("【FishingLoop】检测到钓鱼待机状态或已超过10秒没有任何操作...");
+
                                     SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
                                     lostFishingCount = 0;
                                     _curFishState = EFishState.Fishing;
@@ -379,9 +415,8 @@ namespace NTEFishingTool.FishingTool
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("===========================内层===========================");
-                            Console.WriteLine(e.Message);
-                            Console.WriteLine("===========================内层===========================");
+                            Log.Error(e, "【FishingLoop】执行钓鱼循环时发生异常");
+
                             // 报错了不管怎么样，重置下按键事件，然后直接回退到游戏待机界面，重新来过。
                             if (curKeyScanCode != 0)
                             {
@@ -397,18 +432,13 @@ namespace NTEFishingTool.FishingTool
             }
             catch (OperationCanceledException)
             {
-                Console.WriteLine("任务 [FishingLoop] 收到取消信号");
+                Log.Info("【FishingLoop】任务 [FishingLoop] 收到取消信号，任务暂停");
             }
             catch (Exception e)
             {
-                Console.WriteLine("==========================外层==========================");
-                Console.WriteLine(e.Message);
-                Console.WriteLine("==========================外层==========================");
+                Log.Error(e, "【FishingLoop】任务 [FishingLoop] 在进入循环前发生异常");
+
                 ShowErrorMessage(e.Message);
-            }
-            finally
-            {
-                Console.WriteLine("任务 [FishingLoop] 已停止");
             }
         }
     }

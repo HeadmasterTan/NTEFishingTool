@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-
+using NLog;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
@@ -13,6 +13,8 @@ namespace NTEFishingTool.FishingTool
 {
     internal class ImageHandler
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
@@ -88,6 +90,15 @@ namespace NTEFishingTool.FishingTool
         /// <returns></returns>
         public static Bitmap CaptureWindow(IntPtr hWnd)
         {
+            IntPtr foregroundWindow = ProcessHandler.GetForegroundWindow();
+            if (hWnd != foregroundWindow)
+            {
+                Log.Warn("【CaptureWindow】游戏窗口不在前台，正在切换到前台");
+
+                ProcessHandler.SetForegroundWindow(hWnd);
+                System.Threading.Thread.Sleep(200); // 等待窗口切换完成
+            }
+
             // 获取窗口在屏幕上的坐标和大小
             if (!GetPureClientRect(hWnd, out RECT rect)) return null;
 
@@ -121,7 +132,11 @@ namespace NTEFishingTool.FishingTool
             {
                 return 1080;
             }
-            return 1440;
+            if (height < 2160)
+            {
+                return 1440;
+            }
+            return 2160;
 
             //if (height >= 719 && height < 770)
             //{
@@ -157,9 +172,9 @@ namespace NTEFishingTool.FishingTool
 
             if (!lowRange)
             {
-                hRange = 10;
-                sRange = 30;
-                vRange = 30;
+                hRange = 7;
+                sRange = 20;
+                vRange = 20;
             }
 
             Scalar lower = new Scalar(
@@ -211,6 +226,7 @@ namespace NTEFishingTool.FishingTool
         /// </summary>
         /// <param name="screenFrame">传入的截图</param>
         /// <param name="rgb">RGB颜色值</param>
+        /// <param name="lowRange">是否使用小范围</param>
         /// <returns>返回检测到的颜色区域的中心点坐标，如果未检测到则返回null</returns>
         public static Point? DetectAreaByRgb(Bitmap screenFrame, RGB? rgb = null, bool lowRange = true)
         {

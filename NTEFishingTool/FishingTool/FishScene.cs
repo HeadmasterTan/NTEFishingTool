@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading;
-
+using NLog;
 using Point = System.Drawing.Point;
 using static NTEFishingTool.FishingTool.ImageHandler;
 
@@ -9,6 +9,8 @@ namespace NTEFishingTool.FishingTool
 {
     internal class FishScene
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private static readonly RGB RgbFishBar = new RGB(49, 218, 183); // 绿条
         private static readonly RGB RgbFishPoint = new RGB(245, 246, 159); // 光标
         private static readonly RGB RgbCenterTips = new RGB(255, 255, 255); // 中间提示条
@@ -138,7 +140,8 @@ namespace NTEFishingTool.FishingTool
             _fishingTool.CurFishState = EFishState.BuyBait;
             HandleBuyBait(intPtr);
 
-            _fishingTool.CurFishState = EFishState.Idle;
+            // 购买成功不会自动装配，需要手动更换。
+            HandleChangeBait(intPtr);
         }
 
         /// <summary>
@@ -164,7 +167,7 @@ namespace NTEFishingTool.FishingTool
                 }
             }
 
-            // 不管他是更换，还是购买，点了再说。
+            // 不管他是更换还是购买，点了再说。
             Point confirmBtnPoint =
                 TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ConfirmDialogConfirmButton);
 
@@ -182,6 +185,7 @@ namespace NTEFishingTool.FishingTool
                 }
             }
 
+            Log.Info("【HandleChangeBait】更换鱼饵成功");
             _fishingTool.CurFishState = EFishState.Idle;
             return true;
         }
@@ -252,6 +256,8 @@ namespace NTEFishingTool.FishingTool
                 {
                     throw new Exception("【HandleBuyBait】未能关闭商店界面");
                 }
+
+                Log.Info("【HandleBuyBait】成功购买鱼饵");
                 SimulateEventHandler.MouseClick(pageCloseLoc.Value);
                 Thread.Sleep(1500);
             }
@@ -290,6 +296,10 @@ namespace NTEFishingTool.FishingTool
                 Point? emptyPoint = TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.FishHoldEmpty);
                 if (emptyPoint != null)
                 {
+                    Log.Info("【HandleSaleFish】检测到鱼舱为空...");
+
+                    SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_ESCAPE);
+                    Thread.Sleep(1500);
                     return;
                 }
 
@@ -326,6 +336,8 @@ namespace NTEFishingTool.FishingTool
                 Thread.Sleep(6000); // 休眠时间稍微长一点，让鱼卖一会。
             }
 
+            Log.Info("【HandleSaleFish】成功售出鱼获");
+
             // 直接关闭
             HandleClickToClose();
 
@@ -357,6 +369,9 @@ namespace NTEFishingTool.FishingTool
                 // 没有月卡，无事发生
                 return;
             }
+
+            Log.Info("【HandleMoonCard】检测到月卡提示...");
+
             SimulateEventHandler.MouseClick(moonCardLoc.Value);
             Thread.Sleep(5000);
 
@@ -369,6 +384,8 @@ namespace NTEFishingTool.FishingTool
         /// </summary>
         public static void BackToGameIdle()
         {
+            Log.Info("【BackToGameIdle】回退到游戏待机界面...");
+
             while (true)
             {
                 using (Bitmap windowImg = CaptureWindow(_fishingTool.IntPtrGame))
@@ -387,6 +404,8 @@ namespace NTEFishingTool.FishingTool
 
             }
 
+            Log.Info("【BackToGameIdle】已回退到游戏待机界面");
+
             Thread.Sleep(2000);
         }
 
@@ -397,6 +416,8 @@ namespace NTEFishingTool.FishingTool
         /// <exception cref="Exception"></exception>
         public static void GoToFishingIdle(Bitmap windowImg)
         {
+            Log.Info("【GoToFishingIdle】正在前往钓鱼待机界面...");
+
             IntPtr intPtrGame = _fishingTool.IntPtrGame;
 
             Point? enterFLoc = TemplateController.MathTemplateImgByName(windowImg, intPtrGame, ETemplateName.EnterFKeyToFishing);

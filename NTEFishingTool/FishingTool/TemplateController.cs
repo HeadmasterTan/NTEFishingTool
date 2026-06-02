@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-
+using NLog;
 using Point = System.Drawing.Point;
 using static NTEFishingTool.FishingTool.ImageHandler;
 
@@ -50,9 +50,9 @@ namespace NTEFishingTool.FishingTool
 
     internal class TemplateController
     {
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+
         private const string TEMPLATE_PATH = "./Resources/Images/";
-        private static readonly Dictionary<string, Mat> TemplateMatCache = new Dictionary<string, Mat>();
-        private static readonly Dictionary<string, Bitmap> TemplateImagesCache = new Dictionary<string, Bitmap>();
         private static int _resolutionLevel;
 
         // 以下是游戏内的几种分辨率。
@@ -67,21 +67,23 @@ namespace NTEFishingTool.FishingTool
             double width = windowRect.Right - windowRect.Left;
             double height = windowRect.Bottom - windowRect.Top;
             _curAspectRatio = width / height;
+
+            Log.Info("【InitRatio】宽: {0}, 高: {1}", width, height);
         }
 
         public static double GetSimilarityRatio()
         {
             double result = Math.Abs(_curAspectRatio - 1.6);
-            if (result < 0.1) return 1.6;
+            if (result <= 0.1) return 1.6;
 
             result = Math.Abs(_curAspectRatio - 1.7);
-            if (result < 0.1) return 1.7;
+            if (result <= 0.1) return 1.7;
 
             result = Math.Abs(_curAspectRatio - 2.4);
-            if (result < 0.1) return 2.4;
+            if (result <= 0.1) return 2.4;
 
             result = Math.Abs(_curAspectRatio - 3.5);
-            if (result < 0.1) return 3.5;
+            if (result <= 0.1) return 3.5;
 
             return 0;
         }
@@ -155,7 +157,9 @@ namespace NTEFishingTool.FishingTool
                     return CalculateTemplateRect(windowImg, 907, 565, 110, 28);
             }
 
-            throw new Exception($"【GetNormalRatioRect】无法匹配当前 16/9 分辨率下的模板矩形: {templateName}");
+            string msg = $"【GetNormalRatioRect】无法匹配当前 16/9 分辨率下的模板矩形: {templateName}";
+            Log.Error(msg);
+            throw new Exception(msg);
         }
 
         /// <summary>
@@ -216,7 +220,9 @@ namespace NTEFishingTool.FishingTool
                     return CalculateTemplateRect(windowImg, 1150, 814, 244, 43, ratioWidth, ratioHeight);
             }
 
-            throw new Exception($"【GetShortRatioRect】无法匹配当前 16/10 分辨率下的模板矩形: {templateName}");
+            string msg = $"【GetShortRatioRect】无法匹配当前 16/10 分辨率下的模板矩形: {templateName}";
+            Log.Error(msg);
+            throw new Exception(msg);
         }
 
         /// <summary>
@@ -277,7 +283,9 @@ namespace NTEFishingTool.FishingTool
                     return CalculateTemplateRect(windowImg, 842, 411, 110, 22, ratioWidth, ratioHeight);
             }
 
-            throw new Exception($"【GetLongRatioRect】无法匹配当前 24/10 分辨率下的模板矩形: {templateName}");
+            string msg = $"【GetLongRatioRect】无法匹配当前 24/10 分辨率下的模板矩形: {templateName}";
+            Log.Error(msg);
+            throw new Exception(msg);
         }
 
         /// <summary>
@@ -338,7 +346,9 @@ namespace NTEFishingTool.FishingTool
                     return CalculateTemplateRect(windowImg, 1826, 558, 171, 39, ratioWidth);
             }
 
-            throw new Exception($"【GetUltraRatioRect】无法匹配当前 35/10 分辨率下的模板矩形: {templateName}");
+            string msg = $"【GetUltraRatioRect】无法匹配当前 35/10 分辨率下的模板矩形: {templateName}";
+            Log.Error(msg);
+            throw new Exception(msg);
         }
 
         private static Rectangle MatchRatioRectangle(Bitmap windowImg, ETemplateName templateName)
@@ -355,6 +365,8 @@ namespace NTEFishingTool.FishingTool
                     return GetUltraRatioRect(windowImg, templateName);
             }
 
+            string msg = $"【MatchRatioRectangle】无法匹配当前分辨率 {_curAspectRatio}";
+            Log.Error(msg);
             throw new Exception("【MatchRatioRectangle】无法匹配当前分辨率\n请检查是否符合[16:9] [16:10] [24:10] [35:10]的分辨率");
         }
 
@@ -366,12 +378,14 @@ namespace NTEFishingTool.FishingTool
                 case ETemplateName.LoginPageAnnouncementLight:
                     return CalculateTemplateRect(windowImg, 1826, 140, 85, 85);
                 case ETemplateName.MoonCard:
-                    return CalculateTemplateRect(windowImg, 770, 339, 400, 400);
+                    return CalculateTemplateRect(windowImg, 750, 260, 400, 650);
 
                 default:
                     return MatchRatioRectangle(windowImg, templateName);
             }
         }
+
+        private static Dictionary<string, Mat> _templateMatCache = null;
 
         /// <summary>
         /// 传入游戏窗口截图，程序句柄和需要比对的图片名
@@ -387,9 +401,15 @@ namespace NTEFishingTool.FishingTool
         {
             string imgName = tmplName.ToString();
 
-            if (!TemplateMatCache.ContainsKey(imgName))
+            // 预防Mat未能加载。
+            if (_templateMatCache == null)
             {
-                TemplateMatCache[imgName] = GetTemplateImage(imgName).ToMat();
+                _templateMatCache = new Dictionary<string, Mat>();
+            }
+
+            if (!_templateMatCache.ContainsKey(imgName))
+            {
+                _templateMatCache[imgName] = GetTemplateImage(imgName).ToMat();
             }
 
             // 裁剪区域，以减少干扰和避免增加性能消耗
@@ -397,7 +417,7 @@ namespace NTEFishingTool.FishingTool
 
             using (Bitmap cropImg = CropImageByRect(windowImg, rect))
             {
-                Point? loc = FindImageLocation(cropImg, TemplateMatCache[imgName], minSimilarity);
+                Point? loc = FindImageLocation(cropImg, _templateMatCache[imgName], minSimilarity);
 
                 if (loc != null)
                 {
@@ -439,6 +459,8 @@ namespace NTEFishingTool.FishingTool
             return new Point(x, y);
         }
 
+        private static readonly Dictionary<string, Bitmap> TemplateImagesCache = new Dictionary<string, Bitmap>();
+
         private static void LoadTemplateImage(string path)
         {
             string imageName = Path.GetFileNameWithoutExtension(path);
@@ -463,15 +485,12 @@ namespace NTEFishingTool.FishingTool
             GetPureClientRect(windowHandle, out RECT rect);
             _resolutionLevel = GetResolutionLevel(rect.Bottom - rect.Top);
 
-            if (_resolutionLevel == 0)
-            {
-                throw new Exception("不支持的分辨率");
-            }
-
             string searchPattern = $"*-{_resolutionLevel}.png";
-            // 获取目录下所有PNG图片文件路径
+            // 获取目录下所有符合条件的文件路径
             string[] imagesFilePaths = Directory.GetFiles(TEMPLATE_PATH, searchPattern);
 
+            Log.Info("【InitializeImages】开始初始化模板图片...");
+            Log.Info($"【InitializeImages】{ string.Join(", ", imagesFilePaths) }");
             foreach (var path in imagesFilePaths)
             {
                 try
@@ -483,6 +502,8 @@ namespace NTEFishingTool.FishingTool
                     throw new Exception($"【InitializeImages】加载模板图片失败: {path}. \n错误信息: {ex.Message}");
                 }
             }
+
+            Log.Info("【InitializeImages】模板图片初始化完成");
         }
 
         public static Bitmap GetTemplateImage(string imageName, int resolutionLevel = 0)

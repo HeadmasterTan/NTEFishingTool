@@ -42,9 +42,9 @@
             // 
             // btnStartFishing
             // 
-            this.btnStartFishing.Location = new System.Drawing.Point(81, 206);
+            this.btnStartFishing.Location = new System.Drawing.Point(81, 204);
             this.btnStartFishing.Name = "btnStartFishing";
-            this.btnStartFishing.Size = new System.Drawing.Size(121, 38);
+            this.btnStartFishing.Size = new System.Drawing.Size(121, 53);
             this.btnStartFishing.TabIndex = 0;
             this.btnStartFishing.Text = "自动钓鱼";
             this.btnStartFishing.UseVisualStyleBackColor = true;
@@ -53,9 +53,9 @@
             // btnStopFishing
             // 
             this.btnStopFishing.Enabled = false;
-            this.btnStopFishing.Location = new System.Drawing.Point(298, 206);
+            this.btnStopFishing.Location = new System.Drawing.Point(296, 204);
             this.btnStopFishing.Name = "btnStopFishing";
-            this.btnStopFishing.Size = new System.Drawing.Size(121, 38);
+            this.btnStopFishing.Size = new System.Drawing.Size(121, 53);
             this.btnStopFishing.TabIndex = 1;
             this.btnStopFishing.Text = "停止钓鱼";
             this.btnStopFishing.UseVisualStyleBackColor = true;
@@ -109,7 +109,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(78, 178);
+            this.label6.Location = new System.Drawing.Point(78, 173);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(277, 15);
             this.label6.TabIndex = 7;
