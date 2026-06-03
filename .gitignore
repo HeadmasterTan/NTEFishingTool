@@ -1,6 +1,15 @@
 
+## 忽略编译输出
 /NTEFishingTool/bin/
 /NTEFishingTool/obj/
 
+## 忽略 Visual Studio 本地配置与缓存
 .vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
+## 忽略 NuGet 依赖包目录
+packages/
+!packages/repositories.config

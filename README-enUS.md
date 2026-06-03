@@ -33,6 +33,8 @@ This tool is based on `OpenCV`, so it cannot run in the background. Please be aw
 6. Multi-language support
 7. Supports most screen aspect ratios and resolutions
 
+## ❔ Q&A
+
 ### Q: The cursor cannot keep up with the green bar?
 
 - The background of your current fishing area might be too complex. Try switching to a different fishing spot.
