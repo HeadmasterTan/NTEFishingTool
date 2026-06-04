@@ -22,6 +22,19 @@ namespace NTEFishingTool.FishingTool
             public int Top;
             public int Right;
             public int Bottom;
+
+            public static bool operator ==(RECT r1, RECT r2)
+            {
+                return r1.Left == r2.Left &&
+                       r1.Top == r2.Top &&
+                       r1.Right == r2.Right &&
+                       r1.Bottom == r2.Bottom;
+            }
+
+            public static bool operator !=(RECT r1, RECT r2)
+            {
+                return !(r1 == r2);
+            }
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -87,8 +100,9 @@ namespace NTEFishingTool.FishingTool
         /// 获取指定窗口的屏幕截图，并返回一个Bitmap对象。
         /// </summary>
         /// <param name="hWnd"></param>
+        /// <param name="tmplName"></param>
         /// <returns></returns>
-        public static Bitmap CaptureWindow(IntPtr hWnd)
+        public static Bitmap CaptureWindow(IntPtr hWnd, ETemplateName? tmplName = null)
         {
             IntPtr foregroundWindow = ProcessHandler.GetForegroundWindow();
             if (hWnd != foregroundWindow)
@@ -99,8 +113,17 @@ namespace NTEFishingTool.FishingTool
                 System.Threading.Thread.Sleep(200); // 等待窗口切换完成
             }
 
+            RECT rect;
+
             // 获取窗口在屏幕上的坐标和大小
-            if (!GetPureClientRect(hWnd, out RECT rect)) return null;
+            if (tmplName.HasValue)
+            {
+                rect = TemplateController.GetTemplateRECT(tmplName.Value);
+            }
+            else
+            {
+                rect = TemplateController._curWindowRect;
+            }
 
             int width = rect.Right - rect.Left;
             int height = rect.Bottom - rect.Top;

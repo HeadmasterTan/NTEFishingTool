@@ -16,15 +16,20 @@ namespace NTEFishingTool.FishingTool
         private static readonly RGB RgbCenterTips = new RGB(255, 255, 255); // 中间提示条
         private static readonly Fishing _fishingTool = Fishing.GetInstance();
 
-        public static Point? GetCenterTipsPoint(Bitmap windowImg)
+        public static Point? GetCenterTipsPoint()
         {
-            Rectangle rect = TemplateController.GetTemplateRect(windowImg, ETemplateName.CenterTips);
+            Bitmap image = CaptureWindow(_fishingTool.IntPtrGame, ETemplateName.CenterTips);
 
-            using (Bitmap cropImage = CropImageByRect(windowImg, rect))
-            {
-                Point? point = DetectAreaByRgb(cropImage, RgbCenterTips);
-                return point;
-            }
+            Point? point = DetectAreaByRgb(image, RgbCenterTips);
+            return point;
+        }
+
+        public static void RandomThreadSleep(int milliseconds)
+        {
+            Random random = new Random();
+            int delay = milliseconds + random.Next(0, 500);
+
+            Thread.Sleep(delay);
         }
 
         /// <summary>
@@ -35,7 +40,7 @@ namespace NTEFishingTool.FishingTool
             Point randomClickPoint =
                 TemplateController.GetRectangleRandomPoint(_fishingTool.IntPtrGame, ETemplateName.ClickEmptyAreaToClose);
             SimulateEventHandler.MouseClick(randomClickPoint);
-            Thread.Sleep(1500);
+            RandomThreadSleep(1500);
         }
 
         /// <summary>
@@ -43,18 +48,14 @@ namespace NTEFishingTool.FishingTool
         /// 用两个个依据来判断是否是中间提示条：
         /// F键提示还在，并且中间出现白色匹配时，说明出现了中间提示条。
         /// </summary>
-        /// <param name="windowImg"></param>
         /// <returns></returns>
-        public static bool CheckIsCenterTips(Bitmap windowImg)
+        public static bool CheckIsCenterTips()
         {
-            //Point? enterAKeyPoint =
-            //    TemplateController.MathTemplateImgByName(windowImg, _fishingTool.IntPtrGame, ETemplateName.EnterAKeyToLeft);
             Point? fishSceneFKeyPoint =
-                TemplateController.MathTemplateImgByName(windowImg, _fishingTool.IntPtrGame, ETemplateName.FishingSceneFKey);
-            Point? centerTipsPoint = GetCenterTipsPoint(windowImg);
+                TemplateController.MathTemplateImgByName(_fishingTool.IntPtrGame, ETemplateName.FishingSceneFKey);
+            Point? centerTipsPoint = GetCenterTipsPoint();
 
             return fishSceneFKeyPoint.HasValue && centerTipsPoint.HasValue;
-            //return enterAKeyPoint == null && fishSceneFKeyPoint.HasValue && centerTipsPoint.HasValue;
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace NTEFishingTool.FishingTool
         /// <returns></returns>
         public static bool CheckIsLostFish()
         {
-            Thread.Sleep(4000); // 等待提示条消失。
+            RandomThreadSleep(4000); // 等待提示条消失。
 
             SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
             Thread.Sleep(600);
@@ -71,7 +72,7 @@ namespace NTEFishingTool.FishingTool
             using (Bitmap windowImg = CaptureWindow(_fishingTool.IntPtrGame))
             {
                 // 连续两次触发中间的提示条，说明并不是鱼溜走了。
-                if (CheckIsCenterTips(windowImg))
+                if (CheckIsCenterTips())
                 {
                     return false;
                 }
@@ -84,25 +85,23 @@ namespace NTEFishingTool.FishingTool
         /// <summary>
         /// 获取钓鱼绿条的中心点坐标。
         /// </summary>
-        /// <param name="windowImg"></param>
         /// <param name="absolutePoi">是否取绝对坐标</param>
+        /// <param name="img">游戏截图</param>
         /// <returns></returns>
-        public static Point? GetFishBarPoint(Bitmap windowImg, bool absolutePoi = false)
+        public static Point? GetFishBarPoint(bool absolutePoi = false, Bitmap img = null)
         {
-            Rectangle rect = TemplateController.GetTemplateRect(windowImg, ETemplateName.FishingPoint);
+            Rectangle rect = TemplateController.GetTemplateRect(ETemplateName.FishingPoint);
+            Bitmap image = img ?? CaptureWindow(_fishingTool.IntPtrGame, ETemplateName.FishingPoint);
 
-            using (Bitmap cropImage = CropImageByRect(windowImg, rect))
+            Point? point = DetectAreaByRgb(image, RgbFishBar, false);
+            if (point != null && absolutePoi)
             {
-                Point? point = DetectAreaByRgb(cropImage, RgbFishBar, false);
-                if (point != null && absolutePoi)
-                {
-                    GetPureClientRect(_fishingTool.IntPtrGame, out RECT clientRect);
-                    point = new Point(
-                        clientRect.Left + rect.X + point.Value.X,
-                        clientRect.Top + rect.Y + point.Value.Y);
-                }
-                return point;
+                RECT clientRect = TemplateController._curWindowRect;
+                point = new Point(
+                    clientRect.Left + rect.X + point.Value.X,
+                    clientRect.Top + rect.Y + point.Value.Y);
             }
+            return point;
         }
 
         // 旧版本，暂时保留。
@@ -153,18 +152,17 @@ namespace NTEFishingTool.FishingTool
         /// <returns></returns>
         public static bool HandleChangeBait(IntPtr intPtr)
         {
+            Log.Info("【HandleChangeBait】尝试更换为万能鱼饵...");
+
             SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_E);
-            Thread.Sleep(3000);
+            RandomThreadSleep(3000);
 
             // 弹窗都没有，说明失败。
-            using (Bitmap windowImg = CaptureWindow(intPtr))
+            Point? confirmDialogPoi =
+                TemplateController.MathTemplateImgByName(intPtr, ETemplateName.ConfirmDialogButton);
+            if (confirmDialogPoi == null)
             {
-                Point? confirmDialogPoi =
-                    TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.ConfirmDialogButton);
-                if (confirmDialogPoi == null)
-                {
-                    throw new Exception("【HandleChangeBait】未能找到确认弹窗");
-                }
+                throw new Exception("【HandleChangeBait】未能找到确认弹窗");
             }
 
             // 不管他是更换还是购买，点了再说。
@@ -172,20 +170,19 @@ namespace NTEFishingTool.FishingTool
                 TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ConfirmDialogConfirmButton);
 
             SimulateEventHandler.MouseClick(confirmBtnPoint);
-            Thread.Sleep(2000);
+            RandomThreadSleep(2000);
 
             // 点完之后检查是否可以查找到万能鱼饵图标，如果能找到，说明进入了商店页。如果找不到，说明更换鱼饵成功。
-            using (Bitmap windowImg = CaptureWindow(intPtr))
+            Point? baitPoint = TemplateController.MathTemplateImgByName(intPtr, ETemplateName.UniversalBait);
+            if (baitPoint != null)
             {
-                Point? baitPoint = TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.UniversalBait);
-                if (baitPoint != null)
-                {
-                    _fishingTool.CurFishState = EFishState.BuyBait;
-                    return false;
-                }
+                Log.Info("【HandleChangeBait】尝试更换鱼饵失败，进入购买流程...");
+                _fishingTool.CurFishState = EFishState.BuyBait;
+                return false;
             }
 
             Log.Info("【HandleChangeBait】更换鱼饵成功");
+            RandomThreadSleep(1000);
             _fishingTool.CurFishState = EFishState.Idle;
             return true;
         }
@@ -198,69 +195,66 @@ namespace NTEFishingTool.FishingTool
         /// <exception cref="Exception"></exception>
         public static void HandleBuyBait(IntPtr intPtr)
         {
+            Log.Info("【HandleBuyBait】进入购买流程...");
+
             SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_R);
-            Thread.Sleep(3000);
+            RandomThreadSleep(3000);
 
-            //（新截图）
             // 进入购买页面
-            using (Bitmap windowImg = CaptureWindow(intPtr))
+            // 选中万能鱼饵
+            Point? baitLoc = TemplateController.MathTemplateImgByName(intPtr, ETemplateName.UniversalBait);
+            if (baitLoc == null)
             {
-                // 选中万能鱼饵
-                Point? baitLoc = TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.UniversalBait);
-                if (baitLoc == null)
-                {
-                    throw new Exception("【HandleBuyBait】未能在商店界面选中万能鱼饵");
-                }
-                SimulateEventHandler.MouseClick(baitLoc.Value);
-                Thread.Sleep(1500);
-
-                // 选中拉满鱼饵
-                Point? maximumLoc = TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.Maximum);
-                if (maximumLoc == null)
-                {
-                    throw new Exception("【HandleBuyBait】未能在商店界面选中最大值");
-                }
-                SimulateEventHandler.MouseClick(maximumLoc.Value);
-                Thread.Sleep(1500);
-
-                // 上边都没报错，说明可以直接点击购买
-                Point purchasePoint = TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ShopScenePurchaseButton);
-                SimulateEventHandler.MouseClick(purchasePoint);
-                Thread.Sleep(3500);
+                throw new Exception("【HandleBuyBait】未能在商店界面选中万能鱼饵");
             }
 
-            //（新截图）
-            using (Bitmap windowImg = CaptureWindow(intPtr))
-            {
-                // 购买分两种情况
-                // 一种直接购买成功，然后关闭购买成功提示
-                // 另一种弹出确认购买，需要先确认购买，然后关闭购买成功提示
-                Point? confirmDialogPoi =
-                    TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.ConfirmDialogButton);
-                if (confirmDialogPoi != null)
-                {
-                    Point confirmBtnPoint = TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ConfirmDialogConfirmButton);
-                    SimulateEventHandler.MouseClick(confirmBtnPoint);
-                    Thread.Sleep(2500);
-                }
+            Log.Info("【HandleBuyBait】选中万能鱼饵");
+            SimulateEventHandler.MouseClick(baitLoc.Value);
+            RandomThreadSleep(1500);
 
-                HandleClickToClose();
+            // 选中拉满鱼饵
+            Point? maximumLoc = TemplateController.MathTemplateImgByName(intPtr, ETemplateName.Maximum);
+            if (maximumLoc == null)
+            {
+                throw new Exception("【HandleBuyBait】未能在商店界面选中最大值");
             }
 
-            //（新截图）
-            using (Bitmap windowImg = CaptureWindow(intPtr))
-            {
-                // 关闭商店页
-                Point? pageCloseLoc = TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.CloseIcon);
-                if (pageCloseLoc == null)
-                {
-                    throw new Exception("【HandleBuyBait】未能关闭商店界面");
-                }
+            Log.Info("【HandleBuyBait】选中最大值");
+            SimulateEventHandler.MouseClick(maximumLoc.Value);
+            RandomThreadSleep(1500);
 
-                Log.Info("【HandleBuyBait】成功购买鱼饵");
-                SimulateEventHandler.MouseClick(pageCloseLoc.Value);
-                Thread.Sleep(1500);
+            // 上边都没报错，说明可以直接点击购买
+            Point purchasePoint = TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ShopScenePurchaseButton);
+            SimulateEventHandler.MouseClick(purchasePoint);
+            RandomThreadSleep(3500);
+
+            Log.Info("【HandleBuyBait】正在购买鱼饵...");
+
+            // 购买分两种情况
+            // 一种直接购买成功，然后关闭购买成功提示
+            // 另一种弹出确认购买，需要先确认购买，然后关闭购买成功提示
+            Point? confirmDialogPoi =
+                TemplateController.MathTemplateImgByName(intPtr, ETemplateName.ConfirmDialogButton);
+            if (confirmDialogPoi != null)
+            {
+                Point confirmBtnPoint = TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ConfirmDialogConfirmButton);
+                SimulateEventHandler.MouseClick(confirmBtnPoint);
+                RandomThreadSleep(2500);
             }
+
+            HandleClickToClose();
+
+            Log.Info("【HandleBuyBait】成功购买鱼饵");
+
+            // 关闭商店页
+            Point? pageCloseLoc = TemplateController.MathTemplateImgByName(intPtr, ETemplateName.CloseIcon);
+            if (pageCloseLoc == null)
+            {
+                throw new Exception("【HandleBuyBait】未能关闭商店界面");
+            }
+
+            SimulateEventHandler.MouseClick(pageCloseLoc.Value);
+            RandomThreadSleep(2000);
         }
 
         /// <summary>
@@ -271,112 +265,101 @@ namespace NTEFishingTool.FishingTool
         /// <exception cref="Exception"></exception>
         public static void HandleSaleFish(IntPtr intPtr)
         {
+            Log.Info("【HandleSaleFish】进入出售鱼获流程...");
+
             // 打开仓库界面。
             SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_Q);
-            Thread.Sleep(2000);
+            RandomThreadSleep(2000);
 
-            //（新截图）
-            using (Bitmap windowImg = CaptureWindow(intPtr))
+            // 是否可切换到鱼舱
+            Point? fishHoldInactivePoi =
+                TemplateController.MathTemplateImgByName(intPtr, ETemplateName.FishHoldInactive);
+            if (fishHoldInactivePoi == null)
             {
-                // 是否可切换到鱼舱
-                Point? fishHoldInactivePoi =
-                    TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.FishHoldInactive);
-                if (fishHoldInactivePoi == null)
-                {
-                    throw new Exception("【HandleSaleFish】未能切换到鱼舱");
-                }
-                SimulateEventHandler.MouseClick(fishHoldInactivePoi.Value);
-                Thread.Sleep(1500);
+                throw new Exception("【HandleSaleFish】未能切换到鱼舱");
             }
 
-            //（新截图）
-            using (Bitmap windowImg = CaptureWindow(intPtr))
+            Log.Info("【HandleSaleFish】切换到鱼舱");
+            SimulateEventHandler.MouseClick(fishHoldInactivePoi.Value);
+            RandomThreadSleep(1500);
+
+            // 鱼舱是空的，直接退出。
+            Point? emptyPoint = TemplateController.MathTemplateImgByName(intPtr, ETemplateName.FishHoldEmpty);
+            if (emptyPoint != null)
             {
-                // 鱼舱是空的，直接退出。
-                Point? emptyPoint = TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.FishHoldEmpty);
-                if (emptyPoint != null)
-                {
-                    Log.Info("【HandleSaleFish】检测到鱼舱为空...");
+                Log.Info("【HandleSaleFish】检测到鱼舱为空，退出流程");
 
-                    SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_ESCAPE);
-                    Thread.Sleep(1500);
-                    return;
-                }
-
-                // 是否可售卖
-                Point? fishHoldActivePoi =
-                    TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.FishHoldActive);
-                if (fishHoldActivePoi == null)
-                {
-                    throw new Exception("【HandleSaleFish】未能找到售卖鱼获入口");
-                }
-
-                Point salePoint =
-                    TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.FishHoldQuickSellButton);
-
-                SimulateEventHandler.MouseClick(salePoint);
-                Thread.Sleep(1500);
+                SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_ESCAPE);
+                RandomThreadSleep(1500);
+                return;
             }
 
-            //（新截图）
-            using (Bitmap windowImg = CaptureWindow(intPtr))
+            // 是否可售卖
+            Point? fishHoldActivePoi =
+                TemplateController.MathTemplateImgByName(intPtr, ETemplateName.FishHoldActive);
+            if (fishHoldActivePoi == null)
             {
-                // 是否可确认售卖
-                Point? confirmDialogPoi =
-                    TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.ConfirmDialogButton);
-                if (confirmDialogPoi == null)
-                {
-                    throw new Exception("【HandleSaleFish】未能确认售出鱼获");
-                }
-
-                Point confirmBtnPoint =
-                    TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ConfirmDialogConfirmButton);
-
-                SimulateEventHandler.MouseClick(confirmBtnPoint);
-                Thread.Sleep(6000); // 休眠时间稍微长一点，让鱼卖一会。
+                throw new Exception("【HandleSaleFish】未能找到售卖鱼获入口");
             }
+
+            Log.Info("【HandleSaleFish】开始出售鱼获...");
+            Point salePoint =
+                TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.FishHoldQuickSellButton);
+
+            SimulateEventHandler.MouseClick(salePoint);
+            RandomThreadSleep(1500);
+
+            // 是否可确认售卖
+            Point? confirmDialogPoi =
+                TemplateController.MathTemplateImgByName(intPtr, ETemplateName.ConfirmDialogButton);
+            if (confirmDialogPoi == null)
+            {
+                throw new Exception("【HandleSaleFish】未能确认售出鱼获");
+            }
+
+            Point confirmBtnPoint =
+                TemplateController.GetRectangleCenterPoint(intPtr, ETemplateName.ConfirmDialogConfirmButton);
+
+            SimulateEventHandler.MouseClick(confirmBtnPoint);
+            RandomThreadSleep(6000); // 休眠时间稍微长一点，让鱼卖一会。
 
             Log.Info("【HandleSaleFish】成功售出鱼获");
 
             // 直接关闭
             HandleClickToClose();
 
-            //（新截图）
-            using (Bitmap windowImg = CaptureWindow(intPtr))
+            // 关闭页面，回到垂钓待机界面
+            Point? pageClosePoint =
+                TemplateController.MathTemplateImgByName(intPtr, ETemplateName.CloseIcon);
+            if (pageClosePoint == null)
             {
-                // 关闭页面，回到垂钓待机界面
-                Point? pageClosePoint =
-                    TemplateController.MathTemplateImgByName(windowImg, intPtr, ETemplateName.CloseIcon);
-                if (pageClosePoint == null)
-                {
-                    throw new Exception("【HandleSaleFish】未能从鱼仓库回到垂钓界面");
-                }
-
-                SimulateEventHandler.MouseClick(pageClosePoint.Value);
-                Thread.Sleep(2000);
+                throw new Exception("【HandleSaleFish】未能从鱼仓库回到垂钓界面");
             }
+
+            SimulateEventHandler.MouseClick(pageClosePoint.Value);
+            RandomThreadSleep(2000);
         }
 
         /// <summary>
         /// 处理月卡逻辑。
         /// </summary>
-        /// <param name="windowImg"></param>
-        public static void HandleMoonCard(Bitmap windowImg)
+        public static void HandleMoonCard()
         {
-            Point? moonCardLoc = TemplateController.MathTemplateImgByName(windowImg, _fishingTool.IntPtrGame, ETemplateName.MoonCard);
+            Point? moonCardLoc = TemplateController.MathTemplateImgByName(_fishingTool.IntPtrGame, ETemplateName.MoonCard);
             if (moonCardLoc == null)
             {
                 // 没有月卡，无事发生
                 return;
             }
 
-            Log.Info("【HandleMoonCard】检测到月卡提示...");
+            Log.Info("【HandleMoonCard】正在跳过月卡...");
 
             SimulateEventHandler.MouseClick(moonCardLoc.Value);
-            Thread.Sleep(5000);
+            RandomThreadSleep(5000);
 
             HandleClickToClose();
-            Thread.Sleep(2000);
+            RandomThreadSleep(2000);
+            Log.Info("【HandleMoonCard】已跳过月卡");
         }
 
         /// <summary>
@@ -388,78 +371,72 @@ namespace NTEFishingTool.FishingTool
 
             while (true)
             {
-                using (Bitmap windowImg = CaptureWindow(_fishingTool.IntPtrGame))
+                // 回退到能够看到【钓鱼】按钮时，停止
+                Point? enterFLoc = TemplateController.MathTemplateImgByName(_fishingTool.IntPtrGame, ETemplateName.EnterFKeyToFishing);
+                if (enterFLoc != null)
                 {
-                    // 回退到能够看到【钓鱼】按钮时，停止
-                    Point? enterFLoc = TemplateController.MathTemplateImgByName(windowImg, _fishingTool.IntPtrGame, ETemplateName.EnterFKeyToFishing);
-                    if (enterFLoc != null)
-                    {
-                        _fishingTool.CurFishState = EFishState.GameIdle;
-                        break;
-                    }
-
-                    SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_ESCAPE);
-                    Thread.Sleep(2000);
+                    _fishingTool.CurFishState = EFishState.GameIdle;
+                    break;
                 }
 
+                SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_ESCAPE);
+                RandomThreadSleep(2000);
             }
 
             Log.Info("【BackToGameIdle】已回退到游戏待机界面");
 
-            Thread.Sleep(2000);
+            RandomThreadSleep(2000);
         }
 
         /// <summary>
         /// 从游戏待机界面进入钓鱼待机界面。
         /// </summary>
-        /// <param name="windowImg"></param>
         /// <exception cref="Exception"></exception>
-        public static void GoToFishingIdle(Bitmap windowImg)
+        public static void GoToFishingIdle()
         {
             Log.Info("【GoToFishingIdle】正在前往钓鱼待机界面...");
 
             IntPtr intPtrGame = _fishingTool.IntPtrGame;
 
-            Point? enterFLoc = TemplateController.MathTemplateImgByName(windowImg, intPtrGame, ETemplateName.EnterFKeyToFishing);
+            Point? enterFLoc = TemplateController.MathTemplateImgByName(intPtrGame, ETemplateName.EnterFKeyToFishing);
             if (enterFLoc == null)
             {
                 throw new Exception("【GoToFishingIdle】未找到【钓鱼】按钮");
             }
             SimulateEventHandler.SendScanCodeKeyPress(SimulateEventHandler.SCAN_F);
-            Thread.Sleep(2000);
+            RandomThreadSleep(2000);
 
-            using (Bitmap captureWindow = CaptureWindow(intPtrGame))
+            // 检查是否缺少鱼饵
+            Point? selBaitLoc =
+                TemplateController.MathTemplateImgByName(intPtrGame, ETemplateName.StartSceneSelectBait);
+            if (selBaitLoc != null)
             {
-                // 检查是否缺少鱼饵
-                Point? selBaitLoc =
-                    TemplateController.MathTemplateImgByName(captureWindow, intPtrGame, ETemplateName.StartSceneSelectBait);
-                if (selBaitLoc != null)
+                SimulateEventHandler.MouseClick(selBaitLoc.Value);
+                RandomThreadSleep(1500);
+
+                // 更换鱼饵失败，但未报错，说明现在在商店页。
+                if (!HandleChangeBait(intPtrGame))
                 {
+                    // 购买鱼饵
+                    HandleBuyBait(intPtrGame);
+
+                    // 再次点击选择鱼饵
                     SimulateEventHandler.MouseClick(selBaitLoc.Value);
-                    Thread.Sleep(1500);
+                    RandomThreadSleep(1500);
 
-                    // 更换鱼饵失败，但未报错，说明现在在商店页。
-                    if (!HandleChangeBait(intPtrGame))
-                    {
-                        // 购买鱼饵
-                        HandleBuyBait(intPtrGame);
-
-                        // 再次点击选择鱼饵
-                        SimulateEventHandler.MouseClick(selBaitLoc.Value);
-                        Thread.Sleep(1500);
-
-                        // 更换鱼饵
-                        HandleChangeBait(intPtrGame);
-                    }
+                    // 更换鱼饵
+                    HandleChangeBait(intPtrGame);
                 }
             }
+
+            RandomThreadSleep(1500);
 
             // 没有必要检查模板，直接点击开始钓鱼。
             Point startFishingLoc =
                 TemplateController.GetRectangleCenterPoint(intPtrGame, ETemplateName.StartSceneStartButton);
 
             SimulateEventHandler.MouseClick(startFishingLoc);
-            Thread.Sleep(2000);
+            RandomThreadSleep(2000);
 
             _fishingTool.CurFishState = EFishState.Idle;
         }

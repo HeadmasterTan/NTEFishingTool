@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnStartFishing = new System.Windows.Forms.Button();
             this.btnStopFishing = new System.Windows.Forms.Button();
@@ -38,11 +39,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.selLanguage = new System.Windows.Forms.ComboBox();
+            this.labelHelp = new System.Windows.Forms.Label();
+            this.helpTips = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // btnStartFishing
             // 
-            this.btnStartFishing.Location = new System.Drawing.Point(81, 204);
+            this.btnStartFishing.Location = new System.Drawing.Point(84, 185);
             this.btnStartFishing.Name = "btnStartFishing";
             this.btnStartFishing.Size = new System.Drawing.Size(121, 53);
             this.btnStartFishing.TabIndex = 0;
@@ -53,7 +56,7 @@
             // btnStopFishing
             // 
             this.btnStopFishing.Enabled = false;
-            this.btnStopFishing.Location = new System.Drawing.Point(296, 204);
+            this.btnStopFishing.Location = new System.Drawing.Point(299, 185);
             this.btnStopFishing.Name = "btnStopFishing";
             this.btnStopFishing.Size = new System.Drawing.Size(121, 53);
             this.btnStopFishing.TabIndex = 1;
@@ -109,7 +112,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(78, 173);
+            this.label6.Location = new System.Drawing.Point(81, 154);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(277, 15);
             this.label6.TabIndex = 7;
@@ -119,17 +122,30 @@
             // 
             this.selLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selLanguage.FormattingEnabled = true;
-            this.selLanguage.Location = new System.Drawing.Point(359, 15);
+            this.selLanguage.Location = new System.Drawing.Point(378, 12);
             this.selLanguage.Name = "selLanguage";
-            this.selLanguage.Size = new System.Drawing.Size(121, 23);
+            this.selLanguage.Size = new System.Drawing.Size(108, 23);
             this.selLanguage.TabIndex = 8;
             this.selLanguage.SelectedIndexChanged += new System.EventHandler(this.selLanguage_SelectedIndexChanged);
+            // 
+            // labelHelp
+            // 
+            this.labelHelp.Cursor = System.Windows.Forms.Cursors.Help;
+            this.labelHelp.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelHelp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(102)))), ((int)(((byte)(204)))));
+            this.labelHelp.Location = new System.Drawing.Point(386, 248);
+            this.labelHelp.Name = "labelHelp";
+            this.labelHelp.Size = new System.Drawing.Size(100, 23);
+            this.labelHelp.TabIndex = 9;
+            this.labelHelp.Text = "遇到问题？";
+            this.labelHelp.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(492, 280);
+            this.ClientSize = new System.Drawing.Size(498, 280);
+            this.Controls.Add(this.labelHelp);
             this.Controls.Add(this.selLanguage);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -163,6 +179,8 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox selLanguage;
+        private System.Windows.Forms.Label labelHelp;
+        private System.Windows.Forms.ToolTip helpTips;
     }
 }
 

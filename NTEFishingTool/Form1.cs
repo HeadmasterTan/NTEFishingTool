@@ -126,32 +126,53 @@ namespace NTEFishingTool
             label6.Text = "确认已在游戏中点击【开始钓鱼】后使用";
             btnStartFishing.Text = _hotKeyText + "自动钓鱼";
             btnStopFishing.Text = _hotKeyText + "停止钓鱼";
+            labelHelp.Text = "遇到问题？";
+
+            string helpText = "• 适当降低游戏画质或分辨率。\n" +
+                              "• 关闭色彩增强、滤镜等功能。\n" +
+                              "• 尝试换个钓鱼点。\n" +
+                              "• 关闭AMD显卡帧生成";
+            helpTips.SetToolTip(labelHelp, helpText);
         }
 
         private void SetChineseTraditional()
         {
             this.Text = "安魂曲釣魚工具";
             label1.Text = "使用說明：";
-            label2.Text = "1. 請保持遊戲界面完整暴露在桌面";
-            label3.Text = "2. 開始自動釣魚後請勿再操作電腦（除非停止釣魚）";
-            label4.Text = "3. 支持[16:9] [16:10] [24:10] [35:10]等分辨率";
-            label5.Text = "4. 內置自動購買萬能魚餌和自動售出（不幫忙購買魚竿）";
+            label2.Text = "1. 請保持遊戲畫面完整顯露於桌面";
+            label3.Text = "2. 開始自動釣魚後請勿操作電腦（除非停止釣魚）";
+            label4.Text = "3. 支援 [16:9] [16:10] [24:10] [35:10] 等解析度";
+            label5.Text = "4. 內建自動購買萬能魚餌與自動販售（不提供自動購買魚竿）";
             label6.Text = "確認已在遊戲中點擊【開始釣魚】後使用";
             btnStartFishing.Text = _hotKeyText + "自動釣魚";
             btnStopFishing.Text = _hotKeyText + "停止釣魚";
+            labelHelp.Text = "遇到問題？";
+
+            string helpText = "• 適當降低遊戲畫質或解析度。\n" +
+                              "• 關閉色彩增強、濾鏡等功能。\n" +
+                              "• 嘗試換個釣魚點。\n" +
+                              "• 關閉AMD顯卡幀生成";
+            helpTips.SetToolTip(labelHelp, helpText);
         }
 
         private void SetEnglish()
         {
             this.Text = "LacrimosaFishingTool";
             label1.Text = "Instructions:";
-            label2.Text = "1. Keep the game window fully visible on desktop";
-            label3.Text = "2. Do not use PC after auto-fishing starts (unless stopped)";
-            label4.Text = "3. Supports [16:9], [16:10], [24:10], [35:10] resolutions";
-            label5.Text = "4. Auto-buys bait & auto-sells fish (excludes fishing rods)";
-            label6.Text = "Click [Start Fishing] in-game before using";
+            label2.Text = "1. Keep the game window fully visible on desktop.";
+            label3.Text = "2. Do not use PC after auto-fishing starts (until stopped).";
+            label4.Text = "3. Supports [16:9], [16:10], [24:10], [35:10] resolutions.";
+            label5.Text = "4. Auto-buys bait & auto-sells catch (No auto-buy rod).";
+            label6.Text = "Click [Start Fishing] in-game before using.";
             btnStartFishing.Text = _hotKeyText + "AutoFishing";
             btnStopFishing.Text = _hotKeyText + "StopFishing";
+            labelHelp.Text = "Help";
+
+            string helpText = "• Lower game graphics or resolution.\n" +
+                              "• Disable color enhancements & filters.\n" +
+                              "• Try another fishing spot.\n" +
+                              "• Turn off AMD Frame Generation.";
+            helpTips.SetToolTip(labelHelp, helpText);
         }
 
         private void selLanguage_SelectedIndexChanged(object sender, EventArgs e)
