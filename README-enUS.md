@@ -5,7 +5,7 @@ This tool is based on `OpenCV`, so it cannot run in the background. Please be aw
 
 ![Lacrimosa](./docs/Lacrimosa.png)Let Lacrimosa fish for you.
 
-[Click to download the latest version](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.1)
+[Click to download the latest version](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.2)
 
 [Historical Versions](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
@@ -33,10 +33,13 @@ This tool is based on `OpenCV`, so it cannot run in the background. Please be aw
 6. Multi-language support
 7. Supports most screen aspect ratios and resolutions
 
+## ❔ Q&A
+
 ### Q: The cursor cannot keep up with the green bar?
 
+- You can lower the game's graphics quality or resolution accordingly.
+- Color enhancement or filter features might have been enabled; it is recommended to turn them off.
 - The background of your current fishing area might be too complex. Try switching to a different fishing spot.
-- Your resolution aspect ratio might not meet the requirements. Please check it yourself.
 - If you use an AMD graphics card, try disabling Frame Generation.
 - If none of the above solutions work, there is unfortunately no other fix available at this moment.
 

@@ -5,7 +5,7 @@
 
 ![安魂曲](./docs/Lacrimosa.png)让安魂曲帮你钓。
 
-[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.1)
+[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.2)
 
 [历史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
@@ -13,6 +13,8 @@
 - [English](./README-enUS.md)
 
 ## 📘 使用说明
+
+* 仅支持PC端。
 
 * 本工具只有 `自动钓鱼` 和 `停止钓鱼` 两个按钮，并设置有按键`F11`可直接启动/停止。
 
@@ -40,9 +42,10 @@
 
 ### 问：光标跟不上绿条？
 
-- 1、可能是处在的钓鱼区域背景过于复杂，可以尝试换个钓鱼点。
-- 2、可能是分辨率比例不符合要求，请自行检查。
-- 3、如果是AMD显卡，可以尝试关闭帧生成。
+- 可以适当降低游戏画质或分辨率。
+- 可能是设置过色彩增强、滤镜等功能，建议关闭。
+- 可能是处在的钓鱼区域背景过于复杂，可以尝试换个钓鱼点。
+- 如果是AMD显卡，可以尝试关闭帧生成。
 - 如果上述均无法解决，暂时我也无法帮到你。
 
 ## © 开源许可

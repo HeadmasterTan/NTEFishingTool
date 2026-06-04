@@ -5,7 +5,7 @@
 
 ![安魂曲](./docs/Lacrimosa.png)讓安魂曲幫你釣。
 
-[點擊下載最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.1)
+[點擊下載最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.2)
 
 [曆史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
@@ -37,9 +37,10 @@
 
 ### 問：光標跟不上綠條？
 
-- 1、可能是處在的釣魚區域背景過於複雜，可以嘗試換個釣魚點。
-- 2、可能是解析度比例不符合要求，請自行檢查。
-- 3、如果是AMD顯卡，可以嘗試關閉幀生成。
+- 可以適當降低遊戲畫質或解析度。
+- 可能是設置過色彩增強、濾鏡等功能，建議關閉。
+- 可能是處在的釣魚區域背景過於複雜，可以嘗試換個釣魚點。
+- 如果是AMD顯卡，可以嘗試關閉幀生成。
 - 如果上述均無法解決，暫時我也無法幫到你。
 
 ## © 開源許可
