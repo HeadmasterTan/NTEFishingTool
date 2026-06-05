@@ -56,7 +56,7 @@
             // btnStopFishing
             // 
             this.btnStopFishing.Enabled = false;
-            this.btnStopFishing.Location = new System.Drawing.Point(299, 185);
+            this.btnStopFishing.Location = new System.Drawing.Point(310, 185);
             this.btnStopFishing.Name = "btnStopFishing";
             this.btnStopFishing.Size = new System.Drawing.Size(121, 53);
             this.btnStopFishing.TabIndex = 1;
@@ -111,20 +111,20 @@
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(81, 154);
+            this.label6.Location = new System.Drawing.Point(15, 157);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(277, 15);
+            this.label6.Size = new System.Drawing.Size(485, 15);
             this.label6.TabIndex = 7;
             this.label6.Text = "确认已在游戏中点击【开始钓鱼】后使用";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // selLanguage
             // 
             this.selLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.selLanguage.FormattingEnabled = true;
-            this.selLanguage.Location = new System.Drawing.Point(378, 12);
+            this.selLanguage.Location = new System.Drawing.Point(403, 10);
             this.selLanguage.Name = "selLanguage";
-            this.selLanguage.Size = new System.Drawing.Size(108, 23);
+            this.selLanguage.Size = new System.Drawing.Size(97, 23);
             this.selLanguage.TabIndex = 8;
             this.selLanguage.SelectedIndexChanged += new System.EventHandler(this.selLanguage_SelectedIndexChanged);
             // 
@@ -133,7 +133,7 @@
             this.labelHelp.Cursor = System.Windows.Forms.Cursors.Help;
             this.labelHelp.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelHelp.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(102)))), ((int)(((byte)(204)))));
-            this.labelHelp.Location = new System.Drawing.Point(386, 248);
+            this.labelHelp.Location = new System.Drawing.Point(400, 248);
             this.labelHelp.Name = "labelHelp";
             this.labelHelp.Size = new System.Drawing.Size(100, 23);
             this.labelHelp.TabIndex = 9;
@@ -144,7 +144,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 280);
+            this.ClientSize = new System.Drawing.Size(512, 280);
             this.Controls.Add(this.labelHelp);
             this.Controls.Add(this.selLanguage);
             this.Controls.Add(this.label6);

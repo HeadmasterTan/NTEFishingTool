@@ -10,7 +10,7 @@ namespace NTEFishingTool
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
         private static readonly Fishing _fishingTool = Fishing.GetInstance();
-        private static string[] Languages = { "简体中文", "繁体中文", "English" };
+        private static string[] Languages = { "简体中文", "繁体中文", "English", "日本語", "한국어" };
         private static string _hotKeyText = "";
 
         public Form1()
@@ -175,6 +175,46 @@ namespace NTEFishingTool
             helpTips.SetToolTip(labelHelp, helpText);
         }
 
+        private void SetJapanese()
+        {
+            this.Text = "レクイエム自動釣りツール";
+            label1.Text = "使い方：";
+            label2.Text = "1. ゲーム画面を隠さず、デスクトップにすべて表示してください。";
+            label3.Text = "2. 自動釣り開始後は、PCの操作を控えてください（停止時を除く）。";
+            label4.Text = "3. [16:9] [16:10] [24:10] [35:10] などの解像度に対応。";
+            label5.Text = "4. 万能釣り餌の自動購入・自動売却機能付き（釣竿は購入しません）。";
+            label6.Text = "ゲーム内で【釣りを開始】したことを確認してから起動してください。";
+            btnStartFishing.Text = _hotKeyText + "自動釣り";
+            btnStopFishing.Text = _hotKeyText + "釣り停止";
+            labelHelp.Text = "ヘルプ";
+
+            string helpText = "• ゲームの画質や解像度を下げる。\n" +
+                              "• カラー強調やフィルターをオフにする。\n" +
+                              "• 別の釣りスポットを試す。\n" +
+                              "• AMD製グラボのフレーム生成をオフにする。";
+            helpTips.SetToolTip(labelHelp, helpText);
+        }
+
+        private void SetKorean()
+        {
+            this.Text = "라크리모사 자동 낚시 툴";
+            label1.Text = "사용 방법:";
+            label2.Text = "1. 게임 화면이 가려지지 않게 데스크톱에 온전히 띄워주세요.";
+            label3.Text = "2. 자동 낚시 시작 후에는 컴퓨터 조작을 삼가세요 (중지 시 제외).";
+            label4.Text = "3. [16:9], [16:10], [24:10], [35:10] 등 해상도 지원.";
+            label5.Text = "4. 만능 미끼 자동 구매 및 자동 판매 내장 (낚싯대는 구매 안 함).";
+            label6.Text = "게임 내에서 【낚시 시작】을 누른 후 실행해 주세요.";
+            btnStartFishing.Text = _hotKeyText + "자동 낚시";
+            btnStopFishing.Text = _hotKeyText + "낚시 중지";
+            labelHelp.Text = "돕다";
+
+            string helpText = "• 게임 화질이나 해상도 낮추기.\n" +
+                              "• 색상 강화, 필터 등 기능 끄기.\n" +
+                              "• 다른 낚시터로 이동해 보기.\n" +
+                              "• AMD 그래픽카드 프레임 생성 기능 끄기.";
+            helpTips.SetToolTip(labelHelp, helpText);
+        }
+
         private void selLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
             string item = selLanguage.SelectedItem.ToString();
@@ -188,6 +228,12 @@ namespace NTEFishingTool
                     break;
                 case "English":
                     SetEnglish();
+                    break;
+                case "日本語":
+                    SetJapanese();
+                    break;
+                case "한국어":
+                    SetKorean();
                     break;
                 default:
                     SetChineseSimplified();
