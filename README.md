@@ -5,16 +5,13 @@
 
 ![安魂曲](./docs/Lacrimosa.png)让安魂曲帮你钓。
 
-[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.2)
+[点击下载最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.3) | [历史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
-[历史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
-
-- [繁體中文](./README-zhTW.md)
-- [English](./README-enUS.md)
+[繁體中文](./README-zhTW.md) | [English](./README-enUS.md) | [日本語](./README-jaJP.md) | [한국어](./README-koKR.md)
 
 ## 📘 使用说明
 
-* 仅支持PC端。
+* 将`zip`解压后，`以管理员身份`运行`NTEFishingTool.exe`即可。
 
 * 本工具只有 `自动钓鱼` 和 `停止钓鱼` 两个按钮，并设置有按键`F11`可直接启动/停止。
 

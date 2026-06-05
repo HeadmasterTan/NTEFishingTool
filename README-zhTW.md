@@ -5,11 +5,11 @@
 
 ![安魂曲](./docs/Lacrimosa.png)讓安魂曲幫你釣。
 
-[點擊下載最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.2)
-
-[曆史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
+[點擊下載最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.3) | [曆史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
 ## 📘 使用說明
+
+* 將`zip`解壓縮後，`以管理員身分`執行`NTEFishingTool.exe`即可。
 
 * 本工具只有 `自動釣魚` 和 `停止釣魚` 兩個按鈕，並設置有按鍵`F11`可直接啟動/停止。
 

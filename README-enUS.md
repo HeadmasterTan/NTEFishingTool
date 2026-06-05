@@ -1,15 +1,15 @@
 
-# 🎣 NTEFishingTool
+# 🎣 NTE Fishing Tool
 
 This tool is based on `OpenCV`, so it cannot run in the background. Please be aware.
 
 ![Lacrimosa](./docs/Lacrimosa.png)Let Lacrimosa fish for you.
 
-[Click to download the latest version](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.2)
-
-[Historical Versions](https://github.com/HeadmasterTan/NTEFishingTool/releases)
+[Click to download the latest version](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.3) | [Historical Versions](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
 ## 📘 User Guide
+
+* After extracting the zip file, simply run `NTEFishingTool.exe` as an administrator.
 
 * This tool features only two buttons: `Auto Fish` and `Stop Fishing`. You can also press `F11` to directly start or stop the tool.
 
