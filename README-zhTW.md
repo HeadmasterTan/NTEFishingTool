@@ -5,7 +5,7 @@
 
 ![安魂曲](./docs/Lacrimosa.png)讓安魂曲幫你釣。
 
-[點擊下載最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.3) | [曆史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
+[點擊下載最新版](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.4) | [曆史版本](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
 ## 📘 使用說明
 

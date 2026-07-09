@@ -256,7 +256,7 @@ namespace NTEFishingTool.FishingTool
                         using (Bitmap fishBarCropImg = CaptureWindow(_intPtrGame, ETemplateName.FishingPoint))
                         {
                             locBar = FishScene.GetFishBarPoint(true, fishBarCropImg);
-                            locPoint = TemplateController.MathTemplateImgByName(_intPtrGame, ETemplateName.FishingPoint, fishBarCropImg);
+                            locPoint = TemplateController.MatchTemplateImgByName(_intPtrGame, ETemplateName.FishingPoint, fishBarCropImg);
                         }
 
                         if (locBar == null || locPoint == null)
@@ -312,7 +312,7 @@ namespace NTEFishingTool.FishingTool
 
                             // 判断是否进入上钩逻辑
                             Point? clickToFishingLoc =
-                                TemplateController.MathTemplateImgByName(_intPtrGame, ETemplateName.TakesTheBait);
+                                TemplateController.MatchTemplateImgByName(_intPtrGame, ETemplateName.TakesTheBait);
                             if (clickToFishingLoc != null)
                             {
                                 Log.Info("【Fishing】检测到鱼上钩，开始遛鱼");
@@ -326,7 +326,7 @@ namespace NTEFishingTool.FishingTool
 
                             // 判断是否进入收杆逻辑
                             Point? weightGramLoc =
-                                TemplateController.MathTemplateImgByName(_intPtrGame, ETemplateName.FishWeightGram);
+                                TemplateController.MatchTemplateImgByName(_intPtrGame, ETemplateName.FishWeightGram);
                             if (weightGramLoc != null)
                             {
                                 Log.Info("【Fishing】成功钓起了一条鱼");
@@ -343,7 +343,7 @@ namespace NTEFishingTool.FishingTool
                             }
 
                             // 处理是否处在游戏待机界面。
-                            Point? enterFLoc = TemplateController.MathTemplateImgByName(_intPtrGame, ETemplateName.EnterFKeyToFishing);
+                            Point? enterFLoc = TemplateController.MatchTemplateImgByName(_intPtrGame, ETemplateName.EnterFKeyToFishing);
                             if (enterFLoc != null)
                             {
                                 _curFishState = EFishState.GameIdle;
@@ -380,8 +380,8 @@ namespace NTEFishingTool.FishingTool
                             }
 
                             // 处理莫名退回到登录界面的问题
-                            Point? announcementLoc = TemplateController.MathTemplateImgByName(_intPtrGame, ETemplateName.LoginPageAnnouncement);
-                            Point? announcementLightLoc = TemplateController.MathTemplateImgByName(_intPtrGame, ETemplateName.LoginPageAnnouncementLight);
+                            Point? announcementLoc = TemplateController.MatchTemplateImgByName(_intPtrGame, ETemplateName.LoginPageAnnouncement);
+                            Point? announcementLightLoc = TemplateController.MatchTemplateImgByName(_intPtrGame, ETemplateName.LoginPageAnnouncementLight);
                             if (announcementLoc != null || announcementLightLoc != null)
                             {
                                 Log.Info("【FishingLoop】检测到被踢回登录界面...");
@@ -399,7 +399,7 @@ namespace NTEFishingTool.FishingTool
                             }
 
                             // 处理月卡，并非整点结算月卡，因为此匹配逻辑可能会比较耗时，所以降低其优先级。
-                            Point? moonCardLoc = TemplateController.MathTemplateImgByName(_intPtrGame, ETemplateName.MoonCard);
+                            Point? moonCardLoc = TemplateController.MatchTemplateImgByName(_intPtrGame, ETemplateName.MoonCard);
                             if (moonCardLoc != null)
                             {
                                 Log.Info("【FishingLoop】检测到月卡提示...");

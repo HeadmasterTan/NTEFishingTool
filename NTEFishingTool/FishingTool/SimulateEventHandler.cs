@@ -10,6 +10,8 @@ namespace NTEFishingTool.FishingTool
     {
         public const uint MOUSEEVENTF_LEFTDOWN = 0x02; // 鼠标左键按下
         public const uint MOUSEEVENTF_LEFTUP = 0x04; // 鼠标左键抬起
+        public const uint MOUSEEVENT_WHEEL = 0x0800; // 鼠标滚轮
+        public const uint MOUSEEVENT_MOVE = 0x0001;
 
         public const uint KEYEVENTF_KEYDOWN = 0x00; // 键盘按键按下
         public const uint KEYEVENTF_KEYUP = 0x02; // 键盘按键抬起
@@ -48,6 +50,16 @@ namespace NTEFishingTool.FishingTool
             mouse_event(MOUSEEVENTF_LEFTDOWN, point.X, point.Y, 0, 0);
             Thread.Sleep(delayMs);
             mouse_event(MOUSEEVENTF_LEFTUP, point.X, point.Y, 0, 0);
+        }
+
+        public static void MouseScroll(int clicks)
+        {
+            // 120 代表一个【咔哒】声
+            mouse_event(MOUSEEVENT_WHEEL, 0, 0, clicks * 120, 0);
+
+            // 发送一个相对移动 1 像素的事件，强制系统刷新输入队列，以防鼠标滚动事件不生效。
+            mouse_event(MOUSEEVENT_MOVE, 1, 1, 0, 0);
+            mouse_event(MOUSEEVENT_MOVE, -1, -1, 0, 0);
         }
 
         public static void SendScanCodeKeyDown(byte scanCode)

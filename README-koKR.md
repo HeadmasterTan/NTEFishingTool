@@ -5,7 +5,7 @@
 
 ![라크리모사](./docs/Lacrimosa.png)라크리모사이 대신 낚시를 진행해 드립니다.
 
-[최신 버전 다운로드](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.3) | [이전 버전 목록](https://github.com/HeadmasterTan/NTEFishingTool/releases)
+[최신 버전 다운로드](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.4) | [이전 버전 목록](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
 ## 📘 사용 설명
 
