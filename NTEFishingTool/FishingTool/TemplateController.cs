@@ -129,7 +129,7 @@ namespace NTEFishingTool.FishingTool
                 case ETemplateName.FishHoldQuickSellButton:
                     return CalculateTemplateRect(964, 969, 201, 73);
                 case ETemplateName.EnterFKeyToFishing:
-                    return CalculateTemplateRect(1100, 590, 236, 75);
+                    return CalculateTemplateRect(1100, 520, 145, 240);
                 case ETemplateName.StartSceneShopIcon:
                     return CalculateTemplateRect(1226, 928, 165, 100);
                 case ETemplateName.StartSceneStartButton:
@@ -190,7 +190,7 @@ namespace NTEFishingTool.FishingTool
                 case ETemplateName.FishHoldQuickSellButton:
                     return CalculateTemplateRect(1276, 1364, 283, 88, ratioWidth, ratioHeight);
                 case ETemplateName.EnterFKeyToFishing:
-                    return CalculateTemplateRect(1485, 833, 225, 129, ratioWidth, ratioHeight);
+                    return CalculateTemplateRect(1485, 733, 225, 329, ratioWidth, ratioHeight);
                 case ETemplateName.StartSceneShopIcon:
                     return CalculateTemplateRect(1641, 1295, 194, 158, ratioWidth, ratioHeight);
                 case ETemplateName.StartSceneStartButton:
@@ -251,7 +251,7 @@ namespace NTEFishingTool.FishingTool
                 case ETemplateName.FishHoldQuickSellButton:
                     return CalculateTemplateRect(900, 701, 142, 49, ratioWidth, ratioHeight);
                 case ETemplateName.EnterFKeyToFishing:
-                    return CalculateTemplateRect(999, 432, 131, 50, ratioWidth, ratioHeight);
+                    return CalculateTemplateRect(999, 386, 100, 180, ratioWidth, ratioHeight);
                 case ETemplateName.StartSceneShopIcon:
                     return CalculateTemplateRect(1317, 664, 79, 79, ratioWidth, ratioHeight);
                 case ETemplateName.StartSceneStartButton:
@@ -314,7 +314,7 @@ namespace NTEFishingTool.FishingTool
                 case ETemplateName.FishHoldEmpty:
                     return CalculateTemplateRect(2245, 415, 496, 441, ratioWidth);
                 case ETemplateName.EnterFKeyToFishing:
-                    return CalculateTemplateRect(2028, 582, 257, 85, ratioWidth);
+                    return CalculateTemplateRect(2028, 502, 257, 285, ratioWidth);
                 case ETemplateName.StartSceneShopIcon:
                     return CalculateTemplateRect(3167, 919, 113, 113, ratioWidth);
                 case ETemplateName.StartSceneStartButton:
@@ -424,7 +424,7 @@ namespace NTEFishingTool.FishingTool
         /// <param name="sourceImg">游戏截图</param>
         /// <returns>System.Drawing.Point?</returns>
         /// <exception cref="Exception"></exception>
-        public static Point? MathTemplateImgByName(IntPtr intPtrGame, ETemplateName tmplName, Bitmap sourceImg = null)
+        public static Point? MatchTemplateImgByName(IntPtr intPtrGame, ETemplateName tmplName, Bitmap sourceImg = null)
         {
             string imgName = tmplName.ToString();
             double minSimilarity = 0.8;

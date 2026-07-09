@@ -5,7 +5,7 @@
 
 ![レクイエム](./docs/Lacrimosa.png)レクイエムに釣りを任せましょう。
 
-[最新版をダウンロード](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.3) | [過去のバージョン](https://github.com/HeadmasterTan/NTEFishingTool/releases)
+[最新版をダウンロード](https://github.com/HeadmasterTan/NTEFishingTool/releases/tag/v1.1.4) | [過去のバージョン](https://github.com/HeadmasterTan/NTEFishingTool/releases)
 
 ## 📘 使用方法
 
